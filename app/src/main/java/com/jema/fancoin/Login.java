@@ -7,19 +7,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class Login extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
-        final TextView redirectAll = (TextView) findViewById(R.id.redirectAll);
 
-        redirectAll.setOnClickListener(new View.OnClickListener() {
+        final TextView redirectSignUp = (TextView) findViewById(R.id.redirectSignUp);
+
+        redirectSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(MainActivity.this, Login.class);
+                Intent myIntent = new Intent(Login.this, Register.class);
                 startActivity(myIntent);
             }
         });
