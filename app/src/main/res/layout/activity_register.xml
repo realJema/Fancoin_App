@@ -80,6 +80,7 @@
         app:layout_constraintStart_toEndOf="@+id/imageView5">
 
       <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/nameSignUp"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:backgroundTint="@color/white"
@@ -116,6 +117,7 @@
         app:layout_constraintStart_toEndOf="@+id/imageView10">
 
       <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/mailSignUp"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:backgroundTint="@color/white"
@@ -153,6 +155,7 @@
         app:layout_constraintStart_toEndOf="@+id/imageView11">
 
       <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/numberSignUp"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:backgroundTint="@color/white"
@@ -175,7 +178,7 @@
       app:layout_constraintTop_toBottomOf="@+id/numberInput">
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/imageView12"
         android:layout_width="60dp"
         android:layout_height="match_parent"
         android:padding="20dp"
@@ -187,9 +190,10 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         app:layout_constraintEnd_toStartOf="@+id/imageView6"
-        app:layout_constraintStart_toEndOf="@+id/imageView5">
+        app:layout_constraintStart_toEndOf="@+id/imageView12">
 
       <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/passwordSignUp"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:backgroundTint="@color/white"
@@ -207,7 +211,7 @@
   </androidx.constraintlayout.widget.ConstraintLayout>
 
   <Button
-      android:id="@+id/button"
+      android:id="@+id/signUpBtn"
       android:layout_width="match_parent"
       android:layout_height="60dp"
       android:layout_marginStart="16dp"
@@ -235,7 +239,7 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.5"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/button" />
+      app:layout_constraintTop_toBottomOf="@+id/signUpBtn" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

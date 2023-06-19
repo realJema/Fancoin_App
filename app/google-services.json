@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "747076184487",
+    "project_id": "fancoin-98406",
+    "storage_bucket": "fancoin-98406.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:747076184487:android:d6d589131d6b042ac2ee82",
+        "android_client_info": {
+          "package_name": "com.jema.fancoin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "747076184487-if9rb80b0al6qqk1lmlvn0osil0m5vlb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAvEAtkcwO1XS3U_-_-6jZRg6JAQHamhU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "747076184487-if9rb80b0al6qqk1lmlvn0osil0m5vlb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
