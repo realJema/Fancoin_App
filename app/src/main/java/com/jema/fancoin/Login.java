@@ -1,5 +1,6 @@
 package com.jema.fancoin;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class Login extends AppCompatActivity {
 
@@ -25,6 +27,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        auth = FirebaseAuth.getInstance();
 
         final TextView redirectSignUp = (TextView) findViewById(R.id.redirectSignUp);
 
@@ -36,7 +39,6 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        auth = FirebaseAuth.getInstance();
 
         email = findViewById(R.id.mailSignIn);
         password = findViewById(R.id.passwordSignIn);
