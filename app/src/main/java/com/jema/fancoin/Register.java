@@ -3,6 +3,7 @@ package com.jema.fancoin;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,14 +14,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Register extends AppCompatActivity {
-
-
-    private Button singupBtn;
+    private Button signUp;
     private EditText email, password, name, phoneNumber;
     private FirebaseAuth auth;
 
@@ -39,16 +44,15 @@ public class Register extends AppCompatActivity {
             }
         });
 
-
         auth = FirebaseAuth.getInstance();
 
         email = findViewById(R.id.mailSignUp);
         password = findViewById(R.id.passwordSignUp);
         name = findViewById(R.id.nameSignUp);
         phoneNumber = findViewById(R.id.numberSignUp);
-        singupBtn = findViewById(R.id.signUpBtn);
+        signUp = findViewById(R.id.signUpBtn);
 
-        singupBtn.setOnClickListener(new View.OnClickListener() {
+        signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -62,25 +66,55 @@ public class Register extends AppCompatActivity {
                     Toast.makeText(Register.this, "Empty Credentials!", Toast.LENGTH_SHORT).show();
                 } else if (txt_password.length() < 6) {
                     Toast.makeText(Register.this, "Password too short", Toast.LENGTH_SHORT).show();
+                } else if (txt_phoneNumber.length() < 6) {
+                    Toast.makeText(Register.this, "Phone Number too short", Toast.LENGTH_SHORT).show();
                 } else {
-                    registerUser(txt_email, txt_password, txt_name, txt_phoneNumber); 
+                    registerUser(txt_email, txt_password, txt_name, txt_phoneNumber);
                 }
             }
         });
     }
 
     private void registerUser(String email, String password, String name, String phoneNumber) {
+
+        signUp.setText("Signing Un...");
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(Register.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
+//                    add info to users collection
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    HashMap<String , Object> user = new HashMap<>();
+                    user.put("username" , name);
+                    user.put("email", email);
+                    user.put("phoneNumber" , phoneNumber);
+                    user.put("id" , auth.getCurrentUser().getUid());
+                    user.put("bio" , "");
+                    user.put("imageurl" , "default");
+
+                    db.collection("Users").add(user).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                            if(task.isSuccessful()){
+                                Toast.makeText(Register.this, "User Added", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
                     Toast.makeText(Register.this, "Registering user successful", Toast.LENGTH_SHORT).show();
                     Intent myIntent = new Intent(Register.this, Home.class);
                     startActivity(myIntent);
                     finish();
                 } else {
+                    signUp.setText("Sign Un");
                     Toast.makeText(Register.this, "Registering user failed", Toast.LENGTH_SHORT).show();
                 }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                signUp.setText("Sign Un");
+                Toast.makeText(Register.this, "Registering user failed", Toast.LENGTH_SHORT).show();
             }
         });
     }

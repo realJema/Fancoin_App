@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/homePage"
+            android:icon="@drawable/ic_home"
+            android:title="Home"/>
+        <item android:id="@+id/walletPage"
+            android:icon="@drawable/ic_heart"
+            android:title="Wallet"/>
+    </group>
+    <item android:title="Apply">
+        <menu>
+            <group android:checkableBehavior="single">
+
+                <item android:id="@+id/applyPage"
+                    android:icon="@drawable/ic_profile"
+                    android:title="Apply"/>
+            </group>
+        </menu>
+    </item>
+
+</menu>
