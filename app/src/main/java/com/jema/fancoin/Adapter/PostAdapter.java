@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jema.fancoin.Model.PostCard;
 import com.jema.fancoin.PostDetails;
 import com.jema.fancoin.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +47,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         holder.category.setText(postCardArrayList.get(position).getCategory());
 //        holder.bg.setBackgroundResource(R.drawable.cardbg);
 //        holder.bg.setBackgroundResource(postCardArrayList.get(position).getImage());
+        Picasso.get().load(postCardArrayList.get(position).getImage()).into(holder.image);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +75,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public  static class PostViewHolder extends RecyclerView.ViewHolder{
 
         TextView name, bio, price, category;
-        ConstraintLayout bg;
+        ImageView image;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -81,7 +84,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 //            bio = itemView.findViewById(R.id.product_description);
             price = itemView.findViewById(R.id.product_price);
             category = itemView.findViewById(R.id.product_category);
-            bg = itemView.findViewById(R.id.post_layout);
+            image = itemView.findViewById(R.id.postImage);
 
         }
     }

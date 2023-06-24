@@ -8,7 +8,7 @@
     android:layout_marginStart="16dp">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/postImage"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
         app:srcCompat="@drawable/cardbg" />
@@ -22,7 +22,7 @@
         android:text="Placeholder Name"
         android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"  />
+        app:layout_constraintTop_toBottomOf="@+id/postImage"  />
     <TextView
         android:id="@+id/product_category"
         android:layout_width="wrap_content"

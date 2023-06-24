@@ -8,14 +8,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingVertical="10dp">
 
         <ImageView
             android:id="@+id/drawerBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_menu" />
@@ -65,6 +65,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
+                        android:id="@+id/settings_profile_imageview"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         tools:src="@tools:sample/avatars" />
@@ -121,18 +122,24 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView5">
 
                     <Button
-                        android:id="@+id/button"
+                        android:id="@+id/editProfileBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:backgroundTint="@color/colorAccent"
                         android:text="Edit Profile" />
 
                     <Button
-                        android:id="@+id/button2"
+                        android:id="@+id/adminBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:backgroundTint="@color/colorAccent"
                         android:layout_weight="1"
                         android:text="Admin" />
                 </LinearLayout>
@@ -209,7 +216,8 @@
                 </LinearLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/requestBlock"
+                    android:id="@+id/profileSetting"
+                    android:background="@drawable/borderbottom"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="24dp"
@@ -234,20 +242,21 @@
 
                     <ImageView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
+                        android:layout_height="18dp"
+                        android:layout_marginEnd="6dp"
                         android:src="@drawable/ic_forward_caret"
                         app:layout_constraintEnd_toEndOf="parent"
                         tools:layout_editor_absoluteY="0dp" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout"
+                    android:id="@+id/accountSetting"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="6dp"
+                    android:background="@drawable/borderbottom"
                     android:paddingVertical="5dp"
-                    app:layout_constraintTop_toBottomOf="@+id/requestBlock">
+                    app:layout_constraintTop_toBottomOf="@+id/profileSetting">
 
                     <ImageView
                         android:id="@+id/imageView4"
@@ -269,8 +278,8 @@
                     <ImageView
                         android:id="@+id/imageView8"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
+                        android:layout_height="18dp"
+                        android:layout_marginEnd="6dp"
                         android:src="@drawable/ic_forward_caret"
                         app:layout_constraintEnd_toEndOf="parent"
                         tools:layout_editor_absoluteY="0dp" />
@@ -288,7 +297,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     android:gravity="center"
                     android:background="@color/colorAccent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+                    app:layout_constraintTop_toBottomOf="@+id/accountSetting">
 
 
                     <TextView

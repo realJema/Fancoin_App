@@ -12,6 +12,30 @@
         android:theme="@style/Theme.Fancoin"
         tools:targetApi="31">
         <activity
+            android:name=".SettingsActivity.SettingsThemeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SettingsActivity.SettingsLanguageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SettingsActivity.SettingsPhoneActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SettingsActivity.SettingsEmailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SettingsActivity.SettingsManageVideosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SettingsActivity.SettingsAccountInformationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SettingsActivity.SettingsProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SettingsActivity.SettingsActivity"
+            android:exported="false" />
+        <activity
             android:name=".PostDetails"
             android:exported="false" />
         <activity
