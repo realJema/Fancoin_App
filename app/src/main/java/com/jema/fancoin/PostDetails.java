@@ -8,13 +8,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 public class PostDetails extends AppCompatActivity {
 
     ImageView img, back;
     TextView proName, proPrice, proDesc, proCategory;
 
-    String name, price, desc, cat;
-    int image;
+    String name, price, desc, cat, image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +25,10 @@ public class PostDetails extends AppCompatActivity {
         Intent i = getIntent();
 
         name = i.getStringExtra("name");
-        image = i.getIntExtra("image", R.drawable.cardbg);
         price = i.getStringExtra("price");
         desc = i.getStringExtra("bio");
         cat = i.getStringExtra("category");
+        image = i.getStringExtra("image");
 
         proName = findViewById(R.id.productName);
         proDesc = findViewById(R.id.prodBio);
@@ -42,7 +43,7 @@ public class PostDetails extends AppCompatActivity {
         proCategory.setText(cat);
 
 
-        img.setImageResource(image);
+        Picasso.get().load(image).into(img);
 
 
         back.setOnClickListener(new View.OnClickListener() {

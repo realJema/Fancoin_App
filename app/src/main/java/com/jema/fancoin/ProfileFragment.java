@@ -1,16 +1,29 @@
 package com.jema.fancoin;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.jema.fancoin.SettingsActivity.SettingsActivity;
+import com.squareup.picasso.Picasso;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +42,9 @@ public class ProfileFragment extends Fragment {
     private String mParam2;
 
     private Button editProfileBtn;
+    private FirebaseAuth auth;
+    private ImageView pp;
+    private TextView username, email, phone;
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -66,8 +82,8 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
 
+//        routing to different pages
         editProfileBtn = (Button)rootView.findViewById(R.id.editProfileBtn);
-
         editProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,8 +92,50 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        auth = FirebaseAuth.getInstance();
+
+        pp = (ImageView)rootView.findViewById(R.id.profile_imageview);
+        username = (TextView)rootView.findViewById(R.id.profile_username);
+        phone = (TextView)rootView.findViewById(R.id.profile_phone);
+        email = (TextView)rootView.findViewById(R.id.profile_email);
 
         return rootView;
 
+    }
+
+    private void loadUserData() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String currentId = auth.getCurrentUser().getUid();
+
+        Log.d("User email", currentId);
+
+        db.collection("Users").whereEqualTo("id", currentId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+                        String user = document.getString("username");
+                        String image = document.getString("image");
+                        String useremail = document.getString("email");
+                        String phoneNumber = document.getString("phoneNumber");
+
+
+                        Picasso.get().load(image).into(pp);
+                        username.setText(user);
+                        email.setText(useremail);
+                        phone.setText(phoneNumber);
+                    }
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        loadUserData();
     }
 }

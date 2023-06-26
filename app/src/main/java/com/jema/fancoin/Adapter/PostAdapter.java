@@ -59,6 +59,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 i.putExtra("price",postCardArrayList.get(position).getPricing());
                 i.putExtra("bio",postCardArrayList.get(position).getBio());
                 i.putExtra("category",postCardArrayList.get(position).getCategory());
+                i.putExtra("image", postCardArrayList.get(position).getImage());
 
                 context.startActivity(i);
 
