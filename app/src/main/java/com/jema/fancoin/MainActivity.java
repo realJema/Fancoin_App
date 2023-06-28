@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -64,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user != null){
+            Log.d("JemaTag", "user is logged in ");
             startActivity(new Intent(MainActivity.this, Home.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
         }
     }
-
 }

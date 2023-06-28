@@ -12,7 +12,7 @@ import com.squareup.picasso.Picasso;
 
 public class PostDetails extends AppCompatActivity {
 
-    ImageView img, back;
+    ImageView img, back, pp;
     TextView proName, proPrice, proDesc, proCategory;
 
     String name, price, desc, cat, image;
@@ -32,18 +32,20 @@ public class PostDetails extends AppCompatActivity {
 
         proName = findViewById(R.id.productName);
         proDesc = findViewById(R.id.prodBio);
-        proPrice = findViewById(R.id.prodPrice);
+//        proPrice = findViewById(R.id.prodPrice);
         img = findViewById(R.id.big_image);
         back = findViewById(R.id.back2);
         proCategory = findViewById(R.id.prodCategory);
+        pp = findViewById(R.id.details_profile_image);
 
         proName.setText(name);
-        proPrice.setText(price);
+//        proPrice.setText(price);
         proDesc.setText(desc);
         proCategory.setText(cat);
 
 
         Picasso.get().load(image).into(img);
+        Picasso.get().load(image).into(pp);
 
 
         back.setOnClickListener(new View.OnClickListener() {

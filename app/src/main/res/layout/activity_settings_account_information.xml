@@ -12,13 +12,14 @@
         android:paddingVertical="10dp">
 
         <ImageView
-            android:id="@+id/back2"
+            android:id="@+id/settings_account_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_back_arrow" />
+
 
         <TextView
             android:id="@+id/textView8"
@@ -27,57 +28,64 @@
             android:text="Account Settings"
             android:textColor="@android:color/background_dark"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/back2"
+            app:layout_constraintBottom_toBottomOf="@+id/settings_account_back"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/back2" />
+            app:layout_constraintTop_toTopOf="@+id/settings_account_back" />
 
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/categoryInput"
+        <Spinner
+            android:id="@+id/settings_acount_category"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
+            android:entries="@array/star_categories"
             android:backgroundTint="@color/white"
-            android:hint="Category "
-            android:textColorHint="@android:color/darker_gray"
+            android:spinnerMode="dialog"
+            app:layout_constraintBottom_toTopOf="@+id/settings_account_pricing_input"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
-
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/pricingInput"
+            android:id="@+id/settings_account_pricing_input"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:inputType="number"
             android:layout_marginEnd="16dp"
             android:backgroundTint="@color/white"
             android:hint="Pricing"
             android:textColorHint="@android:color/darker_gray"
+            app:layout_constraintBottom_toTopOf="@+id/settings_account_bio_input"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/categoryInput" />
+            app:layout_constraintTop_toBottomOf="@+id/settings_acount_category" />
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/bioInput"
+            android:id="@+id/settings_account_bio_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:minLines="6"
+            android:maxLines="10"
             android:layout_marginEnd="16dp"
+            android:layout_marginBottom="15dp"
             android:backgroundTint="@color/white"
+            android:gravity="top|start"
             android:hint="Bio"
             android:textColorHint="@android:color/darker_gray"
+            app:layout_constraintBottom_toTopOf="@+id/settings_account_save_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pricingInput" />
+            app:layout_constraintTop_toBottomOf="@+id/settings_account_pricing_input" />
 
         <Button
-            android:id="@+id/signUpBtn"
+            android:id="@+id/settings_account_save_btn"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginStart="16dp"
@@ -92,7 +100,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bioInput" />
+            app:layout_constraintTop_toBottomOf="@+id/settings_account_bio_input" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

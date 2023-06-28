@@ -18,8 +18,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             app:layout_constraintStart_toStartOf="parent"
+            android:rotationY="180"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_menu" />
+            app:srcCompat="@drawable/ic_logout" />
 
         <TextView
             android:id="@+id/textView8"
@@ -56,9 +57,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginBottom="16dp"
                     android:text="TikTok"
+                    android:textSize="16sp"
                     android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/tiktokFeed"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -67,31 +71,67 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="16dp"
-                    app:layout_constraintTop_toBottomOf="@+id/textView14" />
+                    android:paddingRight="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView14">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="Entertainment"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/entertainmentFeed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tiktokFeed" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/entertainmentFeed"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
+                    android:paddingRight="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tiktokFeed" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView4">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="Music"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/musicFeed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/entertainmentFeed" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/musicFeed"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
+                    android:paddingRight="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/entertainmentFeed" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView5" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

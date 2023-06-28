@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -77,7 +78,7 @@ public class Register extends AppCompatActivity {
 
     private void registerUser(String email, String password, String name, String phoneNumber) {
 
-        signUp.setText("Signing Un...");
+        signUp.setText("Signing Up...");
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(Register.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -85,7 +86,7 @@ public class Register extends AppCompatActivity {
 //                    add info to users collection
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     HashMap<String , Object> user = new HashMap<>();
-                    user.put("username" , name);
+                    user.put("name" , name);
                     user.put("email", email);
                     user.put("phoneNumber" , phoneNumber);
                     user.put("id", auth.getCurrentUser().getUid());
@@ -94,12 +95,11 @@ public class Register extends AppCompatActivity {
                     user.put("category", "default");
                     user.put("image" , "https://firebasestorage.googleapis.com/v0/b/fancoin-98406.appspot.com/o/pp%2Fdefault_user.jpg?alt=media&token=4e4ab45d-3650-4969-8fef-27f8d9782278");
 
-                    db.collection("Users").add(user).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    db.collection("Users").document(auth.getCurrentUser().getUid()).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
-                        public void onComplete(@NonNull Task<DocumentReference> task) {
-                            if(task.isSuccessful()){
-                                Toast.makeText(Register.this, "User Added", Toast.LENGTH_SHORT).show();
-                            }
+                        public void onSuccess(Void unused) {
+
+                            Toast.makeText(Register.this, "User Added", Toast.LENGTH_SHORT).show();
                         }
                     });
 

@@ -1,7 +1,10 @@
 package com.jema.fancoin;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,11 +18,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
@@ -49,13 +54,14 @@ public class HomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private Button signOut;
+    private ImageView signOut;
     private RecyclerView tiktokFeed, entertainmentFeed, musicFeed;
 
     ArrayList<PostCard> postCardArrayList;
-    PostAdapter postAdapter;
+    PostAdapter postAdapter, tikAdapter;
     FirebaseFirestore db;
     ProgressDialog progressDialog;
+    private FirebaseAuth auth;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -94,18 +100,19 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
-//        signOut = (Button)rootView.findViewById(R.id.signOutBtn);
-//
-//        signOut.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                FirebaseAuth.getInstance().signOut();
-//                Toast.makeText(getActivity(), "Logged Out!", Toast.LENGTH_SHORT).show();
-//
-//                Intent intent = new Intent(getActivity(), Login.class);
-//                startActivity(intent);
-//            }
-//        });
+        signOut = (ImageView)rootView.findViewById(R.id.drawerBtn);
+
+        signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Toast.makeText(getActivity(), "Logged Out!", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(getActivity(), Login.class);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
 
 
         progressDialog = new ProgressDialog(getContext());
@@ -127,12 +134,16 @@ public class HomeFragment extends Fragment {
         musicFeed.setLayoutManager(new LinearLayoutManager(getContext()  , LinearLayoutManager.HORIZONTAL , false));
 
 
-
+        auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+
         postCardArrayList = new ArrayList<PostCard>();
         postAdapter = new PostAdapter(getContext(),postCardArrayList);
+        tikAdapter = new PostAdapter(getContext(), getTikData(postCardArrayList));
 
         tiktokFeed.setAdapter(postAdapter);
+//        entertainmentFeed.setAdapter(postAdapter);
+//        musicFeed.setAdapter(postAdapter);
         EventChangeListener();
 
         return rootView;
@@ -141,7 +152,7 @@ public class HomeFragment extends Fragment {
 
     private void EventChangeListener() {
 
-        db.collection("Users").whereEqualTo("category", "tiktok")
+        db.collection("Users")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -155,9 +166,38 @@ public class HomeFragment extends Fragment {
                         Log.i("Firebase Info", "success gettting data");
 
                         for(DocumentChange dc : value.getDocumentChanges()){
-                            if(dc.getType() == DocumentChange.Type.ADDED){
-                                postCardArrayList.add(dc.getDocument().toObject(PostCard.class));
+
+                            String id = dc.getDocument().getId();
+                            int oldIndex = postCardArrayList.indexOf(id);
+
+                            switch (dc.getType()){
+                                case ADDED:
+                                    postCardArrayList.add(dc.getDocument().toObject(PostCard.class));
+                                    break;
+                                case MODIFIED:
+
+                                    // modifying
+
+                                    String docID = dc.getDocument().getId();
+                                    PostCard changedModel = dc.getDocument().toObject(PostCard.class);
+                                    if (dc.getOldIndex() == dc.getNewIndex()) {
+                                        // Item changed but remained in same position
+                                        postCardArrayList.set(dc.getOldIndex(),changedModel);
+                                        postAdapter.notifyItemChanged(dc.getOldIndex());
+                                    }else {
+                                        // Item changed and changed position
+                                        postCardArrayList.remove(dc.getOldIndex());
+                                        postCardArrayList.add(dc.getNewIndex(),changedModel);
+                                        postAdapter.notifyItemMoved(dc.getOldIndex(),dc.getNewIndex());
+                                    }
+
+                                    postAdapter.notifyDataSetChanged();
+                                    break;
+                                case REMOVED:
+                                    postCardArrayList.remove(oldIndex);
                             }
+
+
                             postAdapter.notifyDataSetChanged();
                             if(progressDialog.isShowing())
                                 progressDialog.dismiss();
@@ -165,4 +205,16 @@ public class HomeFragment extends Fragment {
                     }
                 });
     }
+
+    private ArrayList<PostCard> getTikData(ArrayList<PostCard> data){
+        ArrayList<PostCard> results = new ArrayList<PostCard>();
+
+        for(int val = 0; val < data.size(); val++){
+            if(data.get(val).getCategory().equalsIgnoreCase("Tiktok")){
+                results.add(data.get(val));
+            };
+        }
+        return results;
+    }
+
 }

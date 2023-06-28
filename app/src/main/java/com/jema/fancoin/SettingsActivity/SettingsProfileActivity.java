@@ -24,8 +24,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -54,7 +56,9 @@ public class SettingsProfileActivity extends AppCompatActivity {
     ImageView pp, back;
     EditText username;
     Button saveBtn;
+    private String currentName, imageSelected, currentPP;
     private FirebaseAuth auth;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +72,7 @@ public class SettingsProfileActivity extends AppCompatActivity {
         back = findViewById(R.id.back2);
 
         auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +85,9 @@ public class SettingsProfileActivity extends AppCompatActivity {
         });
 
 
-        putPP();
+        EventChangeListener();
+
+
         changeImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,7 +98,13 @@ public class SettingsProfileActivity extends AppCompatActivity {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadImage();
+                if(imageSelected == "true")
+                    uploadImage();
+                if(!currentName.equalsIgnoreCase(username.getText().toString())){
+                    saveName();
+                }
+                else if(imageSelected == "false")
+                    Toast.makeText(SettingsProfileActivity.this,"No changes",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -102,7 +115,6 @@ public class SettingsProfileActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Uploading File....");
         progressDialog.show();
-
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA);
         Date now = new Date();
@@ -116,48 +128,33 @@ public class SettingsProfileActivity extends AppCompatActivity {
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                         pp.setImageURI(null);
-                        FirebaseFirestore db = FirebaseFirestore.getInstance();
                         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
                                 String downloadUrl = uri.toString();
 
-
-
 //                        adding data into document of user
                                 HashMap<String , Object> user = new HashMap<>();
                                 user.put("image" , downloadUrl);
-                                user.put("username", username.getText().toString());
 
-                                db.collection("Users").whereEqualTo("id", auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                db.collection("Users").document(auth.getCurrentUser().getUid()).update(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if(task.isSuccessful() && !task.getResult().isEmpty()){
-                                            DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
-                                            String documentID = documentSnapshot.getId();
-                                            db.collection("Users")
-                                                    .document(documentID)
-                                                    .update(user)
-                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                        @Override
-                                                        public void onSuccess(Void unused) {
-                                                            Toast.makeText(SettingsProfileActivity.this,"Successfully Updated",Toast.LENGTH_SHORT).show();
-                                                        }
-                                                    }).addOnFailureListener(new OnFailureListener() {
-                                                        @Override
-                                                        public void onFailure(@NonNull Exception e) {
-                                                            Toast.makeText(SettingsProfileActivity.this,"Update Failed",Toast.LENGTH_SHORT).show();
-                                                        }
-                                                    });
-                                        } else {
-                                            Toast.makeText(SettingsProfileActivity.this,"Failed",Toast.LENGTH_SHORT).show();
-                                        }
+                                    public void onComplete(@NonNull Task<Void> task) {
+
+                                        Toast.makeText(SettingsProfileActivity.this,"Successfully Updated",Toast.LENGTH_SHORT).show();
+
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+
+                                        Toast.makeText(SettingsProfileActivity.this,"Update Failed",Toast.LENGTH_SHORT).show();
                                     }
                                 });
-
                             }
                         });
 
+                        imageSelected = "false";
                         if (progressDialog.isShowing())
                             progressDialog.dismiss();
 
@@ -165,8 +162,6 @@ public class SettingsProfileActivity extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-
-
                         if (progressDialog.isShowing())
                             progressDialog.dismiss();
                         Toast.makeText(SettingsProfileActivity.this,"Failed to Upload", Toast.LENGTH_SHORT).show();
@@ -176,28 +171,30 @@ public class SettingsProfileActivity extends AppCompatActivity {
 
     }
 
-    private void putPP() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String currentId = auth.getCurrentUser().getUid();
-        db.collection("Users").whereEqualTo("id", currentId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+    private void saveName() {
+
+//                        adding data into document of user
+        HashMap<String , Object> user = new HashMap<>();
+        user.put("name", username.getText().toString());
+
+        db.collection("Users").document(auth.getCurrentUser().getUid()).update(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
+                    public void onComplete(@NonNull Task<Void> task) {
 
-                                String user = document.getString("username");
-                                String image = document.getString("image");
+                        Toast.makeText(SettingsProfileActivity.this,"Successfully Updated",Toast.LENGTH_SHORT).show();
 
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
 
-                                Picasso.get().load(image).into(pp);
-                                username.setText(user);
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
+                        Toast.makeText(SettingsProfileActivity.this,"Update Failed",Toast.LENGTH_SHORT).show();
                     }
                 });
+
     }
+
 
     private void selectImage() {
 
@@ -217,11 +214,34 @@ public class SettingsProfileActivity extends AppCompatActivity {
 
             imageUri = data.getData();
             pp.setImageURI(imageUri);
+            imageSelected = "true";
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+
+
+    private void EventChangeListener() {
+
+        db.collection("Users").document(auth.getCurrentUser().getUid())
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if(error != null) {
+                            Log.e("Firebase Error", error.getMessage());
+                            return;
+                        }
+
+                        if(!value.getString("name").equalsIgnoreCase(username.getText().toString())){
+                            username.setText(value.getString("name"));
+                            currentName = value.getString("name");
+                        }
+                        if(!value.getString("image").equalsIgnoreCase(currentPP)){
+                            Picasso.get().load(value.getString("image")).into(pp);
+                            currentPP = value.getString("image");
+                        }
+                    }
+
+                });
     }
+
 }

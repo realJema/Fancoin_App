@@ -7,13 +7,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
+import com.jema.fancoin.Home;
 import com.jema.fancoin.R;
 
 public class SettingsActivity extends AppCompatActivity {
 
     private ConstraintLayout profileSetting, themeSetting, languageSetting, phoneSetting, emailSetting, manageVideosSetting, accountSetting;
 
+    private ImageView back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +29,16 @@ public class SettingsActivity extends AppCompatActivity {
         phoneSetting = findViewById(R.id.phoneSetting);
         languageSetting = findViewById(R.id.languageSetting);
         themeSetting = findViewById(R.id.themeSetting);
+        back = findViewById(R.id.settings_back_btn);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(SettingsActivity.this, Home.class);
+                startActivity(i);
+                finish();
+            }
+        });
 
         profileSetting.setOnClickListener(new View.OnClickListener() {
             @Override

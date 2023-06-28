@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -19,7 +20,10 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.jema.fancoin.SettingsActivity.SettingsActivity;
@@ -39,12 +43,13 @@ public class ProfileFragment extends Fragment {
 
     // TODO: Rename and change types of parameters
     private String mParam1;
-    private String mParam2;
+    private String mParam2, currentPP;
 
     private Button editProfileBtn;
     private FirebaseAuth auth;
     private ImageView pp;
     private TextView username, email, phone;
+    private FirebaseFirestore db;
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -93,49 +98,53 @@ public class ProfileFragment extends Fragment {
         });
 
         auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         pp = (ImageView)rootView.findViewById(R.id.profile_imageview);
         username = (TextView)rootView.findViewById(R.id.profile_username);
         phone = (TextView)rootView.findViewById(R.id.profile_phone);
         email = (TextView)rootView.findViewById(R.id.profile_email);
 
+
+        EventChangeListener();
+
         return rootView;
 
     }
 
-    private void loadUserData() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String currentId = auth.getCurrentUser().getUid();
 
-        Log.d("User email", currentId);
+    private void EventChangeListener() {
 
-        db.collection("Users").whereEqualTo("id", currentId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-
-                        String user = document.getString("username");
-                        String image = document.getString("image");
-                        String useremail = document.getString("email");
-                        String phoneNumber = document.getString("phoneNumber");
+        db.collection("Users").document(auth.getCurrentUser().getUid())
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if(error != null) {
+                            Log.e("Firebase Error", error.getMessage());
+                            return;
+                        }
 
 
-                        Picasso.get().load(image).into(pp);
-                        username.setText(user);
-                        email.setText(useremail);
-                        phone.setText(phoneNumber);
+                        String user = value.getString("name");
+                        String image = value.getString("image");
+                        String useremail = value.getString("email");
+                        String phoneNumber = value.getString("phoneNumber");
+
+                        if(!user.equalsIgnoreCase(username.getText().toString())){
+                            username.setText(user);
+                        }
+                        if(!useremail.equalsIgnoreCase(email.getText().toString())){
+                            email.setText(useremail);
+                        }
+                        if(!phoneNumber.equalsIgnoreCase(phone.getText().toString())){
+                            phone.setText(phoneNumber);
+                        }
+                        if(!image.equalsIgnoreCase(currentPP)){
+                            Picasso.get().load(image).into(pp);
+                            currentPP = value.getString("image");
+                        }
                     }
-                } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
-                }
-            }
-        });
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        loadUserData();
+                });
     }
 }
