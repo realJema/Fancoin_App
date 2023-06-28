@@ -40,7 +40,7 @@
         <Button
             android:id="@+id/button"
             android:layout_width="wrap_content"
-            android:layout_height="45dp"
+            android:layout_height="50dp"
             android:layout_marginEnd="16dp"
             android:backgroundTint="@color/colorAccent"
             android:text="Follow"
@@ -110,28 +110,18 @@
                     app:layout_constraintStart_toStartOf="@+id/prodCategory"
                     app:layout_constraintTop_toBottomOf="@+id/prodCategory" />
 
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/imageView3"
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/details_profile_image"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
-                    android:elevation="0dp"
-                    app:cardCornerRadius="50dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/cardbg"
                     app:layout_constraintBottom_toBottomOf="@+id/productName"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/productName">
-
-                    <ImageView
-                        android:id="@+id/details_profile_image"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        tools:src="@drawable/cardbg" />
-
-
-                </androidx.cardview.widget.CardView>
+                    app:layout_constraintTop_toTopOf="@+id/productName"
+                    app:shapeAppearanceOverlay="@style/Circular" />
 
 
                 <TextView
@@ -194,14 +184,20 @@
             <Button
                 android:id="@+id/button2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
+                android:backgroundTint="@color/purple_700"
+                android:bottomLeftRadius="10dp"
+                android:bottomRightRadius="10dp"
                 android:text="Get Video"
+                android:topLeftRadius="10dp"
+                android:topRightRadius="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView16" />
         </androidx.constraintlayout.widget.ConstraintLayout>

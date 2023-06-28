@@ -37,52 +37,63 @@
         <Spinner
             android:id="@+id/settings_acount_category"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="50dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
+            android:background="@drawable/customborder"
             android:entries="@array/star_categories"
-            android:backgroundTint="@color/white"
             android:spinnerMode="dialog"
-            app:layout_constraintBottom_toTopOf="@+id/settings_account_pricing_input"
+            android:textColorHint="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/settings_account_pricing_input"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:inputType="number"
-            android:layout_marginEnd="16dp"
-            android:backgroundTint="@color/white"
-            android:hint="Pricing"
-            android:textColorHint="@android:color/darker_gray"
-            app:layout_constraintBottom_toTopOf="@+id/settings_account_bio_input"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/settings_acount_category" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/settings_account_bio_input"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/settings_account_pricing_input_container"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:minLines="6"
-            android:maxLines="10"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="15dp"
-            android:backgroundTint="@color/white"
-            android:gravity="top|start"
-            android:hint="Bio"
-            android:textColorHint="@android:color/darker_gray"
-            app:layout_constraintBottom_toTopOf="@+id/settings_account_save_btn"
+            android:hint="Pricing"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/settings_account_pricing_input" />
+            app:layout_constraintTop_toBottomOf="@+id/settings_acount_category"
+            app:startIconDrawable="@drawable/ic_money">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/settings_account_pricing_input"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/settings_account_bio_input_container"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:hint="Description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/settings_account_pricing_input_container"
+            app:startIconDrawable="@drawable/ic_information">
+
+            <EditText
+                android:id="@+id/settings_account_bio_input"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="left|top"
+                android:minLines="6"
+                android:maxLines="10"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <Button
             android:id="@+id/settings_account_save_btn"
@@ -100,7 +111,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/settings_account_bio_input" />
+            app:layout_constraintTop_toBottomOf="@+id/settings_account_bio_input_container" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

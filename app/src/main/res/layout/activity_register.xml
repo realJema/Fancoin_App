@@ -52,166 +52,104 @@
       app:layout_constraintTop_toBottomOf="@+id/redirectSignIn" />
 
 
-  <androidx.constraintlayout.widget.ConstraintLayout
+  <com.google.android.material.textfield.TextInputLayout
       android:id="@+id/nameInput"
+      style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
       android:layout_width="match_parent"
-      android:layout_height="60dp"
+      android:layout_height="wrap_content"
       android:layout_marginStart="16dp"
       android:layout_marginTop="16dp"
       android:layout_marginEnd="16dp"
-      android:background="@drawable/customborder"
+      android:hint="Name"
+      app:endIconMode="clear_text"
+      app:counterMaxLength="50"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/textView">
+      app:layout_constraintTop_toBottomOf="@+id/textView"
+      app:startIconDrawable="@drawable/ic_user_black">
 
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="60dp"
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/nameSignUp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_user" />
+        android:maxLength="50"/>
+  </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView5">
 
-      <com.google.android.material.textfield.TextInputEditText
-          android:id="@+id/nameSignUp"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:backgroundTint="@color/white"
-          android:hint="Name"
-          android:textColorHint="@android:color/darker_gray" />
-    </com.google.android.material.textfield.TextInputLayout>
-  </androidx.constraintlayout.widget.ConstraintLayout>
-
-  <androidx.constraintlayout.widget.ConstraintLayout
+  <com.google.android.material.textfield.TextInputLayout
       android:id="@+id/mailInput"
+      style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
       android:layout_width="match_parent"
-      android:layout_height="60dp"
+      android:layout_height="wrap_content"
       android:layout_marginStart="16dp"
       android:layout_marginTop="16dp"
       android:layout_marginEnd="16dp"
-      android:background="@drawable/customborder"
+      android:hint="Email"
+      app:endIconMode="clear_text"
+      app:counterMaxLength="50"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/nameInput">
+      app:layout_constraintTop_toBottomOf="@+id/nameInput"
+      app:startIconDrawable="@drawable/ic_mail_black">
 
-    <ImageView
-        android:id="@+id/imageView10"
-        android:layout_width="60dp"
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/mailSignUp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_mail" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView10">
-
-      <com.google.android.material.textfield.TextInputEditText
-          android:id="@+id/mailSignUp"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:backgroundTint="@color/white"
-          android:hint="Email"
-          android:textColorHint="@android:color/darker_gray" />
-    </com.google.android.material.textfield.TextInputLayout>
-  </androidx.constraintlayout.widget.ConstraintLayout>
+        android:maxLength="50"/>
+  </com.google.android.material.textfield.TextInputLayout>
 
 
-  <androidx.constraintlayout.widget.ConstraintLayout
+  <com.google.android.material.textfield.TextInputLayout
       android:id="@+id/numberInput"
+      style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
       android:layout_width="match_parent"
-      android:layout_height="60dp"
+      android:layout_height="wrap_content"
       android:layout_marginStart="16dp"
       android:layout_marginTop="16dp"
       android:layout_marginEnd="16dp"
-      android:background="@drawable/customborder"
+      android:hint="Phone Number"
+      app:endIconMode="clear_text"
+      app:counterMaxLength="50"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/mailInput">
+      app:layout_constraintTop_toBottomOf="@+id/mailInput"
+      app:startIconDrawable="@drawable/ic_phone_black">
 
-    <ImageView
-        android:id="@+id/imageView11"
-        android:layout_width="60dp"
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/numberSignUp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_phone" />
+        android:inputType="number"
+        android:maxLength="50"/>
+  </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView11">
 
-      <com.google.android.material.textfield.TextInputEditText
-          android:id="@+id/numberSignUp"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:backgroundTint="@color/white"
-          android:inputType="number"
-          android:hint="Phone Number"
-          android:textColorHint="@android:color/darker_gray" />
-    </com.google.android.material.textfield.TextInputLayout>
-  </androidx.constraintlayout.widget.ConstraintLayout>
-
-  <androidx.constraintlayout.widget.ConstraintLayout
+  <com.google.android.material.textfield.TextInputLayout
       android:id="@+id/passwordInput"
+      style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
       android:layout_width="match_parent"
-      android:layout_height="60dp"
+      android:layout_height="wrap_content"
       android:layout_marginStart="16dp"
       android:layout_marginTop="16dp"
       android:layout_marginEnd="16dp"
-      android:background="@drawable/customborder"
+      android:hint="Password"
+      app:counterEnabled="true"
+      app:helperText="Required"
+      app:helperTextTextColor="@color/colorPrimary"
+      app:endIconMode="password_toggle"
+      app:counterMaxLength="50"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.0"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/numberInput">
+      app:layout_constraintTop_toBottomOf="@+id/numberInput"
+      app:startIconDrawable="@drawable/ic_pass">
 
-    <ImageView
-        android:id="@+id/imageView12"
-        android:layout_width="60dp"
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/passwordSignUp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_pass" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        app:layout_constraintEnd_toStartOf="@+id/imageView6"
-        app:layout_constraintStart_toEndOf="@+id/imageView12">
-
-      <com.google.android.material.textfield.TextInputEditText
-          android:id="@+id/passwordSignUp"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:backgroundTint="@color/white"
-          android:hint="Password"
-          android:inputType="textPassword"
-          android:textColorHint="@android:color/darker_gray" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <ImageView
-        android:id="@+id/imageView6"
-        android:layout_width="60dp"
-        android:layout_height="match_parent"
-        android:padding="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_eye" />
-  </androidx.constraintlayout.widget.ConstraintLayout>
-
+        android:maxLength="50"/>
+  </com.google.android.material.textfield.TextInputLayout>
   <Button
       android:id="@+id/signUpBtn"
       android:layout_width="match_parent"

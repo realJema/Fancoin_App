@@ -3,12 +3,15 @@ package com.jema.fancoin;
 import static android.content.ContentValues.TAG;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,9 +23,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
@@ -57,8 +62,8 @@ public class HomeFragment extends Fragment {
     private ImageView signOut;
     private RecyclerView tiktokFeed, entertainmentFeed, musicFeed;
 
-    ArrayList<PostCard> postCardArrayList;
-    PostAdapter postAdapter, tikAdapter;
+    ArrayList<PostCard> postCardArrayList, tikCardArrayList, entCardArrayList, musCardArrayList;
+    PostAdapter postAdapter, tikAdapter, entAdapter, musAdapter;
     FirebaseFirestore db;
     ProgressDialog progressDialog;
     private FirebaseAuth auth;
@@ -114,11 +119,11 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
-        progressDialog = new ProgressDialog(getContext());
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Fetching data...");
-        progressDialog.show();
+//
+//        progressDialog = new ProgressDialog(getContext());
+//        progressDialog.setCancelable(false);
+//        progressDialog.setMessage("Fetching data...");
+//        progressDialog.show();
 
 
         tiktokFeed = (RecyclerView)rootView.findViewById(R.id.tiktokFeed);
@@ -138,13 +143,20 @@ public class HomeFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
 
         postCardArrayList = new ArrayList<PostCard>();
+        tikCardArrayList = new ArrayList<PostCard>();
+        entCardArrayList = new ArrayList<PostCard>();
+        musCardArrayList = new ArrayList<PostCard>();
         postAdapter = new PostAdapter(getContext(),postCardArrayList);
-        tikAdapter = new PostAdapter(getContext(), getTikData(postCardArrayList));
+        tikAdapter = new PostAdapter(getContext(), tikCardArrayList);
+        entAdapter = new PostAdapter(getContext(), entCardArrayList);
+        musAdapter = new PostAdapter(getContext(), musCardArrayList);
 
-        tiktokFeed.setAdapter(postAdapter);
-//        entertainmentFeed.setAdapter(postAdapter);
-//        musicFeed.setAdapter(postAdapter);
+        tiktokFeed.setAdapter(tikAdapter);
+        entertainmentFeed.setAdapter(entAdapter);
+        musicFeed.setAdapter(musAdapter);
         EventChangeListener();
+        EventChangeListenerEnt();
+        EventChangeListenerMus();
 
         return rootView;
     }
@@ -152,27 +164,27 @@ public class HomeFragment extends Fragment {
 
     private void EventChangeListener() {
 
-        db.collection("Users")
+        db.collection("Users").whereEqualTo("category", "Tiktok")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
                         if(error != null) {
-                            if(progressDialog.isShowing())
-                                progressDialog.dismiss();
-                            Log.e("Firebase Error", error.getMessage());
+//                            if(progressDialog.isShowing())
+//                                progressDialog.dismiss();
+                            Log.i("JemaTag", "error gettting data");
                             return;
                         }
-                        Log.i("Firebase Info", "success gettting data");
+                        Log.i("JemaTag", "success gettting data");
 
                         for(DocumentChange dc : value.getDocumentChanges()){
 
                             String id = dc.getDocument().getId();
-                            int oldIndex = postCardArrayList.indexOf(id);
+                            int oldIndex = tikCardArrayList.indexOf(id);
 
                             switch (dc.getType()){
                                 case ADDED:
-                                    postCardArrayList.add(dc.getDocument().toObject(PostCard.class));
+                                    tikCardArrayList.add(dc.getDocument().toObject(PostCard.class));
                                     break;
                                 case MODIFIED:
 
@@ -182,39 +194,124 @@ public class HomeFragment extends Fragment {
                                     PostCard changedModel = dc.getDocument().toObject(PostCard.class);
                                     if (dc.getOldIndex() == dc.getNewIndex()) {
                                         // Item changed but remained in same position
-                                        postCardArrayList.set(dc.getOldIndex(),changedModel);
-                                        postAdapter.notifyItemChanged(dc.getOldIndex());
+                                        tikCardArrayList.set(dc.getOldIndex(),changedModel);
                                     }else {
                                         // Item changed and changed position
-                                        postCardArrayList.remove(dc.getOldIndex());
-                                        postCardArrayList.add(dc.getNewIndex(),changedModel);
-                                        postAdapter.notifyItemMoved(dc.getOldIndex(),dc.getNewIndex());
+                                        tikCardArrayList.remove(dc.getOldIndex());
+                                        tikCardArrayList.add(dc.getNewIndex(),changedModel);
+                                        tikAdapter.notifyItemMoved(dc.getOldIndex(),dc.getNewIndex());
                                     }
-
-                                    postAdapter.notifyDataSetChanged();
                                     break;
                                 case REMOVED:
-                                    postCardArrayList.remove(oldIndex);
+                                    tikCardArrayList.remove(oldIndex);
                             }
+                            tikAdapter.notifyDataSetChanged();
+//                            if(progressDialog.isShowing())
+//                                progressDialog.dismiss();
+                        }
+                    }
+                });
+    }
+    private void EventChangeListenerEnt() {
 
+        db.collection("Users").whereEqualTo("category", "Entertainment")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                            postAdapter.notifyDataSetChanged();
-                            if(progressDialog.isShowing())
-                                progressDialog.dismiss();
+                        if(error != null) {
+//                            if(progressDialog.isShowing())
+//                                progressDialog.dismiss();
+                            Log.i("JemaTag", "error gettting data");
+                            return;
+                        }
+                        Log.i("JemaTag", "success gettting data");
+
+                        for(DocumentChange dc : value.getDocumentChanges()){
+
+                            String id = dc.getDocument().getId();
+                            int oldIndex = entCardArrayList.indexOf(id);
+
+                            switch (dc.getType()){
+                                case ADDED:
+                                    entCardArrayList.add(dc.getDocument().toObject(PostCard.class));
+                                    break;
+                                case MODIFIED:
+
+                                    // modifying
+
+                                    String docID = dc.getDocument().getId();
+                                    PostCard changedModel = dc.getDocument().toObject(PostCard.class);
+                                    if (dc.getOldIndex() == dc.getNewIndex()) {
+                                        // Item changed but remained in same position
+                                        entCardArrayList.set(dc.getOldIndex(),changedModel);
+                                    }else {
+                                        // Item changed and changed position
+                                        entCardArrayList.remove(dc.getOldIndex());
+                                        entCardArrayList.add(dc.getNewIndex(),changedModel);
+                                        entAdapter.notifyItemMoved(dc.getOldIndex(),dc.getNewIndex());
+                                    }
+                                    break;
+                                case REMOVED:
+                                    tikCardArrayList.remove(oldIndex);
+                            }
+                            entAdapter.notifyDataSetChanged();
+//                            if(progressDialog.isShowing())
+//                                progressDialog.dismiss();
                         }
                     }
                 });
     }
 
-    private ArrayList<PostCard> getTikData(ArrayList<PostCard> data){
-        ArrayList<PostCard> results = new ArrayList<PostCard>();
+    private void EventChangeListenerMus() {
 
-        for(int val = 0; val < data.size(); val++){
-            if(data.get(val).getCategory().equalsIgnoreCase("Tiktok")){
-                results.add(data.get(val));
-            };
-        }
-        return results;
+        db.collection("Users").whereEqualTo("category", "Music")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+                        if(error != null) {
+//                            if(progressDialog.isShowing())
+//                                progressDialog.dismiss();
+                            Log.i("JemaTag", "error gettting data");
+                            return;
+                        }
+                        Log.i("JemaTag", "success gettting data");
+
+                        for(DocumentChange dc : value.getDocumentChanges()){
+
+                            String id = dc.getDocument().getId();
+                            int oldIndex = musCardArrayList.indexOf(id);
+
+                            switch (dc.getType()){
+                                case ADDED:
+                                    musCardArrayList.add(dc.getDocument().toObject(PostCard.class));
+                                    break;
+                                case MODIFIED:
+
+                                    // modifying
+
+                                    String docID = dc.getDocument().getId();
+                                    PostCard changedModel = dc.getDocument().toObject(PostCard.class);
+                                    if (dc.getOldIndex() == dc.getNewIndex()) {
+                                        // Item changed but remained in same position
+                                        musCardArrayList.set(dc.getOldIndex(),changedModel);
+                                    }else {
+                                        // Item changed and changed position
+                                        musCardArrayList.remove(dc.getOldIndex());
+                                        musCardArrayList.add(dc.getNewIndex(),changedModel);
+                                        musAdapter.notifyItemMoved(dc.getOldIndex(),dc.getNewIndex());
+                                    }
+                                    break;
+                                case REMOVED:
+                                    musCardArrayList.remove(oldIndex);
+                            }
+                            musAdapter.notifyDataSetChanged();
+//                            if(progressDialog.isShowing())
+//                                progressDialog.dismiss();
+                        }
+                    }
+                });
     }
 
 }

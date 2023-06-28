@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user != null){
-            Log.d("JemaTag", "user is logged in ");
+//            Log.d("JemaTag", "user is logged in ");
             startActivity(new Intent(MainActivity.this, Home.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
         }
     }
