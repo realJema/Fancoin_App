@@ -114,7 +114,6 @@
                     android:id="@+id/details_profile_image"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/cardbg"
@@ -182,7 +181,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/details_get_video_btn"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginStart="16dp"

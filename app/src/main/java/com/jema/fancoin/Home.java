@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
@@ -72,6 +73,15 @@ public class Home extends AppCompatActivity {
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.colorBlack));
 
         navigationView.getMenu().getItem(0).setChecked(true);
+        TextView draw_name =  (TextView) navigationView.getHeaderView(0).findViewById(R.id.drawer_name);
+        TextView draw_email =  (TextView) navigationView.getHeaderView(0).findViewById(R.id.drawer_email);
+
+        // TODO: 6/28/2023  update user information in drawer
+
+        draw_name.setText("Hello world ");
+        draw_email.setText("john@gmail.com" );
+
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

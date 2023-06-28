@@ -14,6 +14,9 @@
         android:theme="@style/Theme.Fancoin"
         tools:targetApi="31">
         <activity
+            android:name=".OrderVideoActivity"
+            android:exported="false" />
+        <activity
             android:name=".ApplicationActivity"
             android:exported="false" />
         <activity

@@ -11,7 +11,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-public class PostDetails extends AppCompatActivity {
+public class OrderVideoActivity extends AppCompatActivity {
+
 
     ImageView img, back, pp;
     TextView proName, proPrice, proDesc, proCategory;
@@ -22,7 +23,7 @@ public class PostDetails extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post_details);
+        setContentView(R.layout.activity_order_video);
 
         Intent i = getIntent();
 
@@ -32,49 +33,32 @@ public class PostDetails extends AppCompatActivity {
         cat = i.getStringExtra("category");
         image = i.getStringExtra("image");
 
-        proName = findViewById(R.id.productName);
-        proDesc = findViewById(R.id.prodBio);
-//        proPrice = findViewById(R.id.prodPrice);
-        img = findViewById(R.id.big_image);
-        back = findViewById(R.id.back2);
-        proCategory = findViewById(R.id.prodCategory);
-        pp = findViewById(R.id.details_profile_image);
-        orderVideo = findViewById(R.id.details_get_video_btn);
+        proName = findViewById(R.id.order_star_name);
+        proDesc = findViewById(R.id.order_star_bio);
+        back = findViewById(R.id.order_back_btn);
+        pp = findViewById(R.id.order_profile_image);
+        orderVideo = findViewById(R.id.order_get_video_btns);
+
 
         proName.setText(name);
-//        proPrice.setText(price);
         proDesc.setText(desc);
-        proCategory.setText(cat);
-
-
-        Picasso.get().load(image).into(img);
         Picasso.get().load(image).into(pp);
-
 
         orderVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent i = new Intent(PostDetails.this, OrderVideoActivity.class);
-                i.putExtra("name", proName.getText());
-//                i.putExtra("image", postCardArrayList.get(position).getBigimageurl());
-                i.putExtra("price", price);
-                i.putExtra("bio", proDesc.getText());
-                i.putExtra("category", proCategory.getText());
-                i.putExtra("image", image);
-
-                PostDetails.this.startActivity(i);
             }
         });
+
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Intent i = new Intent(PostDetails.this, Home.class);
+                Intent i = new Intent(OrderVideoActivity.this, PostDetails.class);
                 startActivity(i);
                 finish();
             }
         });
-
     }
 }
