@@ -1,16 +1,17 @@
 package com.jema.fancoin.Model;
 
 public class PostCard {
-    String image, name, pricing, bio, category;
+    String image, name, pricing, bio, category, id;
 
     public PostCard(){};
 
-    public PostCard(String image, String name, String pricing, String bio, String category){
+    public PostCard(String image, String name, String pricing, String bio, String category, String id){
         this.image = image;
         this.name = name;
         this.pricing = pricing;
         this.bio = bio;
         this.category = category;
+        this.id = id;
     }
 
     public String getImage() {
@@ -21,6 +22,9 @@ public class PostCard {
         this.image = image;
     }
 
+    public String getId() {
+        return id;
+    }
     public String getName() {
         return name;
     }

@@ -1,23 +1,35 @@
 package com.jema.fancoin;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.media3.common.MediaItem;
+import androidx.media3.common.MimeTypes;
+import androidx.media3.datasource.DefaultDataSource;
+import androidx.media3.exoplayer.ExoPlayer;
+import androidx.media3.exoplayer.source.ProgressiveMediaSource;
+import androidx.media3.ui.PlayerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.squareup.picasso.Picasso;
+
 
 public class PostDetails extends AppCompatActivity {
 
     ImageView img, back, pp;
     TextView proName, proPrice, proDesc, proCategory;
 
-    String name, price, desc, cat, image;
+    String name, price, desc, cat, image, id;
     Button orderVideo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +43,7 @@ public class PostDetails extends AppCompatActivity {
         desc = i.getStringExtra("bio");
         cat = i.getStringExtra("category");
         image = i.getStringExtra("image");
+        id = i.getStringExtra("id");
 
         proName = findViewById(R.id.productName);
         proDesc = findViewById(R.id.prodBio);
@@ -62,6 +75,7 @@ public class PostDetails extends AppCompatActivity {
                 i.putExtra("bio", proDesc.getText());
                 i.putExtra("category", proCategory.getText());
                 i.putExtra("image", image);
+                i.putExtra("id", id);
 
                 PostDetails.this.startActivity(i);
             }
@@ -75,6 +89,7 @@ public class PostDetails extends AppCompatActivity {
                 finish();
             }
         });
+
 
     }
 }

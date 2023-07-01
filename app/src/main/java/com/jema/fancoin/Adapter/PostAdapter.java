@@ -54,6 +54,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             public void onClick(View view) {
 
                 Intent i = new Intent(context, PostDetails.class);
+                i.putExtra("id", postCardArrayList.get(position).getId());
                 i.putExtra("name", postCardArrayList.get(position).getName());
 //                i.putExtra("image", postCardArrayList.get(position).getBigimageurl());
                 i.putExtra("price",postCardArrayList.get(position).getPricing());
