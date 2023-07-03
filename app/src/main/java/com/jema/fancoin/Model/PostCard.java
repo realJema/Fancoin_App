@@ -1,17 +1,21 @@
 package com.jema.fancoin.Model;
 
+import java.util.ArrayList;
+
 public class PostCard {
     String image, name, pricing, bio, category, id;
+    ArrayList<String> followers;
 
     public PostCard(){};
 
-    public PostCard(String image, String name, String pricing, String bio, String category, String id){
+    public PostCard(String image, String name, String pricing, String bio, String category, String id, ArrayList<String> followers){
         this.image = image;
         this.name = name;
         this.pricing = pricing;
         this.bio = bio;
         this.category = category;
         this.id = id;
+        this.followers = followers;
     }
 
     public String getImage() {
@@ -55,5 +59,13 @@ public class PostCard {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public ArrayList<String> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(ArrayList<String> followers) {
+        this.followers = followers;
     }
 }

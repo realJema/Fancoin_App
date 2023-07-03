@@ -2,11 +2,33 @@ package com.jema.fancoin;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.jema.fancoin.Adapter.FollowingAdapter;
+import com.jema.fancoin.Adapter.PostAdapter;
+import com.jema.fancoin.Model.PostCard;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,7 +45,12 @@ public class FollowingFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private RecyclerView followrFeed;
+    ArrayList<PostCard> postCardArrayList;
+    FollowingAdapter followingAdapter;
 
+    FirebaseFirestore db;
+    private FirebaseAuth auth;
     public FollowingFragment() {
         // Required empty public constructor
     }
@@ -59,6 +86,55 @@ public class FollowingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_following, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_following, container, false);
+
+
+        auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
+
+        followrFeed = (RecyclerView)rootView.findViewById(R.id.followerFeed);
+        followrFeed.setHasFixedSize(true);
+        followrFeed.setLayoutManager(new LinearLayoutManager(getContext() , LinearLayoutManager.VERTICAL , false));
+
+        postCardArrayList = new ArrayList<PostCard>();
+        followingAdapter = new FollowingAdapter(getContext(),postCardArrayList);
+
+        followrFeed.setAdapter(followingAdapter);
+        EventChangeListener();
+
+        return rootView;
     }
+
+
+    private void EventChangeListener() {
+
+        db.collection("Users").document(auth.getCurrentUser().getUid())
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if(error != null) {
+                            Log.e("Firebase Error", error.getMessage());
+                            return;
+                        }
+                        List<String> group = (List<String>) value.get("followers");
+
+
+                        db.collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if(task.isSuccessful()){
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        if(group.contains(document.getString("id"))){
+                                            postCardArrayList.add(document.toObject(PostCard.class));
+                                        }
+                                    }
+                                    followingAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        });
+                    }
+            });
+    }
+
 }
