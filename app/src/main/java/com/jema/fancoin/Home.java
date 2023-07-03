@@ -1,6 +1,9 @@
 package com.jema.fancoin;
 
+import static org.xmlpull.v1.XmlPullParser.TEXT;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -10,7 +13,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -18,10 +23,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.jema.fancoin.SettingsActivity.SettingsActivity;
 import com.jema.fancoin.databinding.ActivityHomeBinding;
+import com.squareup.picasso.Picasso;
 
 public class Home extends AppCompatActivity {
 
@@ -29,11 +41,25 @@ public class Home extends AppCompatActivity {
     DrawerLayout drawerLayout;
     androidx.appcompat.widget.Toolbar toolbar;
     NavigationView navigationView;
+    private FirebaseAuth auth;
+    private FirebaseFirestore db;
+
+    public static final String SHARED_PREFS = "sharedPrefs";
+    public static final String USERNAME = "username";
+    public static final String USEREMAIL = "useremail";
+    public static final String USERIMAGE = "userimage";
+    public static final String USERPHONENUMBER = "userphonenumber";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+
+        auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
 
 //        bottom navigation inflater
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
@@ -100,6 +126,16 @@ public class Home extends AppCompatActivity {
                 return true;       //you need to return true here, not false
             }
         });
+
+//        download user data from firestore and save it locally
+        saveData();
+
+//        SharedPreferences mySharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+//        String string1 = mySharedPreferences.getString(USERNAME, null);
+//        String string2 = mySharedPreferences.getString(USEREMAIL, null);
+//
+//        Log.d("JemaTag", string1);
+//        Log.d("JemaTag", string2);
     }
 
     private void replaceFragment(Fragment fragment){
@@ -107,5 +143,30 @@ public class Home extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout,fragment);
         fragmentTransaction.commit();
+    }
+    public void saveData() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+//        we will get all the data about the current user and store it locally
+        db.collection("Users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            String user = task.getResult().getString("name");
+                            String image = task.getResult().getString("image");
+                            String useremail = task.getResult().getString("email");
+                            String phoneNumber = task.getResult().getString("phoneNumber");
+
+
+                            editor.putString(USERNAME, user);
+                            editor.putString(USERIMAGE, image);
+                            editor.putString(USEREMAIL, useremail);
+                            editor.putString(USERPHONENUMBER, phoneNumber);
+                            editor.commit(); // persist the values
+                        }
+                    }
+                });
+
     }
 }

@@ -175,7 +175,6 @@ public class HomeFragment extends Fragment {
                             Log.i("JemaTag", "error gettting data");
                             return;
                         }
-                        Log.i("JemaTag", "success gettting data");
 
                         for(DocumentChange dc : value.getDocumentChanges()){
 
@@ -225,7 +224,7 @@ public class HomeFragment extends Fragment {
                             Log.i("JemaTag", "error gettting data");
                             return;
                         }
-                        Log.i("JemaTag", "success gettting data");
+//                        Log.i("JemaTag", "success gettting data");
 
                         for(DocumentChange dc : value.getDocumentChanges()){
 
@@ -276,7 +275,6 @@ public class HomeFragment extends Fragment {
                             Log.i("JemaTag", "error gettting data");
                             return;
                         }
-                        Log.i("JemaTag", "success gettting data");
 
                         for(DocumentChange dc : value.getDocumentChanges()){
 

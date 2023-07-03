@@ -1,13 +1,22 @@
 package com.jema.fancoin;
 
+import static com.jema.fancoin.Home.SHARED_PREFS;
+import static com.jema.fancoin.Home.USEREMAIL;
+import static com.jema.fancoin.Home.USERIMAGE;
+import static com.jema.fancoin.Home.USERNAME;
+import static com.jema.fancoin.Home.USERPHONENUMBER;
+import static org.xmlpull.v1.XmlPullParser.TEXT;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +55,7 @@ public class OrderVideoActivity extends AppCompatActivity {
 
     FirebaseFirestore db;
     private FirebaseAuth auth;
+    private String username, useremail, userphone, userimage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,11 +88,24 @@ public class OrderVideoActivity extends AppCompatActivity {
         proDesc.setText(desc);
         Picasso.get().load(image).into(pp);
 
+
+//                get client info from local preferences
+        SharedPreferences mySharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+
+        username = mySharedPreferences.getString(USERNAME, null);
+        useremail = mySharedPreferences.getString(USEREMAIL, null);
+        userimage = mySharedPreferences.getString(USERIMAGE, null);
+        userphone = mySharedPreferences.getString(USERPHONENUMBER, null);
+
         orderVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(recipient.getText().toString().matches("") || description.getText().toString().matches("")){
+                if(recipient.getText().toString().matches("") ){
+                    Toast.makeText(OrderVideoActivity.this,"Please Input Recipient and Description",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if( description.getText().toString().matches("")){
                     Toast.makeText(OrderVideoActivity.this,"Please Input Recipient and Description",Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -92,11 +115,12 @@ public class OrderVideoActivity extends AppCompatActivity {
         });
 
 
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        Log.d("JemaTag", sharedPreferences.getString(USERNAME, ""));
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(OrderVideoActivity.this, PostDetails.class);
-                startActivity(i);
                 finish();
             }
         });
@@ -118,17 +142,30 @@ public class OrderVideoActivity extends AppCompatActivity {
                 dialog.dismiss();
 
                 HashMap<String , Object> order = new HashMap<>();
-                order.put("recipient" , recipient);
-                order.put("description", description);
-                order.put("starUid", id);
-                order.put("pricing", price);
+
+                order.put("star_uid", id);
+                order.put("star_image", image);
+                order.put("star_pricing", price);
+                order.put("star_name", name);
+
+                order.put("client_uid", auth.getCurrentUser().getUid());
+                order.put("client_image", userimage);
+                order.put("client_name", username);
+                order.put("client_phoneNumber", userphone);
+                order.put("client_email", useremail);
+
+
+                order.put("recipient" , recipient.getText().toString());
+                order.put("description", description.getText().toString());
                 order.put("date", getDateTime());
+                order.put("id", auth.getCurrentUser().getUid());
 
                 db.collection("Orders").document().set(order).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         Toast.makeText(OrderVideoActivity.this, "Order Sent", Toast.LENGTH_SHORT).show();
-                        Intent myIntent = new Intent(OrderVideoActivity.this, Home.class);
+                        Intent myIntent = new Intent(OrderVideoActivity.this, SuccessOrderActivity.class);
+                        myIntent.putExtra("name", name);
                         startActivity(myIntent);
                         finish();
                     }
