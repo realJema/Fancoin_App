@@ -10,4 +10,10 @@
         <item>Entertainment</item>
         <item>Music</item>
     </string-array>
+    <string-array name="social_options">
+        <item>Select a Social Media</item>
+        <item>Tiktok</item>
+        <item>Instagram</item>
+        <item>Youtube</item>
+    </string-array>
 </resources>

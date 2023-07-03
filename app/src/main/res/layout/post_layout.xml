@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="16dp">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/postImage"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
@@ -19,7 +19,8 @@
         app:layout_constraintTop_toTopOf="parent"
         android:background="@drawable/rounded_outline"
         android:clipToOutline="true"
-        app:srcCompat="@drawable/cardbg" />
+        app:srcCompat="@drawable/cardbg"
+        app:shapeAppearanceOverlay="@style/RoundedSquare" />
 
     <TextView
         android:id="@+id/product_name"
