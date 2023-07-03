@@ -34,10 +34,10 @@
             android:textColor="@android:color/background_dark"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/order_back_btn"
+            app:layout_constraintBottom_toBottomOf="@+id/apply_back_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/order_back_btn" />
+            app:layout_constraintTop_toTopOf="@+id/apply_back_btn" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -103,6 +103,7 @@
                     android:layout_marginTop="24dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/cardbg"
+                    android:padding="1dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"

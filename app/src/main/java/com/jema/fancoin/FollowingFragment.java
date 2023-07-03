@@ -120,19 +120,22 @@ public class FollowingFragment extends Fragment {
                         List<String> group = (List<String>) value.get("followers");
 
 
-                        db.collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if(task.isSuccessful()){
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        if(group.contains(document.getString("id"))){
-                                            postCardArrayList.add(document.toObject(PostCard.class));
+                        if(group != null){
+                            db.collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if(task.isSuccessful()){
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            if(group.contains(document.getString("id"))){
+                                                postCardArrayList.add(document.toObject(PostCard.class));
+                                            }
                                         }
+                                        followingAdapter.notifyDataSetChanged();
                                     }
-                                    followingAdapter.notifyDataSetChanged();
                                 }
-                            }
-                        });
+                            });
+                        }
+
                     }
             });
     }
