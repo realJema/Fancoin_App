@@ -149,6 +149,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/profile_requests_count"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -168,6 +169,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/profile_followers_count"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -187,7 +189,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/textView6"
+                            android:id="@+id/profile_following_count"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -203,7 +205,7 @@
                 </LinearLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/profileSetting"
+                    android:id="@+id/profile_requests_page"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="24dp"
@@ -221,11 +223,12 @@
                         android:layout_marginEnd="16dp"
                         android:src="@drawable/ic_videocam"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/textView3"
+                        app:layout_constraintEnd_toStartOf="@+id/profile_requests_page_text"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/profile_requests_page_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -241,13 +244,13 @@
                         android:layout_height="18dp"
                         android:layout_marginEnd="6dp"
                         android:src="@drawable/ic_forward_caret"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView3"
+                        app:layout_constraintBottom_toBottomOf="@+id/profile_requests_page_text"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/textView3" />
+                        app:layout_constraintTop_toTopOf="@+id/profile_requests_page_text" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/accountSetting"
+                    android:id="@+id/profile_orders_page"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="6dp"
@@ -256,20 +259,21 @@
                     android:paddingLeft="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/profileSetting">
+                    app:layout_constraintTop_toBottomOf="@+id/profile_requests_page">
 
                     <ImageView
                         android:id="@+id/imageView4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
-                        android:src="@drawable/ic_videocam"
+                        android:src="@drawable/ic_cart"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/textView9"
+                        app:layout_constraintEnd_toStartOf="@+id/profile_orders_page_text"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView9"
+                        android:id="@+id/profile_orders_page_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -284,9 +288,9 @@
                         android:layout_height="18dp"
                         android:layout_marginEnd="6dp"
                         android:src="@drawable/ic_forward_caret"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView9"
+                        app:layout_constraintBottom_toBottomOf="@+id/profile_orders_page_text"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/textView9" />
+                        app:layout_constraintTop_toTopOf="@+id/profile_orders_page_text" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
@@ -301,7 +305,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/accountSetting">
+                    app:layout_constraintTop_toBottomOf="@+id/profile_orders_page">
 
 
                     <TextView

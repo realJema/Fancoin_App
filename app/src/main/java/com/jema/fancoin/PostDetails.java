@@ -18,10 +18,13 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.jema.fancoin.Model.OrderModel;
 import com.jema.fancoin.SettingsActivity.SettingsAccountInformationActivity;
 import com.squareup.picasso.Picasso;
 
@@ -82,40 +85,8 @@ public class PostDetails extends AppCompatActivity {
         follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.collection("Users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        DocumentSnapshot document = task.getResult();
-                        List<String> group = (List<String>) document.get("followers");
-                        String currendId = auth.getCurrentUser().getUid();
-
-                        if(group != null){
-                            if(!group.contains(id)){
-                                group.add(id); // adding current user id
-                            } else {
-                                while (group.contains(id)) {
-                                    group.remove(id);
-                                }
-                            }
-                        } else {
-                            group = new ArrayList<String>() {{
-                                add(id);
-                            }};
-
-                        }
-                        db.collection("Users").document(currendId).update("followers", group).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Toast.makeText(PostDetails.this, "Followed", Toast.LENGTH_SHORT).show();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(PostDetails.this, "Unable to update", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                });
+                UpdateFollowing();
+                UpdateFollowers();
             }
         });
 
@@ -160,7 +131,7 @@ public class PostDetails extends AppCompatActivity {
                             Log.e("Firebase Error", error.getMessage());
                             return;
                         }
-                        List<String> group = (List<String>) value.get("followers");
+                        List<String> group = (List<String>) value.get("following");
 
 
                         if(group != null){
@@ -175,5 +146,79 @@ public class PostDetails extends AppCompatActivity {
                     }
 
                 });
+    }
+
+    private void UpdateFollowing() {
+
+        String currendId = auth.getCurrentUser().getUid();
+        db.collection("Users").document(currendId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot document = task.getResult();
+                List<String> group = (List<String>) document.get("following");
+
+                if(group != null){
+                    if(!group.contains(id)){
+                        group.add(id); // adding current user id
+                    } else {
+                        while (group.contains(id)) {
+                            group.remove(id);
+                        }
+                    }
+                } else {
+                    group = new ArrayList<String>() {{
+                        add(id);
+                    }};
+
+                }
+                db.collection("Users").document(currendId).update("following", group).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(PostDetails.this, "Followed", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(PostDetails.this, "Unable to update", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+    }
+    private void UpdateFollowers() {
+
+        db.collection("Users").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot document = task.getResult();
+                List<String> group = (List<String>) document.get("followers");
+
+                if(group != null){
+                    if(!group.contains(id)){
+                        group.add(id); // adding current user id
+                    } else {
+                        while (group.contains(id)) {
+                            group.remove(id);
+                        }
+                    }
+                } else {
+                    group = new ArrayList<String>() {{
+                        add(id);
+                    }};
+
+                }
+                db.collection("Users").document(id).update("followers", group).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+//                        Toast.makeText(PostDetails.this, "Followed", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(PostDetails.this, "Unable to update", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
     }
 }
