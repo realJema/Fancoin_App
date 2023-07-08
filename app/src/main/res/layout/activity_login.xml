@@ -41,6 +41,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:hint="Email"
+
         app:endIconMode="clear_text"
         app:counterMaxLength="50"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,6 +53,8 @@
             android:id="@+id/mailSignIn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
             android:maxLength="50"/>
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -78,6 +81,8 @@
             android:id="@+id/passwordSignIn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:inputType="textPassword"
+            android:maxLines="1"
             android:maxLength="50"/>
     </com.google.android.material.textfield.TextInputLayout>
 

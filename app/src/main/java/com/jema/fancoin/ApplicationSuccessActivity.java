@@ -8,37 +8,37 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.jema.fancoin.SettingsActivity.SettingsActivity;
 import com.squareup.picasso.Picasso;
 
-public class SuccessOrderActivity extends AppCompatActivity {
+public class ApplicationSuccessActivity extends AppCompatActivity {
 
-    private ImageView backBtn, pp;
+    private ImageView pp, backBtn;
+    private String name, image;
     private TextView title;
-    String name, image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_success_order);
+        setContentView(R.layout.activity_application_success);
 
-        pp = findViewById(R.id.success_order_profile_image);
-        backBtn = findViewById(R.id.success_order_back_btn);
-        title = findViewById(R.id.success_order_title);
+        pp = findViewById(R.id.application_success_profile_image);
+        title = findViewById(R.id.application_success_order_title);
+        backBtn = findViewById(R.id.application_success_back_btn);
 
 
         Intent i = getIntent();
-
         name = i.getStringExtra("name");
         image = i.getStringExtra("image");
 
-        title.setText("Order Successful to ".concat(name));
+
         Picasso.get().load(image).into(pp);
+        title.setText("Application Submitted for ".concat(name));
+
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(SuccessOrderActivity.this, Home.class);
+                Intent i = new Intent(ApplicationSuccessActivity.this, Home.class);
                 startActivity(i);
                 finish();
             }

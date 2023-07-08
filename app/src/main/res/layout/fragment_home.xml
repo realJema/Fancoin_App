@@ -13,15 +13,6 @@
         android:layout_height="wrap_content"
         android:paddingVertical="15dp">
 
-        <ImageView
-            android:id="@+id/drawerBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_logout" />
-
         <TextView
             android:id="@+id/textView8"
             android:layout_width="wrap_content"
@@ -29,10 +20,10 @@
             android:text="Browse"
             android:textColor="@android:color/background_dark"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/drawerBtn"
+            app:layout_constraintBottom_toBottomOf="@+id/home_sign_out"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/drawerBtn" />
+            app:layout_constraintTop_toTopOf="@+id/home_sign_out" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- TODO: Update blank fragment layout -->

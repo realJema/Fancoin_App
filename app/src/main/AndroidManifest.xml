@@ -17,6 +17,12 @@
         android:theme="@style/Theme.Fancoin"
         tools:targetApi="31">
         <activity
+            android:name=".OrderDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ApplicationSuccessActivity"
+            android:exported="false" />
+        <activity
             android:name=".SuccessOrderActivity"
             android:exported="false" />
         <activity

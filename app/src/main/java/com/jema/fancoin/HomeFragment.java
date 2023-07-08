@@ -58,8 +58,6 @@ public class HomeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
-    private ImageView signOut;
     private RecyclerView tiktokFeed, entertainmentFeed, musicFeed;
 
     ArrayList<PostCard> postCardArrayList, tikCardArrayList, entCardArrayList, musCardArrayList;
@@ -104,21 +102,6 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-
-        signOut = (ImageView)rootView.findViewById(R.id.drawerBtn);
-
-        signOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Toast.makeText(getActivity(), "Logged Out!", Toast.LENGTH_SHORT).show();
-
-                Intent intent = new Intent(getActivity(), Login.class);
-                startActivity(intent);
-                getActivity().finish();
-            }
-        });
-
 //
 //        progressDialog = new ProgressDialog(getContext());
 //        progressDialog.setCancelable(false);

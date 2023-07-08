@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -49,6 +50,8 @@ public class Home extends AppCompatActivity {
     public static final String USEREMAIL = "useremail";
     public static final String USERIMAGE = "userimage";
     public static final String USERPHONENUMBER = "userphonenumber";
+    public static final String USERAPPLICATIONSTATUS = "userapplication";
+    String applicationStat = "default";
 
 
     @Override
@@ -101,11 +104,28 @@ public class Home extends AppCompatActivity {
         navigationView.getMenu().getItem(0).setChecked(true);
         TextView draw_name =  (TextView) navigationView.getHeaderView(0).findViewById(R.id.drawer_name);
         TextView draw_email =  (TextView) navigationView.getHeaderView(0).findViewById(R.id.drawer_email);
+        ImageView draw_pp =  (ImageView) navigationView.getHeaderView(0).findViewById(R.id.drawer_pp);
+        MenuItem applyItem = (MenuItem) navigationView.getMenu().findItem(R.id.applyPage);
 
-        // TODO: 6/28/2023  update user information in drawer
 
-        draw_name.setText("Hello world ");
-        draw_email.setText("john@gmail.com" );
+
+        SharedPreferences mySharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        String myName = mySharedPreferences.getString(USERNAME, null);
+        String myEmail = mySharedPreferences.getString(USEREMAIL, null);
+        String myPP = mySharedPreferences.getString(USERIMAGE, null);
+        String statusApplication = mySharedPreferences.getString(USERAPPLICATIONSTATUS, null);
+
+//        setting elements in drawer
+        draw_name.setText(myName);
+        draw_email.setText(myEmail);
+
+        Picasso.get().load(myPP).into(draw_pp);
+
+        if(statusApplication != null){
+            applyItem.setTitle("Application Submitted");
+        }
+
+        Log.d("JemaTag", statusApplication);
 
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -117,8 +137,21 @@ public class Home extends AppCompatActivity {
                         startActivity(i);
                         break;
                     case R.id.applyPage:
+                        if(statusApplication.equalsIgnoreCase("pending")){
+                            Toast.makeText(Home.this, "Application Submitted", Toast.LENGTH_SHORT).show();
+                            finish();
+                            break;
+                        }
                         Intent j = new Intent(Home.this, ApplicationActivity.class);
                         startActivity(j);
+                        break;
+                    case R.id.sign_out:
+                        FirebaseAuth.getInstance().signOut();
+                        Toast.makeText(Home.this, "Logged Out!", Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(Home.this, Login.class);
+                        startActivity(intent);
+                        Home.this.finish();
                         break;
                 }
                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -126,7 +159,6 @@ public class Home extends AppCompatActivity {
                 return true;       //you need to return true here, not false
             }
         });
-
 //        download user data from firestore and save it locally
         saveData();
 
@@ -158,7 +190,6 @@ public class Home extends AppCompatActivity {
                             String useremail = task.getResult().getString("email");
                             String phoneNumber = task.getResult().getString("phoneNumber");
 
-
                             editor.putString(USERNAME, user);
                             editor.putString(USERIMAGE, image);
                             editor.putString(USEREMAIL, useremail);
@@ -169,4 +200,5 @@ public class Home extends AppCompatActivity {
                 });
 
     }
+
 }

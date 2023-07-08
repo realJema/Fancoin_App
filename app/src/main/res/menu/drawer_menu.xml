@@ -15,6 +15,9 @@
                 <item android:id="@+id/applyPage"
                     android:icon="@drawable/ic_profile"
                     android:title="Apply"/>
+
+                <item android:id="@+id/sign_out"
+                    android:title="Sign Out"/>
             </group>
         </menu>
     </item>

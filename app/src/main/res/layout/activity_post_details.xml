@@ -10,7 +10,7 @@
         android:id="@+id/detaisNavbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="10dp"
+        android:paddingVertical="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -72,49 +72,59 @@
                 android:paddingBottom="100dp">
 
 
-                <LinearLayout
+                <HorizontalScrollView
                     android:id="@+id/linearLayout3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
                     android:orientation="horizontal"
-                    android:paddingLeft="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:id="@+id/big_image"
-                        android:layout_width="150dp"
-                        android:layout_height="200dp"
-                        android:layout_marginRight="10dp"
-                        android:padding="1dp"
-                        android:background="@drawable/rounded_outline"
-                        android:scaleType="centerCrop"
-                        app:shapeAppearanceOverlay="@style/RoundedSquare"
-                        app:srcCompat="@drawable/cardbg" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:paddingLeft="16dp"
+                        android:gravity="center_vertical"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="150dp"
-                        android:layout_height="200dp"
-                        android:layout_marginRight="10dp"
-                        android:padding="1dp"
-                        android:background="@drawable/rounded_outline"
-                        android:scaleType="centerCrop"
-                        app:shapeAppearanceOverlay="@style/RoundedSquare"
-                        app:srcCompat="@drawable/cardbg" />
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/big_image"
+                            android:layout_width="150dp"
+                            android:layout_height="200dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/rounded_outline"
+                            android:padding="1dp"
+                            android:scaleType="centerCrop"
+                            app:shapeAppearanceOverlay="@style/RoundedSquare"
+                            app:srcCompat="@drawable/cardbg" />
 
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="150dp"
-                        android:layout_height="200dp"
-                        android:layout_marginRight="10dp"
-                        android:padding="1dp"
-                        android:background="@drawable/rounded_outline"
-                        android:scaleType="centerCrop"
-                        app:shapeAppearanceOverlay="@style/RoundedSquare"
-                        app:srcCompat="@drawable/cardbg" />
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="150dp"
+                            android:layout_height="200dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/rounded_outline"
+                            android:padding="1dp"
+                            android:scaleType="centerCrop"
+                            app:shapeAppearanceOverlay="@style/RoundedSquare"
+                            app:srcCompat="@drawable/cardbg" />
 
-                </LinearLayout>
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="150dp"
+                            android:layout_height="200dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/rounded_outline"
+                            android:padding="1dp"
+                            android:scaleType="centerCrop"
+                            app:shapeAppearanceOverlay="@style/RoundedSquare"
+                            app:srcCompat="@drawable/cardbg" />
+
+                    </LinearLayout>
+
+                </HorizontalScrollView>
 
                 <TextView
                     android:id="@+id/productName"

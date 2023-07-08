@@ -1,6 +1,7 @@
 package com.jema.fancoin.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jema.fancoin.Model.OrderModel;
+import com.jema.fancoin.OrderDetailsActivity;
+import com.jema.fancoin.PostDetails;
 import com.jema.fancoin.R;
 import com.squareup.picasso.Picasso;
 
@@ -38,11 +41,36 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
     @Override
     public void onBindViewHolder(@NonNull OrderAdapter.OrderViewHolder holder, int position) {
-        holder.recipient.setText(orderModelArrayList.get(position).getRecipient());
+        holder.recipient.setText("Recipient : ".concat(orderModelArrayList.get(position).getRecipient()));
         holder.star_name.setText(orderModelArrayList.get(position).getStar_name());
         holder.date.setText(orderModelArrayList.get(position).getDate());
         holder.descr.setText(orderModelArrayList.get(position).getDescription());
         Picasso.get().load(orderModelArrayList.get(position).getStar_image()).into(holder.image);
+
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent i = new Intent(context, OrderDetailsActivity.class);
+                i.putExtra("date", orderModelArrayList.get(position).getDate());
+                i.putExtra("description", orderModelArrayList.get(position).getDescription());
+                i.putExtra("recipient", orderModelArrayList.get(position).getRecipient());
+                i.putExtra("id", orderModelArrayList.get(position).getId());
+                i.putExtra("star_uid", orderModelArrayList.get(position).getStar_uid());
+                i.putExtra("star_image", orderModelArrayList.get(position).getStar_image());
+                i.putExtra("star_pricing", orderModelArrayList.get(position).getStar_pricing());
+                i.putExtra("star_name", orderModelArrayList.get(position).getStar_name());
+                i.putExtra("client_uid", orderModelArrayList.get(position).getClient_uid());
+                i.putExtra("client_image", orderModelArrayList.get(position).getClient_image());
+                i.putExtra("client_name", orderModelArrayList.get(position).getClient_name());
+                i.putExtra("client_phonenumber", orderModelArrayList.get(position).getClient_phoneNumber());
+                i.putExtra("client_email", orderModelArrayList.get(position).getClient_email());
+
+                context.startActivity(i);
+
+            }
+        });
 
     }
 

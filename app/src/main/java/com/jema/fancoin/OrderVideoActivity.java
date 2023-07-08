@@ -166,6 +166,7 @@ public class OrderVideoActivity extends AppCompatActivity {
                         Toast.makeText(OrderVideoActivity.this, "Order Sent", Toast.LENGTH_SHORT).show();
                         Intent myIntent = new Intent(OrderVideoActivity.this, SuccessOrderActivity.class);
                         myIntent.putExtra("name", name);
+                        myIntent.putExtra("image", image);
                         startActivity(myIntent);
                         finish();
                     }

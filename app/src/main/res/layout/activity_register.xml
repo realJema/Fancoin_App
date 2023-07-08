@@ -72,6 +72,8 @@
         android:id="@+id/nameSignUp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:inputType="text"
+        android:maxLines="1"
         android:maxLength="50"/>
   </com.google.android.material.textfield.TextInputLayout>
 
@@ -96,6 +98,8 @@
         android:id="@+id/mailSignUp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:inputType="textEmailAddress"
+        android:maxLines="1"
         android:maxLength="50"/>
   </com.google.android.material.textfield.TextInputLayout>
 
@@ -121,6 +125,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:inputType="number"
+        android:maxLines="1"
         android:maxLength="50"/>
   </com.google.android.material.textfield.TextInputLayout>
 
@@ -148,6 +153,8 @@
         android:id="@+id/passwordSignUp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:maxLines="1"
+        android:inputType="textPassword"
         android:maxLength="50"/>
   </com.google.android.material.textfield.TextInputLayout>
   <Button
