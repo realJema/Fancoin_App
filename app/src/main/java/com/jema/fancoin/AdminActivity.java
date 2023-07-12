@@ -6,8 +6,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
@@ -27,6 +30,7 @@ public class AdminActivity extends AppCompatActivity {
     private RecyclerView usersFeed;
 
     ArrayList<PostCard> postCardArrayListt;
+    ImageView back;
     AdminAdapter postAdapter;
     FirebaseFirestore db;
 
@@ -39,6 +43,8 @@ public class AdminActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
+        back = findViewById(R.id.admin_back_btn);
+
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(AdminActivity.this, 2);
 
         usersFeed = findViewById(R.id.usersFeed);
@@ -49,6 +55,17 @@ public class AdminActivity extends AppCompatActivity {
         postAdapter = new AdminAdapter(AdminActivity.this, postCardArrayListt);
 
         usersFeed.setAdapter(postAdapter);
+
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent i = new Intent(AdminActivity.this, Home.class);
+                startActivity(i);
+                finish();
+            }
+        });
 
         EventChangeListener();
 

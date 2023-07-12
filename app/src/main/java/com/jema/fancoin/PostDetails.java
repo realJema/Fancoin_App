@@ -3,6 +3,8 @@ package com.jema.fancoin;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,7 +26,11 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.jema.fancoin.Adapter.CommentAdapter;
+import com.jema.fancoin.Adapter.PostAdapter;
+import com.jema.fancoin.Model.CommentModel;
 import com.jema.fancoin.Model.OrderModel;
+import com.jema.fancoin.Model.PostCard;
 import com.jema.fancoin.SettingsActivity.SettingsAccountInformationActivity;
 import com.squareup.picasso.Picasso;
 
@@ -43,6 +49,10 @@ public class PostDetails extends AppCompatActivity {
     Button orderVideo;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
+    private RecyclerView commentsFeed;
+
+    ArrayList<CommentModel> commentsArrayList;
+    CommentAdapter commentAdapter;
 
 
     @Override
@@ -82,6 +92,19 @@ public class PostDetails extends AppCompatActivity {
         Picasso.get().load(image).into(img);
         Picasso.get().load(image).into(pp);
 
+//        loading comments into recycler
+
+        commentsFeed = findViewById(R.id.commentsFeed);
+        commentsFeed.setHasFixedSize(true);
+        commentsFeed.setLayoutManager(new LinearLayoutManager(PostDetails.this, LinearLayoutManager.HORIZONTAL , false));
+
+
+        commentsArrayList = new ArrayList<CommentModel>();
+        commentAdapter = new CommentAdapter(PostDetails.this,commentsArrayList);
+
+        commentsFeed.setAdapter(commentAdapter);
+
+
         follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,6 +143,7 @@ public class PostDetails extends AppCompatActivity {
 
         EventChangeListener();
     }
+
 
     private void EventChangeListener() {
 

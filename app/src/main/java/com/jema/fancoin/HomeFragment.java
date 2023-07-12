@@ -147,7 +147,7 @@ public class HomeFragment extends Fragment {
 
     private void EventChangeListener() {
 
-        db.collection("Users").whereEqualTo("category", "Tiktok")
+        db.collection("Users").whereEqualTo("category", "Tiktok").whereEqualTo("application_status", "confirmed")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -196,7 +196,7 @@ public class HomeFragment extends Fragment {
     }
     private void EventChangeListenerEnt() {
 
-        db.collection("Users").whereEqualTo("category", "Entertainment")
+        db.collection("Users").whereEqualTo("category", "Entertainment").whereEqualTo("application_status", "confirmed")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -247,7 +247,7 @@ public class HomeFragment extends Fragment {
 
     private void EventChangeListenerMus() {
 
-        db.collection("Users").whereEqualTo("category", "Music")
+        db.collection("Users").whereEqualTo("category", "Music").whereEqualTo("application_status", "confirmed")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {

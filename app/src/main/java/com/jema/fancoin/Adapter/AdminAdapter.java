@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jema.fancoin.Model.PostCard;
 import com.jema.fancoin.PostDetails;
 import com.jema.fancoin.R;
+import com.jema.fancoin.UserAdministrationActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class AdminAdapter extends RecyclerView.Adapter<AdminAdapter.AdminViewHol
             @Override
             public void onClick(View view) {
 
-                Intent i = new Intent(context, PostDetails.class);
+                Intent i = new Intent(context, UserAdministrationActivity.class);
                 i.putExtra("id", postCardArrayList.get(position).getId());
                 i.putExtra("name", postCardArrayList.get(position).getName());
 //                i.putExtra("image", postCardArrayList.get(position).getBigimageurl());
