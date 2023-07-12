@@ -1,6 +1,7 @@
 package com.jema.fancoin.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +16,14 @@ import com.jema.fancoin.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
 
     Context context;
-    ArrayList<CommentModel> commentModelArray;
+    List<CommentModel> commentModelArray;
 
-    public CommentAdapter(Context context, ArrayList<CommentModel> commentModelArray) {
+    public CommentAdapter(Context context, List<CommentModel> commentModelArray) {
         this.context = context;
         this.commentModelArray = commentModelArray;
     }
@@ -37,6 +39,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     @Override
     public void onBindViewHolder(@NonNull CommentAdapter.CommentViewHolder holder, int position) {
 
+        Log.d("JemaTag", commentModelArray.get(position).getUsername());
+
         holder.name.setText(commentModelArray.get(position).getDescr());
         holder.price.setText(commentModelArray.get(position).getUsername());
         Picasso.get().load(commentModelArray.get(position).getPhoto()).into(holder.image);
@@ -45,7 +49,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
     @Override
     public int getItemCount() {
-        return commentModelArray.size();
+        return 0;
     }
 
     public class CommentViewHolder extends RecyclerView.ViewHolder {

@@ -38,6 +38,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class PostDetails extends AppCompatActivity {
@@ -46,6 +47,8 @@ public class PostDetails extends AppCompatActivity {
     TextView proName, proPrice, proDesc, proCategory, follow;
 
     String name, price, desc, cat, image, id;
+
+    public List<CommentModel> commentsList;
     Button orderVideo;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
@@ -99,8 +102,7 @@ public class PostDetails extends AppCompatActivity {
         commentsFeed.setLayoutManager(new LinearLayoutManager(PostDetails.this, LinearLayoutManager.HORIZONTAL , false));
 
 
-        commentsArrayList = new ArrayList<CommentModel>();
-        commentAdapter = new CommentAdapter(PostDetails.this,commentsArrayList);
+        commentAdapter = new CommentAdapter(PostDetails.this,commentsList);
 
         commentsFeed.setAdapter(commentAdapter);
 
@@ -142,8 +144,26 @@ public class PostDetails extends AppCompatActivity {
 
 
         EventChangeListener();
+        CommentChangeListener();
     }
 
+
+    private void CommentChangeListener() {
+
+        db.collection("Users").document(auth.getCurrentUser().getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+
+
+                Log.d("JemaTag", value.get("comments").toString());
+                List<Map<String, Object>> cmts = (List<Map<String, Object>>) value.get("comments");
+
+
+
+                commentAdapter.notifyDataSetChanged();
+            }
+        });
+    }
 
     private void EventChangeListener() {
 
