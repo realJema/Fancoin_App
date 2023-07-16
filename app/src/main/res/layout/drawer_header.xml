@@ -7,7 +7,6 @@
     android:paddingBottom="20dp"
     android:paddingHorizontal="20dp"
     android:orientation="vertical"
-    android:background="@color/black"
     android:gravity="bottom">
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/drawer_pp"
@@ -24,14 +23,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Your name"
-        android:textColor="#fff"
         android:textSize="16dp"
         android:textStyle="bold"/>
     <TextView
         android:id="@+id/drawer_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="email@gmail.com"
-        android:textColor="#fff"/>
+        android:text="email@gmail.com" />
 
 </LinearLayout>

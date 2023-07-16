@@ -90,8 +90,8 @@
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/icon_squared"
+            android:layout_height="@dimen/icon_squared"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/order_profile_image"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
@@ -100,8 +100,8 @@
 
         <ImageView
             android:id="@+id/imageView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/icon_squared"
+            android:layout_height="@dimen/icon_squared"
             android:layout_marginStart="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/imageView3"
             app:layout_constraintStart_toEndOf="@+id/imageView3"

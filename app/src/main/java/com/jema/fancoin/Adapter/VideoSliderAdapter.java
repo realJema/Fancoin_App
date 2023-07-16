@@ -120,6 +120,7 @@ public class VideoSliderAdapter extends RecyclerView.Adapter<VideoSliderAdapter.
                 MediaItem mediaItem = MediaItem.fromUri(videoUri);
                 holder.simpleExoPlayer.setMediaItem(mediaItem);
                 holder.simpleExoPlayer.prepare();
+                holder.simpleExoPlayer.seekTo(1);
                 holder.simpleExoPlayer.play();
             }
         });

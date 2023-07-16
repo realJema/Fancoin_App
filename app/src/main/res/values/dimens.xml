@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="topbar_title">20sp</dimen>
-    <dimen name="icon_height">55dip</dimen>
-    <dimen name="photo_width">170dip</dimen>
-    <dimen name="photo_height">155dip</dimen>
+    <dimen name="bottom_card_height">100dp</dimen>
+    <dimen name="topbar_height">50dp</dimen>
+    <dimen name="icon_squared">18dp</dimen>
 </resources>
