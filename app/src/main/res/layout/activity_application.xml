@@ -82,7 +82,7 @@
                     android:layout_marginTop="8dp"
                     android:text="Fill out the form below and we will get back to you within 72 hours"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/application_title"
                     app:layout_constraintTop_toBottomOf="@+id/application_title" />
 
                 <TextView

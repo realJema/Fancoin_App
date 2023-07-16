@@ -76,7 +76,7 @@ public class ApplicationActivity extends AppCompatActivity {
                 String uCategory = category.getSelectedItem().toString();
                 String uSocial = social.getSelectedItem().toString();
 
-                if (uUseranme == "" || ufollowers == "" || uCategory.equalsIgnoreCase("Select a Category") || uSocial.equalsIgnoreCase("Select a Social Media")){
+                if (uUseranme.equalsIgnoreCase("") || ufollowers.equalsIgnoreCase("") || uCategory.equalsIgnoreCase("Select a Category") || uSocial.equalsIgnoreCase("Select a Social Media")){
                     Toast.makeText(ApplicationActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 } else {
                     HashMap<String , Object> user = new HashMap<>();

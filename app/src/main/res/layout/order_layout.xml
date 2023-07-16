@@ -4,77 +4,110 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/order_layout"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="170dp"
     android:layout_marginVertical="3dp"
-    android:layout_marginHorizontal="10dp">
+    app:cardCornerRadius="15dp" >
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/customborder">
+        android:layout_height="match_parent">
 
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/order_profile_image"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+            android:padding="1dp"
             android:scaleType="centerCrop"
             android:src="@drawable/cardbg"
-            android:padding="1dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/Circular" />
 
         <TextView
             android:id="@+id/order_star_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:text="Placeholder Name"
-            android:textColor="#000000"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/order_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:text="Placeholder description"
-            android:maxLines="2"
-            android:textColor="#000000"
-            app:layout_constraintEnd_toStartOf="@+id/order_profile_image"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/order_star_name" />
-
-        <TextView
-            android:id="@+id/order_recipient_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="placeholder recipient"
-            android:textColor="#000000"
-            android:textSize="12sp"
+            android:text="Placeholder Name"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/order_description"
-            app:layout_constraintTop_toBottomOf="@+id/order_description" />
+            app:layout_constraintBottom_toBottomOf="@+id/order_profile_image"
+            app:layout_constraintEnd_toStartOf="@+id/order_date"
+            app:layout_constraintStart_toEndOf="@+id/order_profile_image"
+            app:layout_constraintTop_toTopOf="@+id/order_profile_image" />
 
         <TextView
             android:id="@+id/order_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
             android:text="date posted"
             android:textColor="#000000"
             android:textSize="10sp"
+
             android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/borderleft"
+            android:orientation="vertical"
+            android:paddingStart="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/order_profile_image"
+            app:layout_constraintTop_toBottomOf="@+id/order_profile_image">
+
+            <TextView
+                android:id="@+id/order_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:maxLines="2"
+                android:text="Placeholder description"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/order_recipient_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:maxLines="1"
+                android:text="placeholder recipient"
+                android:textColor="#000000"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintStart_toStartOf="@+id/order_profile_image"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+            app:srcCompat="@drawable/ic_download"
+            app:tint="@color/grayHard" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+            app:layout_constraintStart_toEndOf="@+id/imageView3"
+            app:layout_constraintTop_toTopOf="@+id/imageView3"
+            app:srcCompat="@drawable/ic_paid"
+            app:tint="@color/grayHard" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

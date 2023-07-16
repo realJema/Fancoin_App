@@ -67,9 +67,9 @@
             android:padding="1dp"
             android:scaleType="centerCrop"
             android:src="@drawable/cardbg"
-            app:layout_constraintBottom_toBottomOf="@+id/order_details_star_name"
+            app:layout_constraintBottom_toBottomOf="@+id/admin_user_name"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/order_details_star_name"
+            app:layout_constraintTop_toTopOf="@+id/admin_user_name"
             app:shapeAppearanceOverlay="@style/Circular" />
 
         <TextView

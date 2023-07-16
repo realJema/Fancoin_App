@@ -2,6 +2,9 @@ package com.jema.fancoin.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.icu.text.RelativeDateTimeFormatter;
+import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +50,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.descr.setText(orderModelArrayList.get(position).getDescription());
         Picasso.get().load(orderModelArrayList.get(position).getStar_image()).into(holder.image);
 
+        long now = System.currentTimeMillis();
+        long due = now + 864000;
+
+        String theTime = (String) DateUtils.getRelativeTimeSpanString(now, 0L, DateUtils.FORMAT_ABBREV_ALL);
+        Log.d("jematag", theTime);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

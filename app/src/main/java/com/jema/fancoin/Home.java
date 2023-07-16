@@ -40,8 +40,10 @@ public class Home extends AppCompatActivity {
 
     ActivityHomeBinding binding;
     DrawerLayout drawerLayout;
+    String statusApplication = "none";
     androidx.appcompat.widget.Toolbar toolbar;
     NavigationView navigationView;
+    MenuItem applyItem;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
 
@@ -105,7 +107,7 @@ public class Home extends AppCompatActivity {
         TextView draw_name =  (TextView) navigationView.getHeaderView(0).findViewById(R.id.drawer_name);
         TextView draw_email =  (TextView) navigationView.getHeaderView(0).findViewById(R.id.drawer_email);
         ImageView draw_pp =  (ImageView) navigationView.getHeaderView(0).findViewById(R.id.drawer_pp);
-        MenuItem applyItem = (MenuItem) navigationView.getMenu().findItem(R.id.applyPage);
+        applyItem = (MenuItem) navigationView.getMenu().findItem(R.id.applyPage);
 
 
 
@@ -113,7 +115,6 @@ public class Home extends AppCompatActivity {
         String myName = mySharedPreferences.getString(USERNAME, null);
         String myEmail = mySharedPreferences.getString(USEREMAIL, null);
         String myPP = mySharedPreferences.getString(USERIMAGE, null);
-        String statusApplication = mySharedPreferences.getString(USERAPPLICATIONSTATUS, null);
 
 //        setting elements in drawer
         draw_name.setText(myName);
@@ -121,12 +122,7 @@ public class Home extends AppCompatActivity {
 
         Picasso.get().load(myPP).into(draw_pp);
 
-        if(statusApplication != null){
-            applyItem.setTitle("Application Submitted");
-        }
-
-        Log.d("JemaTag", statusApplication);
-
+        checkApplication();
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -199,6 +195,20 @@ public class Home extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    public void checkApplication() {
+        db.collection("Users").document(auth.getCurrentUser().getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                String stat = (String) value.get("application_status");
+                if(stat.equalsIgnoreCase("pending")){
+                    statusApplication = stat;
+                    applyItem.setTitle("Application Submitted");
+                }
+
+            }
+        });
     }
 
 }

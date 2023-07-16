@@ -3,10 +3,15 @@ package com.jema.fancoin;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.media3.common.MediaItem;
+import androidx.media3.exoplayer.ExoPlayer;
+import androidx.media3.ui.PlayerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,23 +25,16 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.jema.fancoin.Adapter.CommentAdapter;
-import com.jema.fancoin.Adapter.PostAdapter;
+import com.jema.fancoin.Adapter.VideoSliderAdapter;
 import com.jema.fancoin.Model.CommentModel;
-import com.jema.fancoin.Model.OrderModel;
-import com.jema.fancoin.Model.PostCard;
-import com.jema.fancoin.SettingsActivity.SettingsAccountInformationActivity;
 import com.squareup.picasso.Picasso;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,12 +54,33 @@ public class PostDetails extends AppCompatActivity {
 
     ArrayList<CommentModel> commentsArrayList;
     CommentAdapter commentAdapter;
-
-
+    private RecyclerView showcaseFeed;
+    private VideoSliderAdapter myAdapter;
+    ArrayList<String> videoPaths;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_details);
+
+//        viewPager = findViewById(R.id.videoViewPager);
+        showcaseFeed = findViewById(R.id.showcaseFeed);
+
+        showcaseFeed.setHasFixedSize(true);
+        showcaseFeed.setLayoutManager(new LinearLayoutManager(PostDetails.this , LinearLayoutManager.HORIZONTAL , false));
+
+
+        videoPaths = new ArrayList<>();
+        videoPaths.add("https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4");
+        videoPaths.add("https://samplelib.com/lib/preview/mp4/sample-5s.mp4");
+        videoPaths.add("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4");
+        videoPaths.add("hhttp://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4");
+        videoPaths.add("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4");
+        // add paths for video simllarly
+
+        myAdapter = new VideoSliderAdapter(getApplicationContext(), videoPaths,
+                PostDetails.this);
+        showcaseFeed.setAdapter(myAdapter);
+        showcaseFeed.setPadding(10, 0, 10, 0);
 
         Intent i = getIntent();
         auth = FirebaseAuth.getInstance();
@@ -79,7 +98,7 @@ public class PostDetails extends AppCompatActivity {
         proName = findViewById(R.id.productName);
         proDesc = findViewById(R.id.prodBio);
 //        proPrice = findViewById(R.id.prodPrice);
-        img = findViewById(R.id.big_image);
+//        img = findViewById(R.id.big_image);
         back = findViewById(R.id.back2);
         proCategory = findViewById(R.id.prodCategory);
         pp = findViewById(R.id.details_profile_image);
@@ -92,19 +111,19 @@ public class PostDetails extends AppCompatActivity {
         proCategory.setText(cat);
 
 
-        Picasso.get().load(image).into(img);
+//        Picasso.get().load(image).into(img);
         Picasso.get().load(image).into(pp);
 
 //        loading comments into recycler
-
-        commentsFeed = findViewById(R.id.commentsFeed);
-        commentsFeed.setHasFixedSize(true);
-        commentsFeed.setLayoutManager(new LinearLayoutManager(PostDetails.this, LinearLayoutManager.HORIZONTAL , false));
-
-
-        commentAdapter = new CommentAdapter(PostDetails.this,commentsList);
-
-        commentsFeed.setAdapter(commentAdapter);
+//
+//        commentsFeed = findViewById(R.id.commentsFeed);
+//        commentsFeed.setHasFixedSize(true);
+//        commentsFeed.setLayoutManager(new LinearLayoutManager(PostDetails.this, LinearLayoutManager.HORIZONTAL , false));
+//
+//
+//        commentAdapter = new CommentAdapter(PostDetails.this,commentsList);
+//
+//        commentsFeed.setAdapter(commentAdapter);
 
 
         follow.setOnClickListener(new View.OnClickListener() {
@@ -144,9 +163,8 @@ public class PostDetails extends AppCompatActivity {
 
 
         EventChangeListener();
-        CommentChangeListener();
+//        CommentChangeListener();
     }
-
 
     private void CommentChangeListener() {
 

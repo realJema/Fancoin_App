@@ -71,6 +71,20 @@
                 android:layout_height="match_parent"
                 android:paddingBottom="100dp">
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/showcaseFeed"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_weight="1"
+                    android:clipToPadding="true"
+                    android:foregroundGravity="center"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+<!--
 
                 <HorizontalScrollView
                     android:id="@+id/linearLayout3"
@@ -80,51 +94,56 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
-
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:paddingLeft="16dp"
-                        android:gravity="center_vertical"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="10dp"
+                        android:paddingHorizontal="16dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:id="@+id/big_image"
+                        <androidx.media3.ui.PlayerView
+                            android:id="@+id/player_view"
                             android:layout_width="150dp"
-                            android:layout_height="200dp"
-                            android:layout_marginRight="10dp"
+                            android:layout_height="match_parent"
                             android:background="@drawable/rounded_outline"
-                            android:padding="1dp"
                             android:scaleType="centerCrop"
-                            app:shapeAppearanceOverlay="@style/RoundedSquare"
-                            app:srcCompat="@drawable/cardbg" />
+                            android:layout_marginRight="10dp"
+                            app:resize_mode="zoom" />
 
-                        <com.google.android.material.imageview.ShapeableImageView
+                        <androidx.media3.ui.PlayerView
+                            android:id="@+id/player_view2"
                             android:layout_width="150dp"
-                            android:layout_height="200dp"
-                            android:layout_marginRight="10dp"
+                            android:layout_height="match_parent"
                             android:background="@drawable/rounded_outline"
-                            android:padding="1dp"
                             android:scaleType="centerCrop"
-                            app:shapeAppearanceOverlay="@style/RoundedSquare"
-                            app:srcCompat="@drawable/cardbg" />
+                            android:layout_marginRight="10dp"
+                            app:resize_mode="zoom" />
 
-                        <com.google.android.material.imageview.ShapeableImageView
+                        <androidx.media3.ui.PlayerView
+                            android:id="@+id/player_view3"
                             android:layout_width="150dp"
-                            android:layout_height="200dp"
-                            android:layout_marginRight="10dp"
+                            android:layout_height="match_parent"
                             android:background="@drawable/rounded_outline"
-                            android:padding="1dp"
                             android:scaleType="centerCrop"
-                            app:shapeAppearanceOverlay="@style/RoundedSquare"
-                            app:srcCompat="@drawable/cardbg" />
+                            android:layout_marginRight="10dp"
+                            app:resize_mode="zoom" />
+
+                        <androidx.media3.ui.PlayerView
+                            android:id="@+id/player_view4"
+                            android:layout_width="150dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/rounded_outline"
+                            android:scaleType="centerCrop"
+                            android:layout_marginRight="10dp"
+                            app:resize_mode="zoom" />
 
                     </LinearLayout>
 
+
                 </HorizontalScrollView>
+-->
 
                 <TextView
                     android:id="@+id/productName"
@@ -135,7 +154,7 @@
                     android:text="prodName"
                     android:textSize="24sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+                    app:layout_constraintTop_toBottomOf="@+id/showcaseFeed" />
 
                 <TextView
                     android:id="@+id/prodBio"
@@ -155,9 +174,9 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginEnd="16dp"
+                    android:padding="1dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/cardbg"
-                    android:padding="1dp"
                     app:layout_constraintBottom_toBottomOf="@+id/productName"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/productName"
@@ -184,14 +203,17 @@
                     app:layout_constraintStart_toStartOf="@+id/prodBio"
                     app:layout_constraintTop_toBottomOf="@+id/prodBio" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/commentsFeed"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView13" />
+                <!--                <androidx.recyclerview.widget.RecyclerView-->
+                <!--                    android:id="@+id/commentsFeed"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="0dp"-->
+                <!--                    android:layout_marginTop="16dp"-->
+                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                    app:layout_constraintStart_toStartOf="parent"-->
+                <!--                    app:layout_constraintTop_toBottomOf="@+id/textView13" />-->
+
+
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

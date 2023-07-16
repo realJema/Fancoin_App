@@ -17,6 +17,12 @@
         android:theme="@style/Theme.Fancoin"
         tools:targetApi="31">
         <activity
+            android:name=".UploadVideoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PasswordRecoveryActivity"
+            android:exported="false" />
+        <activity
             android:name=".OrderReplyActivity"
             android:exported="false" />
         <activity
