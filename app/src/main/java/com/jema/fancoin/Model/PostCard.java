@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class PostCard {
     String image, name, pricing, bio, category, id, application_followers, application_social, application_status, application_username;
-    ArrayList<String> followers;
+    ArrayList<String> followers, following;
 
     public PostCard(){};
 
-    public PostCard(String image, String name, String pricing, String bio, String category, String id, String application_followers, String application_social, String application_status, String application_username, ArrayList<String> followers) {
+    public PostCard(String image, String name, String pricing, String bio, String category, String id, String application_followers, String application_social, String application_status, String application_username, ArrayList<String> followers, ArrayList<String> following) {
         this.image = image;
         this.name = name;
         this.pricing = pricing;
@@ -20,6 +20,7 @@ public class PostCard {
         this.application_status = application_status;
         this.application_username = application_username;
         this.followers = followers;
+        this.following = following;
     }
 
     public String getImage() {
@@ -103,5 +104,17 @@ public class PostCard {
 
     public void setApplication_username(String application_username) {
         this.application_username = application_username;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public ArrayList<String> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(ArrayList<String> following) {
+        this.following = following;
     }
 }

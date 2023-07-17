@@ -55,9 +55,9 @@
             android:layout_height="450dp"
             android:layout_centerInParent="true"
             android:background="@android:color/background_dark"
+            android:visibility="gone"
             app:controller_layout_id="@layout/custom_controller_fullsize"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -93,14 +93,30 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_file_upload"
             app:tint="@color/gray" />
+
+        <TextView
+            android:id="@+id/upload_video_selector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/borderbottom"
+            android:paddingVertical="5dp"
+            android:text="Select a video"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/upload_video_icon" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+        android:id="@+id/upload_video_bottom_card"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottom_card_height"
         app:cardBackgroundColor="#F4F4F4"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -122,7 +138,7 @@
                 android:backgroundTint="@color/purple_700"
                 android:bottomLeftRadius="10dp"
                 android:bottomRightRadius="10dp"
-                android:text="Choose Video"
+                android:text="Upload Video"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"

@@ -21,6 +21,8 @@ import com.jema.fancoin.Adapter.OrderAdapter;
 import com.jema.fancoin.Adapter.ReplyAdapter;
 import com.jema.fancoin.Model.OrderModel;
 
+import org.w3c.dom.Document;
+
 import java.util.ArrayList;
 
 public class RequestsActivity extends AppCompatActivity {
@@ -78,13 +80,14 @@ public class RequestsActivity extends AppCompatActivity {
                         if(error != null) {
 //                            if(progressDialog.isShowing())
 //                                progressDialog.dismiss();
-                            Log.i("JemaTag", "error gettting data");
+                            Log.i("JemaTag", "error gettting data at Requests Activity");
                             return;
                         }
 
                         for(DocumentChange dc : value.getDocumentChanges()){
 
                             String id = dc.getDocument().getId();
+
                             int oldIndex = orderModelArrayList.indexOf(id);
 
                             switch (dc.getType()){
@@ -92,10 +95,6 @@ public class RequestsActivity extends AppCompatActivity {
                                     orderModelArrayList.add(dc.getDocument().toObject(OrderModel.class));
                                     break;
                                 case MODIFIED:
-
-                                    // modifying
-
-                                    String docID = dc.getDocument().getId();
                                     OrderModel changedModel = dc.getDocument().toObject(OrderModel.class);
                                     if (dc.getOldIndex() == dc.getNewIndex()) {
                                         // Item changed but remained in same position

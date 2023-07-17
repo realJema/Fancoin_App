@@ -2,6 +2,7 @@ package com.jema.fancoin.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,10 +42,19 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.Post
 
         holder.name.setText(postCardArrayList.get(position).getName());
         holder.descr.setText(postCardArrayList.get(position).getBio());
-//        holder.followingCount.setText(postCardArrayList.get(position).getFollowers().size());
-//        holder.category.setText(postCardArrayList.get(position).getCategory());
-//        holder.bg.setBackgroundResource(R.drawable.cardbg);
-//        holder.bg.setBackgroundResource(postCardArrayList.get(position).getImage());
+
+        Integer followersCount = postCardArrayList.get(position).getFollowers().size();
+//        Integer followingCount = postCardArrayList.get(position).getFollowing().size();
+
+//        Log.d("JemaTag", followingCount.toString());
+
+        if(followersCount != null) {
+            holder.followersCount.setText("Followers : ".concat(followersCount.toString()));
+        }
+//        if(followingCount != null){
+//            holder.followingCount.setText("Following : ".concat(followingCount.toString()));
+//        }
+
         Picasso.get().load(postCardArrayList.get(position).getImage()).into(holder.image);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +84,7 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.Post
 
     public  static class PostViewHolder extends RecyclerView.ViewHolder{
 
-        TextView name, bio, descr, followingCount;
+        TextView name, bio, descr, followingCount, followersCount;
         ImageView image;
 
         public PostViewHolder(@NonNull View itemView) {
@@ -83,6 +93,7 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.Post
             name = itemView.findViewById(R.id.following_star_name);
             descr = itemView.findViewById(R.id.following_description);
             followingCount = itemView.findViewById(R.id.following_count);
+            followersCount = itemView.findViewById(R.id.followers_count);
             image = itemView.findViewById(R.id.followeing_profile_image);
 
         }

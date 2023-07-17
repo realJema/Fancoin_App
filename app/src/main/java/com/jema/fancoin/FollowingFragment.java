@@ -117,7 +117,7 @@ public class FollowingFragment extends Fragment {
                             Log.e("Firebase Error", error.getMessage());
                             return;
                         }
-                        List<String> group = (List<String>) value.get("followers");
+                        List<String> group = (List<String>) value.get("following");
 
 
                         if(group != null){

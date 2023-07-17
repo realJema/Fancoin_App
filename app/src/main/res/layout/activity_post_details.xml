@@ -76,7 +76,8 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/showcaseFeed"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="10dp"
                     android:layout_weight="1"
                     android:clipToPadding="true"
                     android:foregroundGravity="center"

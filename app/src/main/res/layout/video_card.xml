@@ -2,14 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/videoParent"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="16dp">
+    android:layout_width="200dp"
+    android:layout_height="300dp"
+    android:layout_marginEnd="12dp">
 
         <androidx.media3.ui.PlayerView
             android:id="@+id/statusSliderVideo"
-            android:layout_width="150dp"
-            android:layout_height="200dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:background="@android:color/background_dark"
             app:controller_layout_id="@layout/custom_controller"

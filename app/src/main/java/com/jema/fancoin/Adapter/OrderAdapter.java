@@ -50,11 +50,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.descr.setText(orderModelArrayList.get(position).getDescription());
         Picasso.get().load(orderModelArrayList.get(position).getStar_image()).into(holder.image);
 
-        long now = System.currentTimeMillis();
-        long due = now + 864000;
 
-        String theTime = (String) DateUtils.getRelativeTimeSpanString(now, 0L, DateUtils.FORMAT_ABBREV_ALL);
-        Log.d("jematag", theTime);
+//
+//        long now = System.currentTimeMillis();
+//        long due = now + 864000;
+//
+//        String theTime = (String) DateUtils.getRelativeTimeSpanString(now, 0L, DateUtils.FORMAT_ABBREV_ALL);
+//        Log.d("jematag", theTime);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
