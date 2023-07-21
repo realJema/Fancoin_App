@@ -81,9 +81,6 @@ public class UserAdministrationActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Intent i = new Intent(UserAdministrationActivity.this, AdminActivity.class);
-                startActivity(i);
                 finish();
             }
         });

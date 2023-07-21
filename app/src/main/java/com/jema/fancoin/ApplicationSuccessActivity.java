@@ -38,8 +38,6 @@ public class ApplicationSuccessActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(ApplicationSuccessActivity.this, Home.class);
-                startActivity(i);
                 finish();
             }
         });

@@ -57,6 +57,7 @@ public class PostDetails extends AppCompatActivity {
     private RecyclerView showcaseFeed;
     private VideoSliderAdapter myAdapter;
     ArrayList<String> videoPaths;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,22 +66,19 @@ public class PostDetails extends AppCompatActivity {
 //        viewPager = findViewById(R.id.videoViewPager);
         showcaseFeed = findViewById(R.id.showcaseFeed);
 
-        showcaseFeed.setHasFixedSize(true);
-        showcaseFeed.setLayoutManager(new LinearLayoutManager(PostDetails.this , LinearLayoutManager.HORIZONTAL , false));
-
 
         videoPaths = new ArrayList<>();
-        videoPaths.add("https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4");
-        videoPaths.add("https://samplelib.com/lib/preview/mp4/sample-5s.mp4");
-        videoPaths.add("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4");
-        videoPaths.add("hhttp://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4");
-        videoPaths.add("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4");
-        // add paths for video simllarly
+
+//        We only show showcase videos if there are links in videoPaths
+
+        showcaseFeed.setHasFixedSize(true);
+        showcaseFeed.setLayoutManager(new LinearLayoutManager(PostDetails.this, LinearLayoutManager.HORIZONTAL, false));
 
         myAdapter = new VideoSliderAdapter(getApplicationContext(), videoPaths,
                 PostDetails.this);
         showcaseFeed.setAdapter(myAdapter);
         showcaseFeed.setPadding(10, 0, 10, 0);
+
 
         Intent i = getIntent();
         auth = FirebaseAuth.getInstance();
@@ -154,9 +152,6 @@ public class PostDetails extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Intent i = new Intent(PostDetails.this, Home.class);
-                startActivity(i);
                 finish();
             }
         });
@@ -177,7 +172,6 @@ public class PostDetails extends AppCompatActivity {
                 List<Map<String, Object>> cmts = (List<Map<String, Object>>) value.get("comments");
 
 
-
                 commentAdapter.notifyDataSetChanged();
             }
         });
@@ -185,19 +179,32 @@ public class PostDetails extends AppCompatActivity {
 
     private void EventChangeListener() {
 
-        db.collection("Users").document(auth.getCurrentUser().getUid())
+        db.collection("Users").document(id)
                 .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                        if(error != null) {
+                        if (error != null) {
                             Log.e("Firebase Error", error.getMessage());
                             return;
                         }
-                        List<String> group = (List<String>) value.get("following");
+                        List<String> group = (List<String>) value.get("followers");
+                        List<String> shocaseVideos = (List<String>) value.get("showcase");
 
 
-                        if(group != null){
-                            if(group.contains(id)){
+                        if (shocaseVideos != null) {
+                            Log.d("JemaTag", "Contains Showcase");
+                            for (int j = 0; j < shocaseVideos.size(); j++) {
+                                videoPaths.add(shocaseVideos.get(j));
+                            }
+
+                            showcaseFeed.setVisibility(View.VISIBLE);
+                        }else {
+                            showcaseFeed.setVisibility(View.GONE);
+                        }
+
+
+                        if (group != null) {
+                            if (group.contains(id)) {
                                 follow.setText("Unfollow");
                             } else {
                                 follow.setText("Follow");
@@ -219,10 +226,10 @@ public class PostDetails extends AppCompatActivity {
                 DocumentSnapshot document = task.getResult();
                 List<String> group = (List<String>) document.get("following");
 
-                if(group != null){
-                    if(!group.contains(id)){
+                if (group != null) {
+                    if (!group.contains(id)  && follow.getText().toString().equalsIgnoreCase("follow")) {
                         group.add(id); // adding current user id
-                    } else {
+                    } else if(follow.getText().toString().equalsIgnoreCase("unfollow")) {
                         while (group.contains(id)) {
                             group.remove(id);
                         }
@@ -247,6 +254,7 @@ public class PostDetails extends AppCompatActivity {
             }
         });
     }
+
     private void UpdateFollowers() {
 
         db.collection("Users").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -255,10 +263,10 @@ public class PostDetails extends AppCompatActivity {
                 DocumentSnapshot document = task.getResult();
                 List<String> group = (List<String>) document.get("followers");
 
-                if(group != null){
-                    if(!group.contains(id)){
+                if (group != null) {
+                    if (!group.contains(id) && follow.getText().toString().equalsIgnoreCase("follow")) {
                         group.add(id); // adding current user id
-                    } else {
+                    } else if (follow.getText().toString().equalsIgnoreCase("unfollow")){
                         while (group.contains(id)) {
                             group.remove(id);
                         }

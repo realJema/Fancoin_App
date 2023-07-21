@@ -55,8 +55,6 @@ public class SettingsPhoneActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(SettingsPhoneActivity.this, SettingsActivity.class);
-                startActivity(i);
                 finish();
             }
         });

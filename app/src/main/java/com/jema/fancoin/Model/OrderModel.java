@@ -4,19 +4,21 @@ import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.lang.reflect.Array;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 public class OrderModel {
 
-    String date, description, recipient, id, star_uid, star_image, star_pricing, star_name, client_uid, client_image, client_name, client_phoneNumber, client_email;
+    String description, recipient, id, star_uid, star_image, star_pricing, star_name, client_uid, client_image, client_name, client_phoneNumber, client_email;
+    Date date, upload_date;
 
     @DocumentId
     private String documentId;
 
     public OrderModel(){};
 
-    public OrderModel(String date, String description, String recipient, String id, String star_uid, String star_image, String star_pricing, String star_name, String client_uid, String client_image, String client_name, String client_phoneNumber, String client_email, String documentId) {
+    public OrderModel(Date date, String description, String recipient, String id, String star_uid, String star_image, String star_pricing, String star_name, String client_uid, String client_image, String client_name, String client_phoneNumber, String client_email, String documentId, Date upload_date) {
         this.date = date;
         this.description = description;
         this.recipient = recipient;
@@ -31,14 +33,14 @@ public class OrderModel {
         this.client_phoneNumber = client_phoneNumber;
         this.client_email = client_email;
         this.documentId = documentId;
-
+        this.upload_date = upload_date;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -144,5 +146,13 @@ public class OrderModel {
 
     public void setDocumentId(String documentId) {
         this.documentId = documentId;
+    }
+
+    public Date getUpload_date() {
+        return upload_date;
+    }
+
+    public void setUpload_date(Date upload_date) {
+        this.upload_date = upload_date;
     }
 }

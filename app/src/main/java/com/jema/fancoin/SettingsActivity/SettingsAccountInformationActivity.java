@@ -33,6 +33,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class SettingsAccountInformationActivity extends AppCompatActivity {
     private Spinner category;
     private EditText pricing, bio;
@@ -59,9 +61,6 @@ public class SettingsAccountInformationActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Intent i = new Intent(SettingsAccountInformationActivity.this, SettingsActivity.class);
-                startActivity(i);
                 finish();
             }
         });
@@ -85,7 +84,18 @@ public class SettingsAccountInformationActivity extends AppCompatActivity {
                 db.collection("Users").document(auth.getCurrentUser().getUid()).update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Toast.makeText(SettingsAccountInformationActivity.this, "Information Updated", Toast.LENGTH_SHORT).show();
+
+                        new SweetAlertDialog(SettingsAccountInformationActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                                .setTitleText("Information Updated")
+                                .setContentText("Your information was updated successfully")
+                                .setConfirmText("Ok")
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        finish(); // goes to previous activity
+                                    }
+                                })
+                                .show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -115,9 +125,9 @@ public class SettingsAccountInformationActivity extends AppCompatActivity {
                         String biog = value.getString("bio");
                         String cate = value.getString("category");
                         int cateVal = 0;
-                        if(cate == "Tiktok"){
+                        if(cate.equalsIgnoreCase("tiktok")){
                             cateVal = 1;
-                        } else if (cate == "Entertainment"){
+                        } else if (cate.equalsIgnoreCase("Entertainment")){
                             cateVal = 2;
                         } else {
                             cateVal = 3;

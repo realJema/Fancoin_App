@@ -57,8 +57,6 @@ public class SettingsEmailActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(SettingsEmailActivity.this, SettingsActivity.class);
-                startActivity(i);
                 finish();
             }
         });

@@ -19,7 +19,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5"
-            app:srcCompat="@drawable/ic_back_arrow" />
+            app:srcCompat="@drawable/ic_back_arrow"
+            app:tint="@color/icon_tint" />
 
         <TextView
             android:id="@+id/textView8"
@@ -85,7 +86,8 @@
                         android:src="@drawable/ic_user_black"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/icon_tint" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -100,11 +102,12 @@
                         android:id="@+id/profileIcon2"
                         android:layout_width="wrap_content"
                         android:layout_height="18dp"
-                        android:layout_marginEnd="6dp"
+                        android:layout_marginEnd="16dp"
                         android:src="@drawable/ic_forward_caret"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/icon_tint" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -122,7 +125,8 @@
                         android:src="@drawable/ic_information"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/icon_tint" />
 
                     <TextView
                         android:id="@+id/textView9"
@@ -139,11 +143,12 @@
                         android:id="@+id/imageView8"
                         android:layout_width="wrap_content"
                         android:layout_height="18dp"
-                        android:layout_marginEnd="6dp"
+                        android:layout_marginEnd="16dp"
                         android:src="@drawable/ic_forward_caret"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/icon_tint"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -161,7 +166,8 @@
                         android:src="@drawable/ic_videocam"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/icon_tint" />
 
                     <TextView
                         android:id="@+id/manageVideosText"
@@ -177,11 +183,12 @@
                         android:id="@+id/manageVideosIcon2"
                         android:layout_width="wrap_content"
                         android:layout_height="18dp"
-                        android:layout_marginEnd="6dp"
+                        android:layout_marginEnd="16dp"
                         android:src="@drawable/ic_forward_caret"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/icon_tint" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
@@ -213,7 +220,8 @@
                         android:src="@drawable/ic_mail_black"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/icon_tint"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -227,11 +235,12 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="18dp"
-                        android:layout_marginEnd="6dp"
+                        android:layout_marginEnd="16dp"
                         android:src="@drawable/ic_forward_caret"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/icon_tint"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -251,7 +260,8 @@
                         android:src="@drawable/ic_phone_black"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/icon_tint" />
 
                     <TextView
                         android:id="@+id/textView92"
@@ -267,11 +277,12 @@
                         android:id="@+id/imageView82"
                         android:layout_width="wrap_content"
                         android:layout_height="18dp"
-                        android:layout_marginEnd="6dp"
+                        android:layout_marginEnd="16dp"
                         android:src="@drawable/ic_forward_caret"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/icon_tint" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
@@ -303,7 +314,8 @@
                         android:src="@drawable/ic_language"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/icon_tint" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -317,7 +329,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="18dp"
-                        android:layout_marginEnd="6dp"
+                        android:layout_marginEnd="16dp"
                         android:src="@drawable/ic_forward_caret"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -341,7 +353,8 @@
                         android:src="@drawable/ic_theme"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/icon_tint"/>
 
                     <TextView
                         android:id="@+id/textView921"
@@ -357,11 +370,12 @@
                         android:id="@+id/imageView821"
                         android:layout_width="wrap_content"
                         android:layout_height="18dp"
-                        android:layout_marginEnd="6dp"
+                        android:layout_marginEnd="16dp"
                         android:src="@drawable/ic_forward_caret"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/icon_tint" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

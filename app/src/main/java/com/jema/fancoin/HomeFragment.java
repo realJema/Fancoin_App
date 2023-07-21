@@ -135,6 +135,8 @@ public class HomeFragment extends Fragment {
         musAdapter = new PostAdapter(getContext(), musCardArrayList);
 
         tiktokFeed.setAdapter(tikAdapter);
+
+
         entertainmentFeed.setAdapter(entAdapter);
         musicFeed.setAdapter(musAdapter);
         EventChangeListener();
@@ -184,8 +186,9 @@ public class HomeFragment extends Fragment {
                                         tikAdapter.notifyItemMoved(dc.getOldIndex(),dc.getNewIndex());
                                     }
                                     break;
-                                case REMOVED:
-                                    tikCardArrayList.remove(oldIndex);
+//                                case REMOVED:
+//                                    tikCardArrayList.remove(oldIndex);
+//                                    break;
                             }
                             tikAdapter.notifyDataSetChanged();
 //                            if(progressDialog.isShowing())
@@ -234,8 +237,11 @@ public class HomeFragment extends Fragment {
                                         entAdapter.notifyItemMoved(dc.getOldIndex(),dc.getNewIndex());
                                     }
                                     break;
-                                case REMOVED:
-                                    tikCardArrayList.remove(oldIndex);
+//                                case REMOVED:
+//
+//                                        entCardArrayList.remove(oldIndex);
+//                                    break;
+
                             }
                             entAdapter.notifyDataSetChanged();
 //                            if(progressDialog.isShowing())
@@ -284,8 +290,9 @@ public class HomeFragment extends Fragment {
                                         musAdapter.notifyItemMoved(dc.getOldIndex(),dc.getNewIndex());
                                     }
                                     break;
-                                case REMOVED:
-                                    musCardArrayList.remove(oldIndex);
+//                                case REMOVED:
+//                                    musCardArrayList.remove(oldIndex);
+//                                    break;
                             }
                             musAdapter.notifyDataSetChanged();
 //                            if(progressDialog.isShowing())

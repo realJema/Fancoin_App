@@ -51,11 +51,10 @@ public class ProfileFragment extends Fragment {
     private String mParam1;
     private String mParam2, currentPP;
 
-    private Button editProfileBtn, adminBtn;
+    private Button editProfileBtn, adminBtn, requestsPage;
     private FirebaseAuth auth;
     private ImageView pp;
-    private TextView username, email, phone, followers, following, requests, requestsBtnText, myOrdersBtnText;
-    private ConstraintLayout requestPage, ordersPage;
+    private TextView username, usernametop, bio, followers, following, requests, requestsBtnText, myOrdersBtnText;
     private FirebaseFirestore db;
     public ProfileFragment() {
         // Required empty public constructor
@@ -117,35 +116,25 @@ public class ProfileFragment extends Fragment {
 
         pp = (ImageView)rootView.findViewById(R.id.profile_imageview);
         username = (TextView)rootView.findViewById(R.id.profile_username);
-        phone = (TextView)rootView.findViewById(R.id.profile_phone);
-        email = (TextView)rootView.findViewById(R.id.profile_email);
+        usernametop = (TextView)rootView.findViewById(R.id.profile_username1);
+        bio = (TextView)rootView.findViewById(R.id.profile_bio);
         followers = (TextView)rootView.findViewById(R.id.profile_followers_count);
         following = (TextView)rootView.findViewById(R.id.profile_following_count);
         requests = (TextView)rootView.findViewById(R.id.profile_requests_count);
-        requestsBtnText = (TextView)rootView.findViewById(R.id.profile_requests_page_text);
-        myOrdersBtnText = (TextView)rootView.findViewById(R.id.profile_orders_page_text);
-        requestPage = (ConstraintLayout)rootView.findViewById(R.id.profile_requests_page);
-        ordersPage = (ConstraintLayout)rootView.findViewById(R.id.profile_orders_page);
+//        requestsBtnText = (TextView)rootView.findViewById(R.id.profile_requests_page_text);
+        requestsPage = (Button)rootView.findViewById(R.id.profile_requests);
 
-        requestPage.setOnClickListener(new View.OnClickListener() {
+        requestsPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), RequestsActivity.class);
                 startActivity(intent);
             }
         });
-        ordersPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), MyOrdersActivity.class);
-                startActivity(intent);
-            }
-        });
-
 
         EventChangeListener(); // listening for changes to update image, name and profile picture
         OrderChangeListener(); // listening for changes to orders collection to update requests counts and orders
-        MyOrderChangeListener();
+//        MyOrderChangeListener();
 
         return rootView;
 
@@ -170,13 +159,13 @@ public class ProfileFragment extends Fragment {
 
                             String numberOrders = String.valueOf(value.getDocuments().size());
                             requests.setText(numberOrders);
-                            requestsBtnText.setText("Requests (".concat(numberOrders).concat(")"));
+                            requestsPage.setText("Requests (".concat(numberOrders).concat(")"));
                         }
                     }
                 });
     }
 
-
+/*
     private void MyOrderChangeListener() {
 
         db.collection("Orders").whereEqualTo("id", auth.getCurrentUser().getUid())
@@ -198,7 +187,7 @@ public class ProfileFragment extends Fragment {
                         }
                     }
                 });
-    }
+    }*/
 
     private void EventChangeListener() {
 
@@ -214,19 +203,18 @@ public class ProfileFragment extends Fragment {
 
                         String user = value.getString("name");
                         String image = value.getString("image");
-                        String useremail = value.getString("email");
-                        String phoneNumber = value.getString("phoneNumber");
+                        String bio1 = value.getString("bio");
                         List<String> myFollowers = (List<String>) value.get("followers");
                         List<String> myFollowing = (List<String>) value.get("following");
 
                         if(!user.equalsIgnoreCase(username.getText().toString())){
-                            username.setText(user);
+                            username.setText("@".concat(user));
+                            usernametop.setText("@".concat(user));
                         }
-                        if(!useremail.equalsIgnoreCase(email.getText().toString())){
-                            email.setText(useremail);
-                        }
-                        if(!phoneNumber.equalsIgnoreCase(phone.getText().toString())){
-                            phone.setText(phoneNumber);
+                        if (bio1.equalsIgnoreCase("")){
+                            bio.setText("No bio, add your bio in settings");
+                        } else if(!bio1.equalsIgnoreCase(bio.getText().toString())){
+                            bio.setText(bio1);
                         }
                         if(!image.equalsIgnoreCase(currentPP)){
                             Picasso.get().load(image).into(pp);

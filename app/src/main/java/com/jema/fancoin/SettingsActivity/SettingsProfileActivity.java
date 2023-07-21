@@ -33,6 +33,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.jema.fancoin.AddShowcaseActivity;
 import com.jema.fancoin.Home;
 import com.jema.fancoin.PostDetails;
 import com.jema.fancoin.R;
@@ -44,6 +45,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class SettingsProfileActivity extends AppCompatActivity {
 
@@ -78,8 +81,6 @@ public class SettingsProfileActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(SettingsProfileActivity.this, SettingsActivity.class);
-                startActivity(i);
                 finish();
             }
         });
@@ -140,8 +141,17 @@ public class SettingsProfileActivity extends AppCompatActivity {
                                 db.collection("Users").document(auth.getCurrentUser().getUid()).update(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-
-                                        Toast.makeText(SettingsProfileActivity.this,"Successfully Updated",Toast.LENGTH_SHORT).show();
+                                        new SweetAlertDialog(SettingsProfileActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                                                .setTitleText("Information Updated")
+                                                .setContentText("Your information was updated successfully")
+                                                .setConfirmText("Ok")
+                                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                    @Override
+                                                    public void onClick(SweetAlertDialog sDialog) {
+                                                        finish(); // goes to previous activity
+                                                    }
+                                                })
+                                                .show();
 
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
@@ -182,8 +192,17 @@ public class SettingsProfileActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
 
-                        Toast.makeText(SettingsProfileActivity.this,"Successfully Updated",Toast.LENGTH_SHORT).show();
-
+                        new SweetAlertDialog(SettingsProfileActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                                .setTitleText("Information Updated")
+                                .setContentText("Your information was updated successfully")
+                                .setConfirmText("Ok")
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        finish(); // goes to previous activity
+                                    }
+                                })
+                                .show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override

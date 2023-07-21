@@ -158,7 +158,7 @@ public class OrderVideoActivity extends AppCompatActivity {
 
                 order.put("recipient" , recipient.getText().toString());
                 order.put("description", description.getText().toString());
-                order.put("date", getDateTime());
+                order.put("date", new Date());
                 order.put("id", auth.getCurrentUser().getUid());
 
                 db.collection("Orders").document().set(order).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -185,7 +185,7 @@ public class OrderVideoActivity extends AppCompatActivity {
         dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+//        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
 
     }

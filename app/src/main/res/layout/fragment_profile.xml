@@ -11,10 +11,10 @@
         android:layout_height="@dimen/topbar_height">
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/profile_username1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="My Profile"
+            android:text="'@username"
             android:textSize="@dimen/topbar_title"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -28,12 +28,13 @@
     <!-- TODO: Update blank fragment layout -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginTop="50dp">
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent">
@@ -48,9 +49,9 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginTop="8dp"
+                    android:padding="1dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/cardbg"
-                    android:padding="1dp"
                     app:layout_constraintBottom_toTopOf="@+id/profile_username"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -71,82 +72,24 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/profile_imageview" />
 
-                <TextView
-                    android:id="@+id/profile_email"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:text="test@gmail.com"
-                    android:textSize="12sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/profile_username" />
-
-                <TextView
-                    android:id="@+id/profile_phone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:text="+237 651173362"
-                    android:textSize="12sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/profile_email" />
-
-                <LinearLayout
-                    android:id="@+id/linearLayout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/profile_phone">
-
-                    <Button
-                        android:id="@+id/editProfileBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
-                        android:layout_weight="1"
-                        android:backgroundTint="@color/colorAccent"
-                        android:text="Edit Profile"
-                        android:textColor="@color/black"
-                        android:textStyle="bold" />
-
-                    <Button
-                        android:id="@+id/adminBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_weight="1"
-                        android:backgroundTint="@color/colorAccent"
-                        android:text="Admin"
-                        android:textColor="@color/black"
-                        android:textStyle="bold" />
-                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/linearLayout2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center_horizontal"
                     android:orientation="horizontal"
+                    app:layout_constraintBottom_toTopOf="@+id/linearLayout"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+                    app:layout_constraintTop_toBottomOf="@+id/profile_username">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginHorizontal="30dp"
                         android:orientation="vertical">
 
                         <TextView
@@ -155,12 +98,14 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="0"
-                            android:textSize="25sp" />
+                            android:textSize="25sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Requests" />
+                            android:text="Requests"
+                            android:textColor="@color/grayHard" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -175,18 +120,19 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="0"
-                            android:textSize="25sp" />
+                            android:textSize="25sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Followers" />
+                            android:text="Followers"
+                            android:textColor="@color/grayHard" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginHorizontal="30dp"
                         android:orientation="vertical">
 
                         <TextView
@@ -195,135 +141,84 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="0"
-                            android:textSize="25sp" />
+                            android:textSize="25sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/textView7"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Following" />
+                            android:text="Following"
+                            android:textColor="@color/grayHard" />
                     </LinearLayout>
                 </LinearLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/profile_requests_page"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="24dp"
-                    android:background="@drawable/borderbottom"
-                    android:paddingVertical="15dp"
-                    android:paddingLeft="10dp"
+
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
-                    <ImageView
-                        android:id="@+id/imageView41"
+                    <Button
+                        android:id="@+id/editProfileBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
-                        android:src="@drawable/ic_videocam"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/profile_requests_page_text"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_marginHorizontal="2dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/gray"
+                        android:text="Edit Profile"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black" />
 
-                    <TextView
-                        android:id="@+id/profile_requests_page_text"
+                    <Button
+                        android:id="@+id/profile_requests"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="3dp"
-                        android:layout_marginBottom="2dp"
-                        android:text="Requests (0)"
-                        app:layout_constraintBottom_toBottomOf="@+id/imageView41"
-                        app:layout_constraintStart_toEndOf="@+id/imageView41"
-                        app:layout_constraintTop_toTopOf="@+id/imageView41" />
+                        android:layout_marginHorizontal="2dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/gray"
+                        android:text="Requests"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="18dp"
-                        android:layout_marginEnd="6dp"
-                        android:src="@drawable/ic_forward_caret"
-                        app:layout_constraintBottom_toBottomOf="@+id/profile_requests_page_text"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/profile_requests_page_text" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/profile_orders_page"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="6dp"
-                    android:background="@drawable/borderbottom"
-                    android:paddingVertical="15dp"
-                    android:paddingLeft="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/profile_requests_page">
-
-                    <ImageView
-                        android:id="@+id/imageView4"
+                    <Button
+                        android:id="@+id/adminBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
-                        android:src="@drawable/ic_cart"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/profile_orders_page_text"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_marginHorizontal="2dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/gray"
+                        android:text="Admin"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black" />
+                </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/profile_orders_page_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:text="Orders (0)"
-                        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-                        app:layout_constraintStart_toEndOf="@+id/imageView4"
-                        app:layout_constraintTop_toTopOf="@+id/imageView4" />
-
-                    <ImageView
-                        android:id="@+id/imageView8"
-                        android:layout_width="wrap_content"
-                        android:layout_height="18dp"
-                        android:layout_marginEnd="6dp"
-                        android:src="@drawable/ic_forward_caret"
-                        app:layout_constraintBottom_toBottomOf="@+id/profile_orders_page_text"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/profile_orders_page_text" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <LinearLayout
-                    android:id="@+id/linearLayout21"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/profile_bio"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:background="@color/colorAccent"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingVertical="15dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="32dp"
+                    android:text="profile bio"
+                    android:textAlignment="center"
+                    android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/profile_orders_page">
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
 
-                    <TextView
-                        android:id="@+id/textView11"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Public Videos"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/textView12"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Here are all your public videos" />
-                </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

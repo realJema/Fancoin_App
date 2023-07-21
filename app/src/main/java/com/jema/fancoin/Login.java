@@ -69,10 +69,22 @@ public class Login extends AppCompatActivity {
             @Override
             public void onSuccess(AuthResult authResult) {
 
-                Toast.makeText(Login.this, "Sign In Successful!", Toast.LENGTH_SHORT).show();
-                Intent myIntent = new Intent(Login.this, Home.class);
-                startActivity(myIntent);
-                finish();
+                Boolean isEmailVerified = authResult.getUser().isEmailVerified();
+
+                if(isEmailVerified){
+                    Toast.makeText(Login.this, "Sign In Successful!", Toast.LENGTH_SHORT).show();
+                    Intent myIntent = new Intent(Login.this, Home.class);
+                    startActivity(myIntent);
+                    finish();
+
+                } else {
+                    Toast.makeText(Login.this, "Verify your email", Toast.LENGTH_SHORT).show();
+                    Intent myIntent = new Intent(Login.this, UnverifiedEmailActivity.class);
+                    myIntent.putExtra("email", email);
+                    myIntent.putExtra("pass", password);
+                    startActivity(myIntent);
+                    finish();
+                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

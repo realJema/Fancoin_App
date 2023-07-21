@@ -60,9 +60,6 @@ public class AdminActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Intent i = new Intent(AdminActivity.this, Home.class);
-                startActivity(i);
                 finish();
             }
         });

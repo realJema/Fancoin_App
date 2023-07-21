@@ -20,7 +20,16 @@ import com.jema.fancoin.PostDetails;
 import com.jema.fancoin.R;
 import com.squareup.picasso.Picasso;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
 
@@ -44,9 +53,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
     @Override
     public void onBindViewHolder(@NonNull OrderAdapter.OrderViewHolder holder, int position) {
-        holder.recipient.setText("Recipient : ".concat(orderModelArrayList.get(position).getRecipient()));
+
+        PrettyTime p = new PrettyTime(); // used to format dates
+
+//        holder.recipient.setText("Recipient : ".concat(orderModelArrayList.get(position).getRecipient()));
         holder.star_name.setText(orderModelArrayList.get(position).getStar_name());
-        holder.date.setText(orderModelArrayList.get(position).getDate());
+//        holder.date.setText(p.format(orderModelArrayList.get(position).getDate()));
         holder.descr.setText(orderModelArrayList.get(position).getDescription());
         Picasso.get().load(orderModelArrayList.get(position).getStar_image()).into(holder.image);
 
@@ -63,7 +75,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             public void onClick(View view) {
 
                 Intent i = new Intent(context, OrderDetailsActivity.class);
-                i.putExtra("date", orderModelArrayList.get(position).getDate());
+                i.putExtra("date", String.valueOf(p.format(orderModelArrayList.get(position).getDate())));
                 i.putExtra("description", orderModelArrayList.get(position).getDescription());
                 i.putExtra("recipient", orderModelArrayList.get(position).getRecipient());
                 i.putExtra("id", orderModelArrayList.get(position).getId());
@@ -98,8 +110,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
             star_name = itemView.findViewById(R.id.order_star_name);
             descr = itemView.findViewById(R.id.order_description);
-            recipient = itemView.findViewById(R.id.order_recipient_name);
-            date = itemView.findViewById(R.id.order_date);
+//            recipient = itemView.findViewById(R.id.order_recipient_name);
+//            date = itemView.findViewById(R.id.order_date);
             image = itemView.findViewById(R.id.order_profile_image);
 
         }

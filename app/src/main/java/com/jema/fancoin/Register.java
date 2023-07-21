@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -100,24 +101,46 @@ public class Register extends AppCompatActivity {
                         public void onSuccess(Void unused) {
 
                             Toast.makeText(Register.this, "User Added", Toast.LENGTH_SHORT).show();
+                            sendVerificationEmail();
                         }
                     });
-
-                    Toast.makeText(Register.this, "Registering user successful", Toast.LENGTH_SHORT).show();
-                    Intent myIntent = new Intent(Register.this, Home.class);
-                    startActivity(myIntent);
-                    finish();
                 } else {
-                    signUp.setText("Sign Un");
+                    signUp.setText("Sign Up");
                     Toast.makeText(Register.this, "Registering user failed", Toast.LENGTH_SHORT).show();
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                signUp.setText("Sign Un");
+                signUp.setText("Sign Up");
                 Toast.makeText(Register.this, "Registering user failed", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private void sendVerificationEmail()
+    {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        user.sendEmailVerification()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(Register.this, "Registering user successful", Toast.LENGTH_SHORT).show();
+                            Intent myIntent = new Intent(Register.this, UnverifiedEmailActivity.class);
+                            startActivity(myIntent);
+                            finish();
+                        }
+                        else
+                        {
+                            // email not sent, so display message and restart the activity or do whatever you wish to do
+                            //restart this activity
+                            overridePendingTransition(0, 0);
+                            finish();
+                            overridePendingTransition(0, 0);
+                            startActivity(getIntent());
+                        }
+                    }
+                });
     }
 }

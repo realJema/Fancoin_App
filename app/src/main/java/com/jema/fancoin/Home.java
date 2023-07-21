@@ -1,11 +1,13 @@
 package com.jema.fancoin;
 
+import static com.jema.fancoin.SettingsActivity.SettingsThemeActivity.THEME;
 import static org.xmlpull.v1.XmlPullParser.TEXT;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -28,6 +30,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -54,17 +57,49 @@ public class Home extends AppCompatActivity {
     public static final String USERPHONENUMBER = "userphonenumber";
     public static final String USERAPPLICATIONSTATUS = "userapplication";
     String applicationStat = "default";
-
+    private FirebaseAuth firebaseAuth;
+    FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        SharedPreferences mySharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        String myName = mySharedPreferences.getString(USERNAME, null);
+        String myEmail = mySharedPreferences.getString(USEREMAIL, null);
+        String myPP = mySharedPreferences.getString(USERIMAGE, null);
+        String theme = mySharedPreferences.getString(THEME, null);
+
+
+//        block used to check the default theme setting of user and start off the app with that
+        if(theme != null) {
+            if (theme.equalsIgnoreCase("1")) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            } else if (theme.equalsIgnoreCase("2")){
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY);
+            }
+        }
+
 
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if (user != null) {
+                    Intent intent = new Intent(Home.this, Login.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        };
 
 //        bottom navigation inflater
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
@@ -111,18 +146,11 @@ public class Home extends AppCompatActivity {
 
 
 
-        SharedPreferences mySharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        String myName = mySharedPreferences.getString(USERNAME, null);
-        String myEmail = mySharedPreferences.getString(USEREMAIL, null);
-        String myPP = mySharedPreferences.getString(USERIMAGE, null);
-
 //        setting elements in drawer
         draw_name.setText(myName);
         draw_email.setText(myEmail);
 
         Picasso.get().load(myPP).into(draw_pp);
-
-        checkApplication();
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -195,20 +223,6 @@ public class Home extends AppCompatActivity {
                     }
                 });
 
-    }
-
-    public void checkApplication() {
-        db.collection("Users").document(auth.getCurrentUser().getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                String stat = (String) value.get("application_status");
-                if(stat.equalsIgnoreCase("pending")){
-                    statusApplication = stat;
-                    applyItem.setTitle("Application Submitted");
-                }
-
-            }
-        });
     }
 
 }

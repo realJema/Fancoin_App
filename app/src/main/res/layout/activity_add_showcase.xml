@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UploadVideoActivity">
+    tools:context=".AddShowcaseActivity">
 
-<!--    Correct Implementation of page -->
+    <!--    Correct Implementation of page -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/topNavbar"
         android:layout_width="match_parent"
@@ -22,13 +22,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_back_arrow"
-            app:tint="@color/icon_tint" />
+            app:tint="@color/icon_tint"/>
 
         <TextView
             android:id="@+id/textView8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Upload Video"
+            android:text="Add Showcase Video"
             android:textSize="@dimen/topbar_title"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"

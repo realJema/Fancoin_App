@@ -59,9 +59,6 @@ public class RequestsActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Intent i = new Intent(RequestsActivity.this, Home.class);
-                startActivity(i);
                 finish();
             }
         });

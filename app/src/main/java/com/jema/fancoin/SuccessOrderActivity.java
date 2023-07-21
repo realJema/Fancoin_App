@@ -38,8 +38,6 @@ public class SuccessOrderActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(SuccessOrderActivity.this, Home.class);
-                startActivity(i);
                 finish();
             }
         });

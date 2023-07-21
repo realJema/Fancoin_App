@@ -14,6 +14,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
 public class OrderDetailsActivity extends AppCompatActivity {
     private TextView id, date, descr, recipient, starName, description, pricing;
     private ImageView pp, backBtn;
@@ -66,9 +68,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Intent i = new Intent(OrderDetailsActivity.this, Home.class);
-                startActivity(i);
                 finish();
             }
         });

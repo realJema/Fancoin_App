@@ -17,6 +17,8 @@ import com.jema.fancoin.OrderReplyActivity;
 import com.jema.fancoin.R;
 import com.squareup.picasso.Picasso;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
 import java.util.ArrayList;
 
 public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.OrderViewHolder> {
@@ -41,9 +43,12 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.OrderViewHol
 
     @Override
     public void onBindViewHolder(@NonNull ReplyAdapter.OrderViewHolder holder, int position) {
+
+        PrettyTime p = new PrettyTime();
+
         holder.recipient.setText("Recipient : ".concat(orderModelArrayList.get(position).getRecipient()));
         holder.star_name.setText(orderModelArrayList.get(position).getStar_name());
-        holder.date.setText(orderModelArrayList.get(position).getDate());
+        holder.date.setText(p.format(orderModelArrayList.get(position).getUpload_date()));
         holder.descr.setText(orderModelArrayList.get(position).getDescription());
         Picasso.get().load(orderModelArrayList.get(position).getStar_image()).into(holder.image);
 
@@ -53,7 +58,7 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.OrderViewHol
             public void onClick(View view) {
 
                 Intent i = new Intent(context, OrderReplyActivity.class);
-                i.putExtra("date", orderModelArrayList.get(position).getDate());
+                i.putExtra("date", String.valueOf(p.format(orderModelArrayList.get(position).getDate())));
                 i.putExtra("description", orderModelArrayList.get(position).getDescription());
                 i.putExtra("recipient", orderModelArrayList.get(position).getRecipient());
                 i.putExtra("id", orderModelArrayList.get(position).getId());
