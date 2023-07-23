@@ -23,7 +23,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public class UnverifiedEmailActivity extends AppCompatActivity {
 
     TextView resendBtn;
-    ImageView backBtn;
+    private ImageView backBtn;
     private FirebaseAuth auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,45 +37,20 @@ public class UnverifiedEmailActivity extends AppCompatActivity {
         resendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Intent i = getIntent();
-                String email = i.getStringExtra("email");
-                String pass = i.getStringExtra("pass");
-                singInUser(email, pass);
+                sendVerificationEmail();
+                Intent intent = new Intent(UnverifiedEmailActivity.this, Login.class);
+                startActivity(intent);
+                finish();
             }
         });
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Intent intent = new Intent(UnverifiedEmailActivity.this, Login.class);
+                startActivity(intent);
                 finish();
-            }
-        });
-    }
-
-    private void singInUser(String email, String password) {
-        auth.signInWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-                sendVerificationEmail();
-
-                new SweetAlertDialog(UnverifiedEmailActivity.this, SweetAlertDialog.SUCCESS_TYPE)
-                        .setTitleText("Email Sent")
-                        .setContentText("Your verification email was sent")
-                        .setConfirmText("Ok")
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sDialog) {
-                                FirebaseAuth.getInstance().signOut();
-                                finish(); // goes to previous activity
-                            }
-                        })
-                        .show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(UnverifiedEmailActivity.this, "Sign In Failed!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -83,7 +58,17 @@ public class UnverifiedEmailActivity extends AppCompatActivity {
     private void sendVerificationEmail()
     {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        user.sendEmailVerification();
+        user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(UnverifiedEmailActivity.this, "Verification Email Sent", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(UnverifiedEmailActivity.this, "Unable to send verification!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

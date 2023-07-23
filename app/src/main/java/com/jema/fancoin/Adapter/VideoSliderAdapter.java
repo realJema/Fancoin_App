@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,19 +55,25 @@ public class VideoSliderAdapter extends RecyclerView.Adapter<VideoSliderAdapter.
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.thumbnailImage.setImageBitmap(ThumbnailUtils.createVideoThumbnail(pathsList.get(position),
-                MediaStore.Video.Thumbnails.FULL_SCREEN_KIND));
-
+//        holder.thumbnailImage.setImageBitmap(ThumbnailUtils.createVideoThumbnail(pathsList.get(position),MediaStore.Video.Thumbnails.FULL_SCREEN_KIND));
 
         // get data
         Uri videoUri = Uri.parse(pathsList.get(position));
+
+        holder.simpleExoPlayer = new ExoPlayer.Builder(context).build();
+
+        holder.playerView.setPlayer(holder.simpleExoPlayer);
+
+        MediaItem mediaItem = MediaItem.fromUri(videoUri);
+        holder.simpleExoPlayer.setMediaItem(mediaItem);
+        holder.simpleExoPlayer.prepare();
+        holder.simpleExoPlayer.seekTo(10);
 
         holder.bt_fullscreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!isFullScreen) {
-                    holder.bt_fullscreen.setImageDrawable(
-                            ContextCompat.getDrawable(context, R.drawable.ic_fullscreen_exit)
+                    holder.bt_fullscreen.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_fullscreen_exit)
                     );
 //                    activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
                 } else {
@@ -76,36 +83,16 @@ public class VideoSliderAdapter extends RecyclerView.Adapter<VideoSliderAdapter.
                 isFullScreen = !isFullScreen;
             }
         });
-
-
-/*
-
-        holder.bt_lockscreen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isFullLock) {
-                    holder.bt_lockscreen.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_forward_caret));
-                } else {
-                    holder.bt_lockscreen.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_inbox));
-                }
-
-                isFullLock = !isFullLock;
-                lockScreen(isFullLock, holder.sec_mid, holder.sec_bottom);
-
-            }
-        });
-*/
-
-
+        
         holder.playPauseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 holder.playPauseBtn.setVisibility(View.GONE);
-//                        holder.thumbnailImage.setVisibility(View.GONE);
-                holder.simpleExoPlayer = new ExoPlayer.Builder(context).build();
+                holder.bt_pause.setVisibility(View.VISIBLE);
 
-                holder.playerView.setPlayer(holder.simpleExoPlayer);
+                holder.simpleExoPlayer.setPlayWhenReady(true);
+
+//                holder.simpleExoPlayer.play();
                 holder.simpleExoPlayer.addListener(new Player.Listener() {
                     @Override
                     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
@@ -116,12 +103,6 @@ public class VideoSliderAdapter extends RecyclerView.Adapter<VideoSliderAdapter.
                         }
                     }
                 });
-
-                MediaItem mediaItem = MediaItem.fromUri(videoUri);
-                holder.simpleExoPlayer.setMediaItem(mediaItem);
-                holder.simpleExoPlayer.prepare();
-                holder.simpleExoPlayer.seekTo(1);
-                holder.simpleExoPlayer.play();
             }
         });
 

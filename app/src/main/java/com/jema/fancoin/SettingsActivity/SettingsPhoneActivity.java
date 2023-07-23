@@ -1,12 +1,9 @@
 package com.jema.fancoin.SettingsActivity;
 
-import static android.content.ContentValues.TAG;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,17 +12,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.jema.fancoin.R;
 
 import java.util.HashMap;
@@ -62,9 +55,7 @@ public class SettingsPhoneActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 String phoner = phoneInput.getText().toString();
-
 //                        adding data into document of user
                 HashMap<String , Object> user = new HashMap<>();
                 user.put("phoneNumber" , phoner);
@@ -73,12 +64,12 @@ public class SettingsPhoneActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void unused) {
                         Toast.makeText(SettingsPhoneActivity.this, "Phone Number Updated", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-
-                        Toast.makeText(SettingsPhoneActivity.this, "Unable to update", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SettingsPhoneActivity.this, "Unable to update, please try again", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

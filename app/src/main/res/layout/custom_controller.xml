@@ -41,6 +41,7 @@
         android:layout_height="50dp"
         android:layout_marginHorizontal="30dp"
         android:src="@drawable/ic_pause"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

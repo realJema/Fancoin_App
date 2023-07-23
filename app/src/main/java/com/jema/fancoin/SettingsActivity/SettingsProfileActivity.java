@@ -22,6 +22,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
@@ -57,7 +59,8 @@ public class SettingsProfileActivity extends AppCompatActivity {
 
     TextView changeImageBtn;
     ImageView pp, back;
-    EditText username;
+    TextInputEditText username;
+    TextInputLayout usernameContainer;
     Button saveBtn;
     private String currentName, imageSelected, currentPP;
     private FirebaseAuth auth;
@@ -71,6 +74,7 @@ public class SettingsProfileActivity extends AppCompatActivity {
         pp = findViewById(R.id.settings_profile_image);
         changeImageBtn = findViewById(R.id.settings_profile_change_image_textview);
         username = findViewById(R.id.settings_profile_name_input);
+        usernameContainer = findViewById(R.id.settings_profile_username_container);
         saveBtn = findViewById(R.id.settings_profile_save_btn);
         back = findViewById(R.id.back2);
 
@@ -99,7 +103,17 @@ public class SettingsProfileActivity extends AppCompatActivity {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(imageSelected == "true")
+
+                usernameContainer.setError("");
+                usernameContainer.setErrorEnabled(false);
+
+                if(username.getText().toString().contains(" ")){
+                    usernameContainer.setError("Can't have spaces");
+                    usernameContainer.setErrorEnabled(true);
+                    return;
+                }
+
+                if(imageSelected == "true" )
                     uploadImage();
                 if(!currentName.equalsIgnoreCase(username.getText().toString())){
                     saveName();
@@ -141,23 +155,13 @@ public class SettingsProfileActivity extends AppCompatActivity {
                                 db.collection("Users").document(auth.getCurrentUser().getUid()).update(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        new SweetAlertDialog(SettingsProfileActivity.this, SweetAlertDialog.SUCCESS_TYPE)
-                                                .setTitleText("Information Updated")
-                                                .setContentText("Your information was updated successfully")
-                                                .setConfirmText("Ok")
-                                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                                    @Override
-                                                    public void onClick(SweetAlertDialog sDialog) {
-                                                        finish(); // goes to previous activity
-                                                    }
-                                                })
-                                                .show();
+
+//                                        finish(); // goes to previous activity
 
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-
                                         Toast.makeText(SettingsProfileActivity.this,"Update Failed",Toast.LENGTH_SHORT).show();
                                     }
                                 });
@@ -186,23 +190,13 @@ public class SettingsProfileActivity extends AppCompatActivity {
 
 //                        adding data into document of user
         HashMap<String , Object> user = new HashMap<>();
-        user.put("name", username.getText().toString());
+        user.put("username", username.getText().toString());
 
         db.collection("Users").document(auth.getCurrentUser().getUid()).update(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
 
-                        new SweetAlertDialog(SettingsProfileActivity.this, SweetAlertDialog.SUCCESS_TYPE)
-                                .setTitleText("Information Updated")
-                                .setContentText("Your information was updated successfully")
-                                .setConfirmText("Ok")
-                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sDialog) {
-                                        finish(); // goes to previous activity
-                                    }
-                                })
-                                .show();
+                        finish(); // goes to previous activity
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -250,10 +244,18 @@ public class SettingsProfileActivity extends AppCompatActivity {
                             return;
                         }
 
-                        if(!value.getString("name").equalsIgnoreCase(username.getText().toString())){
-                            username.setText(value.getString("name"));
-                            currentName = value.getString("name");
+                        String uname = value.getString("username");
+
+                        if(uname != null){
+                            if(!uname.equalsIgnoreCase(username.getText().toString())){
+                                username.setText(uname);
+                                currentName = uname;
+                            }
+
+                        } else {
+                            username.setText("username");
                         }
+
                         if(!value.getString("image").equalsIgnoreCase(currentPP)){
                             Picasso.get().load(value.getString("image")).into(pp);
                             currentPP = value.getString("image");

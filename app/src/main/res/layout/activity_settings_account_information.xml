@@ -61,6 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/customborder"
             android:entries="@array/star_categories"
@@ -68,7 +69,32 @@
             android:textColorHint="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/settings_account_name_input_container" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/settings_account_name_input_container"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:hint="Full Name"
+            app:counterMaxLength="50"
+            app:endIconMode="clear_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/settings_account_name_input"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="text"
+                android:maxLength="50"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -82,13 +108,15 @@
             android:hint="Pricing"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/settings_acount_category"
-            app:startIconDrawable="@drawable/ic_money">
+            app:layout_constraintTop_toBottomOf="@+id/settings_acount_category">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/settings_account_pricing_input"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:inputType="number"
+                android:maxLength="50"
+                android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -101,10 +129,11 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:hint="Description"
+            app:counterMaxLength="250"
+            app:counterEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/settings_account_pricing_input_container"
-            app:startIconDrawable="@drawable/ic_information">
+            app:layout_constraintTop_toBottomOf="@+id/settings_account_pricing_input_container" >
 
             <EditText
                 android:id="@+id/settings_account_bio_input"
@@ -113,7 +142,8 @@
                 android:gravity="left|top"
                 android:text="Description"
                 android:minLines="6"
-                android:maxLines="10"/>
+                android:maxLines="10"
+                app:counterMaxLength="250"/>
         </com.google.android.material.textfield.TextInputLayout>
 
 

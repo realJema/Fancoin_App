@@ -37,7 +37,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class SettingsAccountInformationActivity extends AppCompatActivity {
     private Spinner category;
-    private EditText pricing, bio;
+    private EditText pricing, bio, name;
     private ImageView back;
     private Button save;
     private FirebaseAuth auth;
@@ -53,6 +53,7 @@ public class SettingsAccountInformationActivity extends AppCompatActivity {
 
         category = findViewById(R.id.settings_acount_category);
         pricing = findViewById(R.id.settings_account_pricing_input);
+        name = findViewById(R.id.settings_account_name_input);
         bio = findViewById(R.id.settings_account_bio_input);
         save = findViewById(R.id.settings_account_save_btn);
         back = findViewById(R.id.settings_account_back);
@@ -73,6 +74,7 @@ public class SettingsAccountInformationActivity extends AppCompatActivity {
 
                 String price = pricing.getText().toString();
                 String biography = bio.getText().toString();
+                String fullname = name.getText().toString();
                 String cat = category.getSelectedItem().toString();
 
 //                        adding data into document of user
@@ -80,27 +82,16 @@ public class SettingsAccountInformationActivity extends AppCompatActivity {
                 user.put("pricing" , price);
                 user.put("bio", biography);
                 user.put("category", cat);
+                user.put("name", fullname);
 
                 db.collection("Users").document(auth.getCurrentUser().getUid()).update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-
-                        new SweetAlertDialog(SettingsAccountInformationActivity.this, SweetAlertDialog.SUCCESS_TYPE)
-                                .setTitleText("Information Updated")
-                                .setContentText("Your information was updated successfully")
-                                .setConfirmText("Ok")
-                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sDialog) {
-                                        finish(); // goes to previous activity
-                                    }
-                                })
-                                .show();
+                        finish(); // goes to previous activity
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-
                         Toast.makeText(SettingsAccountInformationActivity.this, "Unable to update", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -124,6 +115,7 @@ public class SettingsAccountInformationActivity extends AppCompatActivity {
                         String price = value.getString("pricing");
                         String biog = value.getString("bio");
                         String cate = value.getString("category");
+                        String uname = value.getString("name");
                         int cateVal = 0;
                         if(cate.equalsIgnoreCase("tiktok")){
                             cateVal = 1;
@@ -138,6 +130,9 @@ public class SettingsAccountInformationActivity extends AppCompatActivity {
                         }
                         if(!biog.equalsIgnoreCase(bio.getText().toString())){
                             bio.setText(biog);
+                        }
+                        if(!uname.equalsIgnoreCase(name.getText().toString())){
+                            name.setText(uname);
                         }
                         if(!cate.equalsIgnoreCase(category.getSelectedItem().toString())){
                             category.setSelection(cateVal);

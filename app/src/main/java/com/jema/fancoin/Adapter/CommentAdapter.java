@@ -15,15 +15,17 @@ import com.jema.fancoin.Model.CommentModel;
 import com.jema.fancoin.R;
 import com.squareup.picasso.Picasso;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
 
     Context context;
-    List<CommentModel> commentModelArray;
+    ArrayList<CommentModel> commentModelArray;
 
-    public CommentAdapter(Context context, List<CommentModel> commentModelArray) {
+    public CommentAdapter(Context context, ArrayList<CommentModel> commentModelArray) {
         this.context = context;
         this.commentModelArray = commentModelArray;
     }
@@ -39,31 +41,32 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     @Override
     public void onBindViewHolder(@NonNull CommentAdapter.CommentViewHolder holder, int position) {
 
-        Log.d("JemaTag", commentModelArray.get(position).getUsername());
+        PrettyTime p = new PrettyTime();
 
-        holder.name.setText(commentModelArray.get(position).getDescr());
-        holder.price.setText(commentModelArray.get(position).getUsername());
-        Picasso.get().load(commentModelArray.get(position).getPhoto()).into(holder.image);
+        holder.commentName.setText(commentModelArray.get(position).getDescr());
+        holder.commentComment.setText(commentModelArray.get(position).getCommenter_username());
+        holder.commentDate.setText(p.format(commentModelArray.get(position).getDate()));
+        Picasso.get().load(commentModelArray.get(position).getPhoto()).into(holder.commentImage);
 
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return commentModelArray.size();
     }
 
     public class CommentViewHolder extends RecyclerView.ViewHolder {
 
-        TextView name, bio, price, category;
-        ImageView image;
+        TextView commentName, commentComment, commentDate;
+        ImageView commentImage;
 
         public CommentViewHolder(@NonNull View itemView) {
             super(itemView);
 
-
-            name = itemView.findViewById(R.id.product_name);
-            price = itemView.findViewById(R.id.product_price);
-            image = itemView.findViewById(R.id.postImage);
+            commentName = itemView.findViewById(R.id.commenter_name);
+            commentComment = itemView.findViewById(R.id.commenter_comment);
+            commentImage = itemView.findViewById(R.id.comment_image);
+            commentDate = itemView.findViewById(R.id.comment_date);
         }
     }
 }

@@ -74,100 +74,56 @@
                 android:layout_height="match_parent"
                 android:paddingBottom="100dp">
 
+                <TextView
+                    android:id="@+id/post_details_no_videos"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="No videos"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    android:gravity="center_vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/showcaseFeed"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
-                    android:paddingStart="10dp"
+                    android:layout_marginTop="16dp"
                     android:layout_weight="1"
                     android:clipToPadding="true"
                     android:foregroundGravity="center"
                     android:orientation="horizontal"
                     android:overScrollMode="never"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="30dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-<!--
-
-                <HorizontalScrollView
-                    android:id="@+id/linearLayout3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:layout_marginTop="10dp"
-                        android:paddingHorizontal="16dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <androidx.media3.ui.PlayerView
-                            android:id="@+id/player_view"
-                            android:layout_width="150dp"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/rounded_outline"
-                            android:scaleType="centerCrop"
-                            android:layout_marginRight="10dp"
-                            app:resize_mode="zoom" />
-
-                        <androidx.media3.ui.PlayerView
-                            android:id="@+id/player_view2"
-                            android:layout_width="150dp"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/rounded_outline"
-                            android:scaleType="centerCrop"
-                            android:layout_marginRight="10dp"
-                            app:resize_mode="zoom" />
-
-                        <androidx.media3.ui.PlayerView
-                            android:id="@+id/player_view3"
-                            android:layout_width="150dp"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/rounded_outline"
-                            android:scaleType="centerCrop"
-                            android:layout_marginRight="10dp"
-                            app:resize_mode="zoom" />
-
-                        <androidx.media3.ui.PlayerView
-                            android:id="@+id/player_view4"
-                            android:layout_width="150dp"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/rounded_outline"
-                            android:scaleType="centerCrop"
-                            android:layout_marginRight="10dp"
-                            app:resize_mode="zoom" />
-
-                    </LinearLayout>
-
-
-                </HorizontalScrollView>
--->
-
                 <TextView
                     android:id="@+id/productName"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="350dp"
+                    android:layout_marginEnd="16dp"
                     android:text="prodName"
-                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/details_profile_image"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/showcaseFeed" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/prodBio"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:layout_marginEnd="272dp"
+                    android:layout_marginEnd="16dp"
                     android:text="prodDesc"
-                    android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/prodCategory"
@@ -189,10 +145,13 @@
 
                 <TextView
                     android:id="@+id/prodCategory"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
                     android:text="prodCategory"
+                    android:textColor="@color/grayHard"
+                    app:layout_constraintEnd_toStartOf="@+id/details_profile_image"
                     app:layout_constraintStart_toStartOf="@+id/productName"
                     app:layout_constraintTop_toBottomOf="@+id/productName" />
 
@@ -200,23 +159,33 @@
                     android:id="@+id/textView13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
+                    android:layout_marginTop="16dp"
                     android:text="Comments"
-                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="@+id/prodBio"
                     app:layout_constraintTop_toBottomOf="@+id/prodBio" />
 
-                <!--                <androidx.recyclerview.widget.RecyclerView-->
-                <!--                    android:id="@+id/commentsFeed"-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="0dp"-->
-                <!--                    android:layout_marginTop="16dp"-->
-                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-                <!--                    app:layout_constraintStart_toStartOf="parent"-->
-                <!--                    app:layout_constraintTop_toBottomOf="@+id/textView13" />-->
+                <TextView
+                    android:id="@+id/post_details_no_comments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="No Comments"
+                    android:textAlignment="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
-
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/commentsFeed"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -238,25 +207,34 @@
             android:elevation="20dp">
 
             <TextView
-                android:id="@+id/textView15"
-                android:layout_width="wrap_content"
+                android:id="@+id/post_details_username"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:text="prodName"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="2dp"
+                android:text="username"
                 android:textSize="14sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/post_details_username_subtitle"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView16"
-                android:layout_width="wrap_content"
+                android:id="@+id/post_details_username_subtitle"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
                 android:text="follow user"
-                app:layout_constraintStart_toStartOf="@+id/textView15"
-                app:layout_constraintTop_toBottomOf="@+id/textView15" />
+                android:textSize="10sp"
+                app:layout_constraintBottom_toTopOf="@+id/details_get_video_btn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/post_details_username"
+                app:layout_constraintTop_toBottomOf="@+id/post_details_username" />
 
             <Button
                 android:id="@+id/details_get_video_btn"
@@ -276,7 +254,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView16" />
+                app:layout_constraintTop_toBottomOf="@+id/post_details_username_subtitle" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>

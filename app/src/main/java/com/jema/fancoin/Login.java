@@ -80,8 +80,6 @@ public class Login extends AppCompatActivity {
                 } else {
                     Toast.makeText(Login.this, "Verify your email", Toast.LENGTH_SHORT).show();
                     Intent myIntent = new Intent(Login.this, UnverifiedEmailActivity.class);
-                    myIntent.putExtra("email", email);
-                    myIntent.putExtra("pass", password);
                     startActivity(myIntent);
                     finish();
                 }
@@ -100,7 +98,7 @@ public class Login extends AppCompatActivity {
         super.onStart();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        if (user != null){
+        if (user != null && user.isEmailVerified()){
             startActivity(new Intent(Login.this, Home.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
         }
     }

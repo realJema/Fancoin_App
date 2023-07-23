@@ -201,15 +201,20 @@ public class ProfileFragment extends Fragment {
                         }
 
 
-                        String user = value.getString("name");
+                        String user = value.getString("username");
                         String image = value.getString("image");
                         String bio1 = value.getString("bio");
                         List<String> myFollowers = (List<String>) value.get("followers");
                         List<String> myFollowing = (List<String>) value.get("following");
 
-                        if(!user.equalsIgnoreCase(username.getText().toString())){
-                            username.setText("@".concat(user));
-                            usernametop.setText("@".concat(user));
+                        if(user != null){
+                            if(!user.equalsIgnoreCase(username.getText().toString())){
+                                username.setText("@".concat(user));
+                                usernametop.setText("@".concat(user));
+                            }
+                        } else {
+                            username.setText("@".concat("username"));
+                            usernametop.setText("@".concat("username"));
                         }
                         if (bio1.equalsIgnoreCase("")){
                             bio.setText("No bio, add your bio in settings");

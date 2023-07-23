@@ -41,7 +41,12 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.Post
     public void onBindViewHolder(@NonNull PostViewHolder holder, final int position) {
 
         holder.name.setText(postCardArrayList.get(position).getName());
-        holder.descr.setText(postCardArrayList.get(position).getBio());
+
+        String ubio = postCardArrayList.get(position).getBio();
+        if(ubio.equalsIgnoreCase("")){
+            ubio = "(no description)";
+        }
+        holder.descr.setText(ubio);
 
         Integer followersCount = postCardArrayList.get(position).getFollowers().size();
 //        Integer followingCount = postCardArrayList.get(position).getFollowing().size();
@@ -92,7 +97,7 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.Post
 
             name = itemView.findViewById(R.id.following_star_name);
             descr = itemView.findViewById(R.id.following_description);
-            followingCount = itemView.findViewById(R.id.following_count);
+//            followingCount = itemView.findViewById(R.id.following_count);
             followersCount = itemView.findViewById(R.id.followers_count);
             image = itemView.findViewById(R.id.followeing_profile_image);
 

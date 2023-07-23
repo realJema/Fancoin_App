@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
@@ -20,6 +21,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.jema.fancoin.Adapter.OrderAdapter;
 import com.jema.fancoin.Model.OrderModel;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -42,6 +45,7 @@ public class InboxFragment extends Fragment {
     private RecyclerView orderFeed;
 
     ArrayList<OrderModel> orderModelArrayList;
+    TextView emptyText;
     OrderAdapter orderAdapter;
     FirebaseFirestore db;
     private FirebaseAuth auth;
@@ -84,6 +88,7 @@ public class InboxFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_inbox, container, false);
 
 
+        emptyText = (TextView) rootView.findViewById(R.id.inbox_empty_text);
         orderFeed = (RecyclerView)rootView.findViewById(R.id.orderFeed);
         orderFeed.setHasFixedSize(true);
         orderFeed.setLayoutManager(new LinearLayoutManager(getContext() , LinearLayoutManager.VERTICAL , false));
@@ -98,8 +103,6 @@ public class InboxFragment extends Fragment {
 
         orderFeed.setAdapter(orderAdapter);
         OrderChangeListener();
-
-
 
         return rootView;
 
@@ -118,6 +121,15 @@ public class InboxFragment extends Fragment {
                             Log.i("JemaTag", "error gettting data");
                             return;
                         }
+
+                        if(value.getDocuments().size() == 0) {
+                            orderFeed.setVisibility(View.GONE);
+                            emptyText.setVisibility(View.VISIBLE);
+                            return;
+                        };
+
+                        orderFeed.setVisibility(View.VISIBLE);
+                        emptyText.setVisibility(View.GONE);
 
                         for(DocumentChange dc : value.getDocumentChanges()){
 

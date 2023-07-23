@@ -94,8 +94,8 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.OrderViewHol
 
             star_name = itemView.findViewById(R.id.order_star_name);
             descr = itemView.findViewById(R.id.order_description);
-            recipient = itemView.findViewById(R.id.order_recipient_name);
-            date = itemView.findViewById(R.id.order_date);
+//            recipient = itemView.findViewById(R.id.order_recipient_name);
+//            date = itemView.findViewById(R.id.order_date);
             image = itemView.findViewById(R.id.order_profile_image);
 
         }

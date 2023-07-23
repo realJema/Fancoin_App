@@ -34,11 +34,8 @@ public class SettingsThemeActivity extends AppCompatActivity {
         darkBtn  = findViewById(R.id.settings_theme_dark_btn);
         systemBtn  = findViewById(R.id.settings_theme_system_btn);
 
-
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-
-
         lightBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,9 +94,7 @@ public class SettingsThemeActivity extends AppCompatActivity {
         finish();
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
-
-        Intent intent = new Intent(SettingsThemeActivity.this, SettingsThemeActivity.class);
-        startActivity(intent);
+        startActivity(getIntent());
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
     }

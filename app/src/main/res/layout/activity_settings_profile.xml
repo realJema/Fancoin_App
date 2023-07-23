@@ -87,21 +87,23 @@
                     android:background="@drawable/borderbottom"
                     android:paddingVertical="5dp"
                     android:text="Change your Image"
-                    app:layout_constraintBottom_toTopOf="@+id/settings_profile_name_input_container"
+                    app:layout_constraintBottom_toTopOf="@+id/settings_profile_username_container"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/settings_profile_image" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/settings_profile_name_input_container"
+                    android:id="@+id/settings_profile_username_container"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
-                    android:hint="Name"
+                    android:hint="Username"
+                    app:counterMaxLength="50"
+                    app:counterEnabled="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/settings_profile_change_image_textview"
@@ -110,7 +112,10 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/settings_profile_name_input"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:maxLength="50"    />
                 </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -131,7 +136,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/settings_profile_name_input_container" />
+                    app:layout_constraintTop_toBottomOf="@+id/settings_profile_username_container" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
