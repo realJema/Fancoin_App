@@ -30,6 +30,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -52,7 +53,7 @@ public class PostDetails extends AppCompatActivity {
     ImageView img, back, pp;
     TextView proName, bottomTitle, bottomSubtitle, proDesc, proCategory, follow, noComment, noShowcase;
 
-    String name, price, desc, cat, image, id;
+    String name, price, desc, cat, image, artistId, currentUserId;
 
     public List<CommentModel> commentsList;
     Button orderVideo;
@@ -90,6 +91,7 @@ public class PostDetails extends AppCompatActivity {
         Intent i = getIntent();
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+        currentUserId = auth.getCurrentUser().getUid();
 
 //        getting post data and passing from previous activity
 
@@ -98,7 +100,7 @@ public class PostDetails extends AppCompatActivity {
         desc = i.getStringExtra("bio");
         cat = i.getStringExtra("category");
         image = i.getStringExtra("image");
-        id = i.getStringExtra("id");
+        artistId = i.getStringExtra("id");
 
         proName = findViewById(R.id.productName);
         proDesc = findViewById(R.id.prodBio);
@@ -145,8 +147,12 @@ public class PostDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d("JemaTag", "Follow button clicked");
-                UpdateFollowing();
-                UpdateFollowers();
+                String choice = follow.getText().toString();
+                if(choice.equalsIgnoreCase("follow")){
+                    AddFollowing();
+                } else {
+                    RemoveFollowing();
+                }
             }
         });
 
@@ -162,7 +168,7 @@ public class PostDetails extends AppCompatActivity {
                 i.putExtra("bio", proDesc.getText());
                 i.putExtra("category", proCategory.getText());
                 i.putExtra("image", image);
-                i.putExtra("id", id);
+                i.putExtra("id", artistId);
 
                 PostDetails.this.startActivity(i);
             }
@@ -181,7 +187,7 @@ public class PostDetails extends AppCompatActivity {
 
     private void CommentsChangeListener() {
         db.collection("Comments")
-                .whereEqualTo("owner_uid", id)
+                .whereEqualTo("owner_uid", artistId)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -230,7 +236,7 @@ public class PostDetails extends AppCompatActivity {
 
     private void EventChangeListener() {
 
-        db.collection("Users").document(id)
+        db.collection("Users").document(artistId)
                 .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -276,30 +282,12 @@ public class PostDetails extends AppCompatActivity {
                 });
     }
 
-    private void UpdateFollowing() {
-
-        String currendId = auth.getCurrentUser().getUid();
-        db.collection("Users").document(currendId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+    private void AddFollowing() {
+        db.collection("Users").document(currentUserId).update("following", FieldValue.arrayUnion(artistId)).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                DocumentSnapshot document = task.getResult();
-                List<String> group = (List<String>) document.get("following");
+            public void onSuccess(Void unused) {
 
-                if (group != null) {
-                    if (!group.contains(id) && follow.getText().toString().equalsIgnoreCase("follow")) {
-                        group.add(id); // adding current user id
-                    } else if (follow.getText().toString().equalsIgnoreCase("unfollow")) {
-                        while (group.contains(id)) {
-                            group.remove(id);
-                        }
-                    }
-                } else {
-                    group = new ArrayList<String>() {{
-                        add(id);
-                    }};
-
-                }
-                db.collection("Users").document(currendId).update("following", group).addOnSuccessListener(new OnSuccessListener<Void>() {
+                db.collection("Users").document(artistId).update("followers", FieldValue.arrayUnion(currentUserId)).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         Toast.makeText(PostDetails.this, "Followed", Toast.LENGTH_SHORT).show();
@@ -311,36 +299,22 @@ public class PostDetails extends AppCompatActivity {
                     }
                 });
             }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(PostDetails.this, "Unable to update", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
-    private void UpdateFollowers() {
-        String currentUserId = auth.getCurrentUser().getUid();
-
-        db.collection("Users").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+    private void RemoveFollowing() {
+        db.collection("Users").document(artistId).update("followers", FieldValue.arrayRemove(currentUserId)).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                DocumentSnapshot document = task.getResult();
-                List<String> group = (List<String>) document.get("followers");
-
-                if (group != null) {
-                    if (!group.contains(currentUserId) && follow.getText().toString().equalsIgnoreCase("follow")) {
-                        group.add(currentUserId); // adding current user id
-                    } else if (follow.getText().toString().equalsIgnoreCase("unfollow")) {
-                        while (group.contains(currentUserId)) {
-                            group.remove(currentUserId);
-                        }
-                    }
-                } else {
-                    group = new ArrayList<String>() {{
-                        add(currentUserId);
-                    }};
-
-                }
-                db.collection("Users").document(id).update("followers", group).addOnSuccessListener(new OnSuccessListener<Void>() {
+            public void onSuccess(Void unused) {
+                db.collection("Users").document(currentUserId).update("following", FieldValue.arrayRemove(artistId)).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-//                        Toast.makeText(PostDetails.this, "Followed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PostDetails.this, "Unfollowed", Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -348,6 +322,11 @@ public class PostDetails extends AppCompatActivity {
                         Toast.makeText(PostDetails.this, "Unable to update", Toast.LENGTH_SHORT).show();
                     }
                 });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(PostDetails.this, "Unable to update", Toast.LENGTH_SHORT).show();
             }
         });
     }

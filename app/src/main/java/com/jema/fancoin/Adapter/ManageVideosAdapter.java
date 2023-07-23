@@ -2,14 +2,13 @@ package com.jema.fancoin.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,19 +16,14 @@ import androidx.core.content.ContextCompat;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.Player;
 import androidx.media3.exoplayer.ExoPlayer;
-import androidx.media3.exoplayer.SimpleExoPlayer;
 import androidx.media3.ui.PlayerView;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 
 import com.jema.fancoin.R;
 
 import java.util.ArrayList;
 
-public class VideoSliderAdapter extends RecyclerView.Adapter<VideoSliderAdapter.ViewHolder> {
+public class ManageVideosAdapter extends RecyclerView.Adapter<ManageVideosAdapter.ViewHolder> {
     private Context context;
     private ArrayList<String> pathsList;
     private AppCompatActivity activity;
@@ -38,7 +32,7 @@ public class VideoSliderAdapter extends RecyclerView.Adapter<VideoSliderAdapter.
     public static boolean isFullLock = false;
 
 
-    public VideoSliderAdapter(Context context, ArrayList<String> pathsList, AppCompatActivity activity) {
+    public ManageVideosAdapter(Context context, ArrayList<String> pathsList, AppCompatActivity activity) {
         this.context = context;
         this.pathsList = pathsList;
         this.activity = activity;
@@ -48,7 +42,7 @@ public class VideoSliderAdapter extends RecyclerView.Adapter<VideoSliderAdapter.
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.video_card, parent, false);
+                .inflate(R.layout.manage_video_card, parent, false);
         return new ViewHolder(view);
     }
 

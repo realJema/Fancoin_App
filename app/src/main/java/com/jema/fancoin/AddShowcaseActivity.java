@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -50,7 +51,6 @@ public class AddShowcaseActivity extends AppCompatActivity {
     TextView selector;
     CardView bottomCard;
     StorageReference videoRef;
-
     Uri vidUri = null;
     PlayerView playerView;
     ExoPlayer simpleExoPlayer;
@@ -96,10 +96,9 @@ public class AddShowcaseActivity extends AppCompatActivity {
         uploadVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!vidUri.toString().equalsIgnoreCase("")){
+                if (!vidUri.toString().equalsIgnoreCase("")) {
                     uploadVideo(vidUri);
-                }
-                else {
+                } else {
                     Toast.makeText(AddShowcaseActivity.this, "Choose Valid Video", Toast.LENGTH_SHORT).show();
 
                 }
@@ -110,7 +109,6 @@ public class AddShowcaseActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 finish();
             }
         });
@@ -151,8 +149,6 @@ public class AddShowcaseActivity extends AppCompatActivity {
 //            uploadVideo(vidUri);
 
         }
-
-
         playerView.setPlayer(simpleExoPlayer);
         playerView.setVisibility(View.VISIBLE);
         pauseBtn.setVisibility(View.VISIBLE);
@@ -172,7 +168,7 @@ public class AddShowcaseActivity extends AppCompatActivity {
 //        the path of the video file is going to contain, the order's uid, date and time to make it unique
         Date now = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yyyy_HH-m-s"); // we change the format to give a valid name string
-        String strDate= formatter.format(now);
+        String strDate = formatter.format(now);
         String filename = auth.getCurrentUser().getUid().concat("_" + strDate + ".mp4"); // the name containing the user's id, date formatted and the extension
 
         videoRef = storageRef.child("/showcases/" + filename); // the directory on firebase
@@ -194,13 +190,16 @@ public class AddShowcaseActivity extends AppCompatActivity {
             //reset progress bar and filesize status
             progressBarStatus = 0;
             fileSize = 0;
-            uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
-                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        progressBar.dismiss();
-                        updateShowcaseList(filename);
-                    }
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Task<Uri> firebaseUri = taskSnapshot.getStorage().getDownloadUrl();
+                    firebaseUri.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            updateShowcaseList(uri.toString()); // gets video uri and stores it in users field reserved for showcase videos
+                        }
+                    });
                 }
             }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -216,53 +215,20 @@ public class AddShowcaseActivity extends AppCompatActivity {
 
     }
 
+    ;
+
 // StorageReference videoRef;
 
-    private void updateShowcaseList(String filename) {
+    private void updateShowcaseList(String videoUri) {
         String currendId = auth.getCurrentUser().getUid();
 
-        db.collection("Users").document(currendId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        db.collection("Users").document(currendId).update("showcase", FieldValue.arrayUnion(videoUri)).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                DocumentSnapshot document = task.getResult();
-                List<String> group = (List<String>) document.get("showcase");
+            public void onSuccess(Void unused) {
 
-                if (group != null) {
-                    if (!group.contains(filename)) {
-                        group.add(filename); // adding current user id
-                    } else {
-                        while (group.contains(filename)) {
-                            group.remove(filename);
-                        }
-                    }
-                } else {
-                    group = new ArrayList<String>() {{
-                        add(filename);
-                    }};
+                finish(); // goes to previous activity
 
-                }
-                db.collection("Users").document(currendId).update("showcase", group).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-
-                        new SweetAlertDialog(AddShowcaseActivity.this, SweetAlertDialog.SUCCESS_TYPE)
-                                .setTitleText("Showcase Uploaded")
-                                .setContentText("Your video was uploaded successfully")
-                                .setConfirmText("Ok")
-                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sDialog) {
-                                        finish(); // goes to previous activity
-                                    }
-                                })
-                                .show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(AddShowcaseActivity.this, "Unable to update", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                Toast.makeText(AddShowcaseActivity.this, "Video Uploaded Successfully ", Toast.LENGTH_SHORT).show();
             }
         });
     }
