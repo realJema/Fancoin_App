@@ -59,10 +59,127 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <!-- Shimmer Effect -->
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmer_tiktok"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView14">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/padding_10"
+                        android:orientation="horizontal"
+                        >
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="20dp">
+
+                            <View
+                                android:id="@+id/thumbnaili1"
+                                android:layout_width="150dp"
+                                android:layout_height="200dp"
+                                android:background="@color/grayHard"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <View
+                                android:id="@+id/thumbnaili2"
+                                android:layout_width="120dp"
+                                android:layout_height="10dp"
+                                android:layout_marginTop="5dp"
+                                android:background="@color/grayHard"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/thumbnaili1" />
+
+                            <View
+                                android:id="@+id/thumbnaili3"
+                                android:layout_width="50dp"
+                                android:layout_height="10dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="4dp"
+                                android:background="@color/grayHard"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/thumbnaili2" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="20dp">
+
+                            <View
+                                android:id="@+id/thumbnailj1"
+                                android:layout_width="150dp"
+                                android:layout_height="200dp"
+                                android:background="@color/grayHard"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <View
+                                android:id="@+id/thumbnailj2"
+                                android:layout_width="120dp"
+                                android:layout_height="10dp"
+                                android:layout_marginTop="5dp"
+                                android:background="@color/grayHard"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/thumbnailj1" />
+
+                            <View
+                                android:id="@+id/thumbnailj3"
+                                android:layout_width="50dp"
+                                android:layout_height="10dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="4dp"
+                                android:background="@color/grayHard"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/thumbnailj2" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="20dp">
+
+                            <View
+                                android:id="@+id/thumbnail"
+                                android:layout_width="150dp"
+                                android:layout_height="200dp"
+                                android:background="@color/grayHard"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <View
+                                android:id="@+id/thumbnail2"
+                                android:layout_width="120dp"
+                                android:layout_height="10dp"
+                                android:layout_marginTop="5dp"
+                                android:background="@color/grayHard"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/thumbnail" />
+
+                            <View
+                                android:id="@+id/thumbnail23"
+                                android:layout_width="50dp"
+                                android:layout_height="10dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="4dp"
+                                android:background="@color/grayHard"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/thumbnail2" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/tiktokFeed"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:paddingRight="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -85,10 +202,126 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tiktokFeed" />
 
+                <!-- Shimmer Effect -->
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmer_ent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView4">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/padding_10"
+                        android:orientation="horizontal"
+                        >
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="20dp">
+
+                            <View
+                                android:id="@+id/thumbnaili11"
+                                android:layout_width="150dp"
+                                android:layout_height="200dp"
+                                android:background="@color/grayHard"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <View
+                                android:id="@+id/thumbnaili21"
+                                android:layout_width="120dp"
+                                android:layout_height="10dp"
+                                android:layout_marginTop="5dp"
+                                android:background="@color/grayHard"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/thumbnaili11" />
+
+                            <View
+                                android:id="@+id/thumbnaili31"
+                                android:layout_width="50dp"
+                                android:layout_height="10dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="4dp"
+                                android:background="@color/grayHard"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/thumbnaili21" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="20dp">
+
+                            <View
+                                android:id="@+id/thumbnailj11"
+                                android:layout_width="150dp"
+                                android:layout_height="200dp"
+                                android:background="@color/grayHard"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <View
+                                android:id="@+id/thumbnailj21"
+                                android:layout_width="120dp"
+                                android:layout_height="10dp"
+                                android:layout_marginTop="5dp"
+                                android:background="@color/grayHard"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/thumbnailj11" />
+
+                            <View
+                                android:id="@+id/thumbnailj31"
+                                android:layout_width="50dp"
+                                android:layout_height="10dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="4dp"
+                                android:background="@color/grayHard"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/thumbnailj21" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="20dp">
+
+                            <View
+                                android:id="@+id/thumbnail1"
+                                android:layout_width="150dp"
+                                android:layout_height="200dp"
+                                android:background="@color/grayHard"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <View
+                                android:id="@+id/thumbnail21"
+                                android:layout_width="120dp"
+                                android:layout_height="10dp"
+                                android:layout_marginTop="5dp"
+                                android:background="@color/grayHard"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/thumbnail1" />
+
+                            <View
+                                android:id="@+id/thumbnail231"
+                                android:layout_width="50dp"
+                                android:layout_height="10dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="4dp"
+                                android:background="@color/grayHard"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/thumbnail21" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+                </com.facebook.shimmer.ShimmerFrameLayout>
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/entertainmentFeed"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
                     android:paddingRight="20dp"

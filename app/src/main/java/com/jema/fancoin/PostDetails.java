@@ -1,57 +1,53 @@
 package com.jema.fancoin;
 
-import static android.content.ContentValues.TAG;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.media3.common.MediaItem;
-import androidx.media3.exoplayer.ExoPlayer;
-import androidx.media3.ui.PlayerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.Dialog;
 import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.jema.fancoin.Adapter.CommentAdapter;
 import com.jema.fancoin.Adapter.VideoSliderAdapter;
 import com.jema.fancoin.Model.CommentModel;
-import com.jema.fancoin.Model.OrderModel;
-import com.jema.fancoin.Model.PostCard;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class PostDetails extends AppCompatActivity {
 
     ImageView img, back, pp;
-    TextView proName, bottomTitle, bottomSubtitle, proDesc, proCategory, follow, noComment, noShowcase;
+    TextView proName, bottomTitle, bottomSubtitle, proDesc, proCategory, follow, noComment, noShowcase, addReview;
 
     String name, price, desc, cat, image, artistId, currentUserId;
 
@@ -115,6 +111,7 @@ public class PostDetails extends AppCompatActivity {
         bottomSubtitle = findViewById(R.id.post_details_username_subtitle);
         noShowcase = findViewById(R.id.post_details_no_videos);
         noComment = findViewById(R.id.post_details_no_comments);
+        addReview = findViewById(R.id.post_details_add_review);
 
         proName.setText(name);
 //        proPrice.setText(price);
@@ -131,38 +128,38 @@ public class PostDetails extends AppCompatActivity {
         Picasso.get().load(image).into(pp);
 
 //        loading comments into recycler
-//
         commentsFeed = findViewById(R.id.commentsFeed);
         commentsFeed.setHasFixedSize(true);
-        commentsFeed.setLayoutManager(new LinearLayoutManager(PostDetails.this, LinearLayoutManager.HORIZONTAL, false));
-
-
+        commentsFeed.setLayoutManager(new LinearLayoutManager(PostDetails.this, LinearLayoutManager.VERTICAL, false));
         commentsArrayList = new ArrayList<CommentModel>();
         commentAdapter = new CommentAdapter(PostDetails.this, commentsArrayList);
-
         commentsFeed.setAdapter(commentAdapter);
 
 
+        addReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog();
+            }
+        });
         follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("JemaTag", "Follow button clicked");
+//                Log.d("JemaTag", "Follow button clicked");
                 String choice = follow.getText().toString();
-                if(choice.equalsIgnoreCase("follow")){
+                if (choice.equalsIgnoreCase("follow")) {
                     AddFollowing();
                 } else {
                     RemoveFollowing();
                 }
             }
         });
-
-
         orderVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Intent i = new Intent(PostDetails.this, OrderVideoActivity.class);
-                i.putExtra("name", proName.getText());
+                i.putExtra("name", name);
 //                i.putExtra("image", postCardArrayList.get(position).getBigimageurl());
                 i.putExtra("price", price);
                 i.putExtra("bio", proDesc.getText());
@@ -194,41 +191,43 @@ public class PostDetails extends AppCompatActivity {
                         if (value.isEmpty()) {
                             noComment.setVisibility(View.VISIBLE);
                             commentsFeed.setVisibility(View.GONE);
-                        } else {
-                            noComment.setVisibility(View.GONE);
-                            commentsFeed.setVisibility(View.VISIBLE);
+                            return;
+                        }
 
-                            for (DocumentChange dc : value.getDocumentChanges()) {
 
-                                String id = dc.getDocument().getId();
-                                int oldIndex = commentsArrayList.indexOf(id);
+//                        Log.d("JemaTag", String.valueOf(value.getDocuments().size()));
+                        noComment.setVisibility(View.GONE);
+                        commentsFeed.setVisibility(View.VISIBLE);
 
-                                switch (dc.getType()) {
-                                    case ADDED:
-                                        commentsArrayList.add(dc.getDocument().toObject(CommentModel.class));
-                                        break;
-                                    case MODIFIED:
+                        for (DocumentChange dc : value.getDocumentChanges()) {
 
-                                        // modifying
+                            String id = dc.getDocument().getId();
+                            int oldIndex = commentsArrayList.indexOf(id);
 
-                                        String docID = dc.getDocument().getId();
-                                        CommentModel changedModel = dc.getDocument().toObject(CommentModel.class);
-                                        if (dc.getOldIndex() == dc.getNewIndex()) {
-                                            // Item changed but remained in same position
-                                            commentsArrayList.set(dc.getOldIndex(), changedModel);
-                                        } else {
-                                            // Item changed and changed position
-                                            commentsArrayList.remove(dc.getOldIndex());
-                                            commentsArrayList.add(dc.getNewIndex(), changedModel);
-                                            commentAdapter.notifyItemMoved(dc.getOldIndex(), dc.getNewIndex());
-                                        }
-                                        break;
+                            switch (dc.getType()) {
+                                case ADDED:
+                                    commentsArrayList.add(dc.getDocument().toObject(CommentModel.class));
+                                    break;
+                                case MODIFIED:
+                                    // modifying
+
+                                    String docID = dc.getDocument().getId();
+                                    CommentModel changedModel = dc.getDocument().toObject(CommentModel.class);
+                                    if (dc.getOldIndex() == dc.getNewIndex()) {
+                                        // Item changed but remained in same position
+                                        commentsArrayList.set(dc.getOldIndex(), changedModel);
+                                    } else {
+                                        // Item changed and changed position
+                                        commentsArrayList.remove(dc.getOldIndex());
+                                        commentsArrayList.add(dc.getNewIndex(), changedModel);
+                                        commentAdapter.notifyItemMoved(dc.getOldIndex(), dc.getNewIndex());
+                                    }
+                                    break;
 //                                case REMOVED:
 //                                    tikCardArrayList.remove(oldIndex);
 //                                    break;
-                                }
-                                commentAdapter.notifyDataSetChanged();
                             }
+                            commentAdapter.notifyDataSetChanged();
                         }
                     }
                 });
@@ -253,7 +252,7 @@ public class PostDetails extends AppCompatActivity {
 //                            Log.d("JemaTag", "Contains Showcase");
                             for (int j = 0; j < shocaseVideos.size(); j++) {
                                 videoPaths.add(shocaseVideos.get(j));
-                                Log.d("JemaTag", shocaseVideos.get(j));
+//                                Log.d("JemaTag", shocaseVideos.get(j));
                             }
 
                             showcaseFeed.setVisibility(View.VISIBLE);
@@ -330,4 +329,49 @@ public class PostDetails extends AppCompatActivity {
             }
         });
     }
+
+    private String showDialog() {
+        final BottomSheetDialog dialog = new BottomSheetDialog(this);
+        View view = getLayoutInflater().inflate(R.layout.comment_bottomsheet, null);
+        dialog.setContentView(R.layout.order_bottomsheet);
+        Button sendComment = view.findViewById(R.id.comment_send_btn);
+        TextView descr = view.findViewById(R.id.comment_text);
+
+        sendComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (descr.getText().toString().equalsIgnoreCase("")) {
+                    Toast.makeText(PostDetails.this, "Please enter a comment", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                dialog.dismiss();
+
+                HashMap<String, Object> order = new HashMap<>();
+
+                order.put("commenter_uid", currentUserId);
+                order.put("date", new Date());
+                order.put("descr", descr.getText().toString());
+                order.put("owner_uid", artistId);
+
+                db.collection("Comments").add(order).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Toast.makeText(PostDetails.this, "Comment Sent", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(PostDetails.this, "Unable to send, Try again", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+        });
+        dialog.setCancelable(true);
+        dialog.setContentView(view);
+        dialog.show();
+        return null;
+    }
+
 }

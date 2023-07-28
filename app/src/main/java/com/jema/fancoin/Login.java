@@ -22,6 +22,7 @@ public class Login extends AppCompatActivity {
 
     private Button signIn;
     private EditText email, password;
+    private TextView forgoetPass;
     private FirebaseAuth auth;
 
     @Override
@@ -45,6 +46,15 @@ public class Login extends AppCompatActivity {
         email = findViewById(R.id.mailSignIn);
         password = findViewById(R.id.passwordSignIn);
         signIn = findViewById(R.id.signInBtn);
+        forgoetPass = findViewById(R.id.redirectForgotPass);
+
+        forgoetPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Login.this, ForgotPassActivity.class);
+                startActivity(i);
+            }
+        });
 
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override

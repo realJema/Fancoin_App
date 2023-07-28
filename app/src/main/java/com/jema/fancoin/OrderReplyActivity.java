@@ -30,7 +30,7 @@ public class OrderReplyActivity extends AppCompatActivity {
         String iRecipient = i.getStringExtra("recipient");
         String iId = i.getStringExtra("id");
         String DocumentId = i.getStringExtra("DocumentId");
-        Log.d("JemaTag", DocumentId);
+//        Log.d("JemaTag", DocumentId);
         String star_image = i.getStringExtra("star_image");
         String star_pricing = i.getStringExtra("star_pricing");
         String star_name = i.getStringExtra("star_name");

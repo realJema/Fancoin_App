@@ -44,7 +44,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public void onBindViewHolder(@NonNull PostViewHolder holder, final int position) {
 
         holder.name.setText(postCardArrayList.get(position).getName());
-        holder.price.setText(postCardArrayList.get(position).getPricing());
+        holder.price.setText(postCardArrayList.get(position).getPricing().concat(" XAF"));
 //        holder.bio.setText(postCardArrayList.get(position).getBio());
         holder.category.setText(postCardArrayList.get(position).getCategory());
 //        holder.bg.setBackgroundResource(R.drawable.cardbg);

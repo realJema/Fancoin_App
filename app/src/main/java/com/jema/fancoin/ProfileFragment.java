@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,11 +30,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.jema.fancoin.Adapter.ManageVideosAdapter;
+import com.jema.fancoin.Adapter.ProfileVideosAdapter;
 import com.jema.fancoin.SettingsActivity.SettingsActivity;
+import com.jema.fancoin.SettingsActivity.SettingsManageVideosActivity;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,12 +56,15 @@ public class ProfileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2, currentPP;
-
+    private RecyclerView videosFeed;
     private Button editProfileBtn, adminBtn, requestsPage;
+    private ArrayList<String> videoPaths;
     private FirebaseAuth auth;
+    private ProfileVideosAdapter videosAdapter;
     private ImageView pp;
     private TextView username, usernametop, bio, followers, following, requests, requestsBtnText, myOrdersBtnText;
     private FirebaseFirestore db;
+
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -94,8 +103,35 @@ public class ProfileFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
 
 //        routing to different pages
-        editProfileBtn = (Button)rootView.findViewById(R.id.editProfileBtn);
-        adminBtn = (Button)rootView.findViewById(R.id.adminBtn);
+        editProfileBtn = (Button) rootView.findViewById(R.id.editProfileBtn);
+        adminBtn = (Button) rootView.findViewById(R.id.adminBtn);
+
+        auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
+        pp = (ImageView) rootView.findViewById(R.id.profile_imageview);
+        username = (TextView) rootView.findViewById(R.id.profile_username);
+        usernametop = (TextView) rootView.findViewById(R.id.profile_username1);
+        bio = (TextView) rootView.findViewById(R.id.profile_bio);
+        followers = (TextView) rootView.findViewById(R.id.profile_followers_count);
+        following = (TextView) rootView.findViewById(R.id.profile_following_count);
+        requests = (TextView) rootView.findViewById(R.id.profile_requests_count);
+//        requestsBtnText = (TextView)rootView.findViewById(R.id.profile_requests_page_text);
+        requestsPage = (Button) rootView.findViewById(R.id.profile_requests);
+        videosFeed = (RecyclerView) rootView.findViewById(R.id.profile_videos_feed);
+
+
+//        videos feed display
+
+
+//        videosFeed.setHasFixedSize(true);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 3);
+        videosFeed.setLayoutManager(mLayoutManager);
+        videoPaths = new ArrayList<>();
+        videosAdapter = new ProfileVideosAdapter(getActivity().getApplicationContext(), videoPaths, getActivity());
+        videosFeed.setAdapter(videosAdapter);
+
+//        button triggers
         editProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,20 +146,6 @@ public class ProfileFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
-        auth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
-
-        pp = (ImageView)rootView.findViewById(R.id.profile_imageview);
-        username = (TextView)rootView.findViewById(R.id.profile_username);
-        usernametop = (TextView)rootView.findViewById(R.id.profile_username1);
-        bio = (TextView)rootView.findViewById(R.id.profile_bio);
-        followers = (TextView)rootView.findViewById(R.id.profile_followers_count);
-        following = (TextView)rootView.findViewById(R.id.profile_following_count);
-        requests = (TextView)rootView.findViewById(R.id.profile_requests_count);
-//        requestsBtnText = (TextView)rootView.findViewById(R.id.profile_requests_page_text);
-        requestsPage = (Button)rootView.findViewById(R.id.profile_requests);
-
         requestsPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,6 +157,7 @@ public class ProfileFragment extends Fragment {
         EventChangeListener(); // listening for changes to update image, name and profile picture
         OrderChangeListener(); // listening for changes to orders collection to update requests counts and orders
 //        MyOrderChangeListener();
+
 
         return rootView;
 
@@ -148,14 +171,14 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                        if(error != null) {
+                        if (error != null) {
 //                            if(progressDialog.isShowing())
 //                                progressDialog.dismiss();
                             Log.i("JemaTag", "error gettting data");
                             return;
                         }
 
-                        for(DocumentChange dc : value.getDocumentChanges()){
+                        for (DocumentChange dc : value.getDocumentChanges()) {
 
                             String numberOrders = String.valueOf(value.getDocuments().size());
                             requests.setText(numberOrders);
@@ -195,7 +218,7 @@ public class ProfileFragment extends Fragment {
                 .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                        if(error != null) {
+                        if (error != null) {
                             Log.e("Firebase Error", error.getMessage());
                             return;
                         }
@@ -206,9 +229,19 @@ public class ProfileFragment extends Fragment {
                         String bio1 = value.getString("bio");
                         List<String> myFollowers = (List<String>) value.get("followers");
                         List<String> myFollowing = (List<String>) value.get("following");
+                        List<String> group = (List<String>) value.get("showcase");
 
-                        if(user != null){
-                            if(!user.equalsIgnoreCase(username.getText().toString())){
+//                        adding videos to profile
+                        if (group != null) {
+                            for (int i = 0; i < group.size(); i++) {
+                                videoPaths.add(group.get(i));
+                            }
+                        }
+                        videosAdapter.notifyDataSetChanged();
+
+
+                        if (user != null) {
+                            if (!user.equalsIgnoreCase(username.getText().toString())) {
                                 username.setText("@".concat(user));
                                 usernametop.setText("@".concat(user));
                             }
@@ -216,23 +249,24 @@ public class ProfileFragment extends Fragment {
                             username.setText("@".concat("username"));
                             usernametop.setText("@".concat("username"));
                         }
-                        if (bio1.equalsIgnoreCase("")){
+                        if (bio1.equalsIgnoreCase("")) {
                             bio.setText("No bio, add your bio in settings");
-                        } else if(!bio1.equalsIgnoreCase(bio.getText().toString())){
+                        } else if (!bio1.equalsIgnoreCase(bio.getText().toString())) {
                             bio.setText(bio1);
                         }
-                        if(!image.equalsIgnoreCase(currentPP)){
+                        if (!image.equalsIgnoreCase(currentPP)) {
                             Picasso.get().load(image).into(pp);
                             currentPP = value.getString("image");
                         }
-                        if(myFollowers != null){
+                        if (myFollowers != null) {
                             followers.setText(String.valueOf(myFollowers.size()));
                         }
-                        if(myFollowing != null){
+                        if (myFollowing != null) {
                             following.setText(String.valueOf(myFollowing.size()));
                         }
                     }
 
                 });
     }
+
 }

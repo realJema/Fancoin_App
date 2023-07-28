@@ -203,7 +203,7 @@ public class UploadVideoActivity extends AppCompatActivity {
                         HashMap<String , Object> order = new HashMap<>();
                         order.put("video" , filename);
                         order.put("upload_date", now);
-                        Log.d("JemaTag", DocumentId);
+//                        Log.d("JemaTag", DocumentId);
                         db.collection("Orders").document(DocumentId).update(order).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {

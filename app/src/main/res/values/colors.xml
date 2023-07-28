@@ -20,4 +20,5 @@
 
 
     <color name="icon_tint">#272727</color>
+    <color name="text_tint">#000000</color>
 </resources>

@@ -112,6 +112,7 @@
                     android:layout_marginTop="350dp"
                     android:layout_marginEnd="16dp"
                     android:text="prodName"
+                    android:textSize="@dimen/topbar_title"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toStartOf="@+id/details_profile_image"
                     app:layout_constraintStart_toStartOf="parent"
@@ -123,6 +124,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:layout_marginEnd="16dp"
+                    android:maxLines="5"
                     android:text="prodDesc"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -156,11 +158,23 @@
                     app:layout_constraintTop_toBottomOf="@+id/productName" />
 
                 <TextView
+                    android:id="@+id/post_details_add_review"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="Add Review"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView13"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/textView13" />
+
+                <TextView
                     android:id="@+id/textView13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Comments"
+                    android:text="Reviews"
+                    android:textSize="@dimen/topbar_title"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="@+id/prodBio"
                     app:layout_constraintTop_toBottomOf="@+id/prodBio" />

@@ -5,40 +5,28 @@ import static com.jema.fancoin.Home.USEREMAIL;
 import static com.jema.fancoin.Home.USERIMAGE;
 import static com.jema.fancoin.Home.USERNAME;
 import static com.jema.fancoin.Home.USERPHONENUMBER;
-import static org.xmlpull.v1.XmlPullParser.TEXT;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -117,7 +105,7 @@ public class OrderVideoActivity extends AppCompatActivity {
 
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        Log.d("JemaTag", sharedPreferences.getString(USERNAME, ""));
+//        Log.d("JemaTag", sharedPreferences.getString(USERNAME, ""));
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,14 +114,13 @@ public class OrderVideoActivity extends AppCompatActivity {
             }
         });
     }
-    private void showDialog() {
 
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.bottom_sheet_layout);
-
-        Button sendOrder = dialog.findViewById(R.id.order_send_order_btn);
-        TextView descr = dialog.findViewById(R.id.order_bottomsheet_descr);
+    private String showDialog() {
+        final BottomSheetDialog dialog = new BottomSheetDialog(this);
+        View view = getLayoutInflater().inflate(R.layout.order_bottomsheet, null);
+        dialog.setContentView(R.layout.order_bottomsheet);
+        Button sendOrder = view.findViewById(R.id.order_send_order_btn);
+        TextView descr = view.findViewById(R.id.order_bottomsheet_descr);
 
         descr.setText("Your are about to order from ".concat(name));
 
@@ -181,18 +168,9 @@ public class OrderVideoActivity extends AppCompatActivity {
 
             }
         });
-
+        dialog.setCancelable(true);
+        dialog.setContentView(view);
         dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-//        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
-
-    }
-
-    private String getDateTime() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        Date date = new Date();
-        return dateFormat.format(date);
+        return null;
     }
 }

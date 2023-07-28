@@ -10,7 +10,7 @@
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/postImage"
         android:layout_width="wrap_content"
-        android:layout_height="200dp"
+        android:layout_height="170dp"
         android:layout_marginBottom="6dp"
         android:scaleType="centerCrop"
         android:padding="1dp"
@@ -18,42 +18,45 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/rounded_outline"
         android:clipToOutline="true"
         app:srcCompat="@drawable/cardbg"
         app:shapeAppearanceOverlay="@style/RoundedSquare" />
 
     <TextView
         android:id="@+id/product_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="6dp"
         android:text="Placeholder Name"
-        android:textColor="#000000"
+        android:maxLines="1"
+        android:textColor="@color/text_tint"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/postImage"  />
+        app:layout_constraintTop_toBottomOf="@+id/postImage" />
+
     <TextView
         android:id="@+id/product_category"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:text="Placeholder Category"
-        android:textColor="#000000"
+        android:textColor="@color/text_tint"
         android:textSize="10sp"
+        android:maxLines="1"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/product_name" />
 
     <TextView
         android:id="@+id/product_price"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="6dp"
         android:text="Placeholder Pricing"
-        android:textColor="#000000"
+        android:textColor="@color/text_tint"
         android:textSize="10sp"
+        android:maxLines="1"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/product_category" />
 

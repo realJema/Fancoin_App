@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-
     <color name="icon_tint">#F6F6F6</color>
+    <color name="text_tint">#E4E4E4</color>
 </resources>

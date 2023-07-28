@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/videoParent"
     android:layout_width="match_parent"
-    android:layout_height="180dp">
+    android:layout_height="180dp"
+    android:layout_marginVertical="5dp"
+    android:layout_marginHorizontal="2dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginVertical="5dp"
-        android:layout_marginHorizontal="2dp">
+        android:layout_height="match_parent">
 
 
         <androidx.media3.ui.PlayerView
@@ -18,7 +18,7 @@
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:background="@android:color/background_dark"
-            app:controller_layout_id="@layout/custom_controller"
+            app:controller_layout_id="@layout/manage_custom_controller"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"

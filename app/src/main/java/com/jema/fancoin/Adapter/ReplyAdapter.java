@@ -2,6 +2,7 @@ package com.jema.fancoin.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,11 +47,12 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.OrderViewHol
 
         PrettyTime p = new PrettyTime();
 
-        holder.recipient.setText("Recipient : ".concat(orderModelArrayList.get(position).getRecipient()));
+//        holder.recipient.setText("Recipient : ".concat(orderModelArrayList.get(position).getRecipient()));
         holder.star_name.setText(orderModelArrayList.get(position).getStar_name());
-        holder.date.setText(p.format(orderModelArrayList.get(position).getUpload_date()));
+//        holder.date.setText(p.format(orderModelArrayList.get(position).getUpload_date()));
         holder.descr.setText(orderModelArrayList.get(position).getDescription());
-        Picasso.get().load(orderModelArrayList.get(position).getStar_image()).into(holder.image);
+        Picasso.get().load(orderModelArrayList.get(position).getClient_image()).into(holder.image);
+//        Log.d("JemaTag", orderModelArrayList.get(position).getClient_image());
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

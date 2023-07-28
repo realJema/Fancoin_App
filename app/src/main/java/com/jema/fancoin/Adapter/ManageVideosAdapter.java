@@ -49,72 +49,72 @@ public class ManageVideosAdapter extends RecyclerView.Adapter<ManageVideosAdapte
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-//        holder.thumbnailImage.setImageBitmap(ThumbnailUtils.createVideoThumbnail(pathsList.get(position),MediaStore.Video.Thumbnails.FULL_SCREEN_KIND));
+//        holder.manage_thumbnailImage.setImageBitmap(ThumbnailUtils.createVideoThumbnail(pathsList.get(position),MediaStore.Video.Thumbnails.FULL_SCREEN_KIND));
 
         // get data
         Uri videoUri = Uri.parse(pathsList.get(position));
 
-        holder.simpleExoPlayer = new ExoPlayer.Builder(context).build();
+        holder.manage_simpleExoPlayer = new ExoPlayer.Builder(context).build();
 
-        holder.playerView.setPlayer(holder.simpleExoPlayer);
+        holder.manage_playerView.setPlayer(holder.manage_simpleExoPlayer);
 
         MediaItem mediaItem = MediaItem.fromUri(videoUri);
-        holder.simpleExoPlayer.setMediaItem(mediaItem);
-        holder.simpleExoPlayer.prepare();
-        holder.simpleExoPlayer.seekTo(10);
+        holder.manage_simpleExoPlayer.setMediaItem(mediaItem);
+        holder.manage_simpleExoPlayer.prepare();
+        holder.manage_simpleExoPlayer.seekTo(10);
 
-        holder.bt_fullscreen.setOnClickListener(new View.OnClickListener() {
+        holder.manage_bt_fullscreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!isFullScreen) {
-                    holder.bt_fullscreen.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_fullscreen_exit)
+                    holder.manage_bt_fullscreen.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_fullscreen_exit)
                     );
 //                    activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
                 } else {
-                    holder.bt_fullscreen.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_fullscreen));
+                    holder.manage_bt_fullscreen.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_fullscreen));
 //                    activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 }
                 isFullScreen = !isFullScreen;
             }
         });
 
-        holder.playPauseBtn.setOnClickListener(new View.OnClickListener() {
+        holder.manage_playPauseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                holder.playPauseBtn.setVisibility(View.GONE);
-                holder.bt_pause.setVisibility(View.VISIBLE);
+                holder.manage_playPauseBtn.setVisibility(View.GONE);
+                holder.manage_bt_pause.setVisibility(View.VISIBLE);
 
-                holder.simpleExoPlayer.setPlayWhenReady(true);
+                holder.manage_simpleExoPlayer.setPlayWhenReady(true);
 
-//                holder.simpleExoPlayer.play();
-                holder.simpleExoPlayer.addListener(new Player.Listener() {
+//                holder.manage_simpleExoPlayer.play();
+                holder.manage_simpleExoPlayer.addListener(new Player.Listener() {
                     @Override
                     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
                         if (playbackState == Player.STATE_BUFFERING) {
-                            holder.progressBar.setVisibility(View.VISIBLE);
+                            holder.manage_progressBar.setVisibility(View.VISIBLE);
                         } else if (playbackState == Player.STATE_READY) {
-                            holder.progressBar.setVisibility(View.GONE);
+                            holder.manage_progressBar.setVisibility(View.GONE);
                         }
                     }
                 });
             }
         });
 
-        holder.bt_pause.setOnClickListener(new View.OnClickListener() {
+        holder.manage_bt_pause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                holder.simpleExoPlayer.pause();
-                holder.bt_pause.setVisibility(View.GONE);
-                holder.bt_play.setVisibility(View.VISIBLE);
+                holder.manage_simpleExoPlayer.pause();
+                holder.manage_bt_pause.setVisibility(View.GONE);
+                holder.manage_bt_play.setVisibility(View.VISIBLE);
             }
         });
 
-        holder.bt_play.setOnClickListener(new View.OnClickListener() {
+        holder.manage_bt_play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                holder.simpleExoPlayer.play();
-                holder.bt_pause.setVisibility(View.VISIBLE);
-                holder.bt_play.setVisibility(View.GONE);
+                holder.manage_simpleExoPlayer.play();
+                holder.manage_bt_pause.setVisibility(View.VISIBLE);
+                holder.manage_bt_play.setVisibility(View.GONE);
             }
         });
 
@@ -126,26 +126,20 @@ public class ManageVideosAdapter extends RecyclerView.Adapter<ManageVideosAdapte
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        PlayerView playerView;
-        ImageView thumbnailImage;
-        ImageView playPauseBtn;
-        ImageView bt_fullscreen, bt_pause, bt_play;
-        ExoPlayer simpleExoPlayer;
-        ProgressBar progressBar;
-        LinearLayout sec_mid, sec_bottom;
+        PlayerView manage_playerView; 
+        ImageView manage_playPauseBtn;
+        ImageView manage_bt_fullscreen, manage_bt_pause, manage_bt_play;
+        ExoPlayer manage_simpleExoPlayer;
+        ProgressBar manage_progressBar; 
 
         public ViewHolder(@NonNull View view) {
             super(view);
-            playerView = view.findViewById(R.id.statusSliderVideo);
-            thumbnailImage = view.findViewById(R.id.statusSliderThumbnailImage);
-            playPauseBtn = view.findViewById(R.id.playPauseBtn);
-            progressBar = view.findViewById(R.id.progress_bar);
-            bt_fullscreen = view.findViewById(R.id.bt_fullscreen);
-            bt_pause = view.findViewById(R.id.exo_pause);
-            bt_play = view.findViewById(R.id.exo_play);
-//            bt_lockscreen = view.findViewById(R.id.exo_lock);
-//            sec_mid = view.findViewById(R.id.sec_controlvid1);
-//            sec_bottom = view.findViewById(R.id.sec_controlvid2);
+            manage_playerView = view.findViewById(R.id.statusSliderVideo);
+            manage_playPauseBtn = view.findViewById(R.id.playPauseBtn);
+            manage_progressBar = view.findViewById(R.id.progress_bar);
+            manage_bt_fullscreen = view.findViewById(R.id.bt_fullscreen);
+            manage_bt_pause = view.findViewById(R.id.exo_pause);
+            manage_bt_play = view.findViewById(R.id.exo_play); 
         }
     }
 }

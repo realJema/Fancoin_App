@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
@@ -64,6 +65,8 @@ public class HomeFragment extends Fragment {
     PostAdapter postAdapter, tikAdapter, entAdapter, musAdapter;
     FirebaseFirestore db;
     ProgressDialog progressDialog;
+    // Variables created for buttons and Shimmer
+    ShimmerFrameLayout tiktokShimmer, entShimmer;
     private FirebaseAuth auth;
     public HomeFragment() {
         // Required empty public constructor
@@ -108,17 +111,25 @@ public class HomeFragment extends Fragment {
 //        progressDialog.setMessage("Fetching data...");
 //        progressDialog.show();
 
+        // Shimmer effect Find
+        tiktokShimmer = (ShimmerFrameLayout)rootView.findViewById(R.id.shimmer_tiktok);
+        entShimmer = (ShimmerFrameLayout)rootView.findViewById(R.id.shimmer_ent);
+
+
+        // Start Shimmer Effect
+        tiktokShimmer.startShimmer();
+        entShimmer.startShimmer();
 
         tiktokFeed = (RecyclerView)rootView.findViewById(R.id.tiktokFeed);
-        tiktokFeed.setHasFixedSize(true);
+//        tiktokFeed.setHasFixedSize(true);
         tiktokFeed.setLayoutManager(new LinearLayoutManager(getContext() , LinearLayoutManager.HORIZONTAL , false));
 
         entertainmentFeed = (RecyclerView)rootView.findViewById(R.id.entertainmentFeed);
-        entertainmentFeed.setHasFixedSize(true);
+//        entertainmentFeed.setHasFixedSize(true);
         entertainmentFeed.setLayoutManager(new LinearLayoutManager(getContext()  , LinearLayoutManager.HORIZONTAL , false));
 
         musicFeed = (RecyclerView)rootView.findViewById(R.id.musicFeed);
-        musicFeed.setHasFixedSize(true);
+//        musicFeed.setHasFixedSize(true);
         musicFeed.setLayoutManager(new LinearLayoutManager(getContext()  , LinearLayoutManager.HORIZONTAL , false));
 
 
@@ -143,6 +154,13 @@ public class HomeFragment extends Fragment {
         EventChangeListenerEnt();
         EventChangeListenerMus();
 
+//        hiding the shimmer
+        tiktokShimmer.stopShimmer();
+        tiktokShimmer.setShimmer(null);
+        entShimmer.stopShimmer();
+        entShimmer.setShimmer(null);
+        tiktokShimmer.setVisibility(View.GONE);
+        entShimmer.setVisibility(View.GONE);
         return rootView;
     }
 
