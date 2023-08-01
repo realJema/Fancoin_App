@@ -39,6 +39,8 @@ import com.jema.fancoin.SettingsActivity.SettingsActivity;
 import com.jema.fancoin.databinding.ActivityHomeBinding;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 public class Home extends AppCompatActivity {
 
     ActivityHomeBinding binding;
@@ -51,11 +53,18 @@ public class Home extends AppCompatActivity {
     private FirebaseFirestore db;
 
     public static final String SHARED_PREFS = "sharedPrefs";
-    public static final String USERNAME = "username";
-    public static final String USEREMAIL = "useremail";
-    public static final String USERIMAGE = "userimage";
-    public static final String USERPHONENUMBER = "userphonenumber";
-    public static final String USERAPPLICATIONSTATUS = "userapplication";
+    public static final String UNAME = "username";
+    public static final String UFULLNAME = "name";
+    public static final String UAPPLICATION_STATUS = "application_status";
+    public static final String UBIO = "bio";
+    public static final String UCATEGORY = "category";
+    public static final String UEMAIL = "email";
+    public static final String UFOLLOWERS = "followers";
+    public static final String UFOLLOWING = "following";
+    public static final String UID = "id";
+    public static final String UIMAGE = "image";
+    public static final String UPHONE = "phone";
+    public static final String UPRICING = "pricing";
     String applicationStat = "default";
     private FirebaseAuth firebaseAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
@@ -66,9 +75,10 @@ public class Home extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         SharedPreferences mySharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        String myName = mySharedPreferences.getString(USERNAME, null);
-        String myEmail = mySharedPreferences.getString(USEREMAIL, null);
-        String myPP = mySharedPreferences.getString(USERIMAGE, null);
+        SharedPreferences.Editor editor = mySharedPreferences.edit();
+        String myName = mySharedPreferences.getString(UNAME, null);
+        String myEmail = mySharedPreferences.getString(UEMAIL, null);
+        String myPP = mySharedPreferences.getString(UIMAGE, null);
         String theme = mySharedPreferences.getString(THEME, null);
 
 
@@ -136,7 +146,7 @@ public class Home extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.colorBlack));
+        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.colorAccent));
 
         navigationView.getMenu().getItem(0).setChecked(true);
         TextView draw_name =  (TextView) navigationView.getHeaderView(0).findViewById(R.id.drawer_name);
@@ -184,14 +194,8 @@ public class Home extends AppCompatActivity {
             }
         });
 //        download user data from firestore and save it locally
-        saveData();
+        UserDataListener();
 
-//        SharedPreferences mySharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-//        String string1 = mySharedPreferences.getString(USERNAME, null);
-//        String string2 = mySharedPreferences.getString(USEREMAIL, null);
-//
-//        Log.d("JemaTag", string1);
-//        Log.d("JemaTag", string2);
     }
 
     private void replaceFragment(Fragment fragment){
@@ -200,29 +204,79 @@ public class Home extends AppCompatActivity {
         fragmentTransaction.replace(R.id.frameLayout,fragment);
         fragmentTransaction.commit();
     }
-    public void saveData() {
+    public void UserDataListener() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
 //        we will get all the data about the current user and store it locally
-        db.collection("Users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if(task.isSuccessful()){
-                            String user = task.getResult().getString("name");
-                            String image = task.getResult().getString("image");
-                            String useremail = task.getResult().getString("email");
-                            String phoneNumber = task.getResult().getString("phoneNumber");
+        db.collection("Users").document(auth.getCurrentUser().getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.e("Firebase Error", error.getMessage());
+                    return;
+                }
 
-                            editor.putString(USERNAME, user);
-                            editor.putString(USERIMAGE, image);
-                            editor.putString(USEREMAIL, useremail);
-                            editor.putString(USERPHONENUMBER, phoneNumber);
-                            editor.commit(); // persist the values
-                        }
-                    }
-                });
 
+                String temp_username = value.getString("username");
+                String temp_fullname = value.getString("name");
+                String temp_status = value.getString("application_status");
+                String temp_bio = value.getString("bio");
+                String temp_category = value.getString("category");
+                String temp_email = value.getString("email");
+                String temp_phone = value.getString("phone");
+                String temp_pricing = value.getString("pricing");
+                String temp_id = value.getString("id");
+                String temp_image = value.getString("image");
+                List<String> myFollowers = (List<String>) value.get("followers");
+                List<String> myFollowing = (List<String>) value.get("following");
+
+                if (temp_id != null) {
+                    editor.putString(UID, temp_id);
+                }
+                if (temp_username != null) {
+                    editor.putString(UNAME, temp_username);
+                }
+                if (temp_fullname != null) {
+                    editor.putString(UFULLNAME, temp_fullname);
+                }
+                if (temp_status != null) {
+                    editor.putString(UAPPLICATION_STATUS, temp_status);
+                }
+                if (temp_bio != null) {
+                    editor.putString(UBIO, temp_bio);
+                }
+                if (temp_category != null) {
+                    editor.putString(UCATEGORY, temp_category);
+                }
+                if (temp_email != null) {
+                    editor.putString(UEMAIL, temp_email);
+                }
+                if (temp_bio != null) {
+                    editor.putString(UID, temp_bio);
+                }
+                if (temp_image != null) {
+                    editor.putString(UIMAGE, temp_image);
+                }
+                if (temp_phone != null) {
+                    editor.putString(UPHONE, temp_phone);
+                }
+                if (temp_pricing != null) {
+                    editor.putString(UPRICING, temp_pricing);
+                }
+
+
+                if(myFollowers != null) {
+                    editor.putString(UFOLLOWERS, String.valueOf(myFollowers.size()));
+                }
+                if(myFollowers != null) {
+                    editor.putString(UFOLLOWING, String.valueOf(myFollowing.size()));
+                }
+                editor.commit(); // persist the values
+
+                Log.d("JemaTag", "User Data Retrieved");
+            }
+        });
     }
 
 }

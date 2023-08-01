@@ -33,6 +33,7 @@
             android:text="Manage Videos"
             android:textSize="@dimen/topbar_title"
             android:textStyle="bold"
+            android:textColor="@color/text_tint"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -86,6 +87,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="#F4F4F4"
+        android:backgroundTint="@color/cards_tint"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="1dp">
 
@@ -118,7 +120,8 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
-                android:backgroundTint="@color/purple_700"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/colorPrimary"
                 android:bottomLeftRadius="10dp"
                 android:bottomRightRadius="10dp"
                 android:text="Add Video"

@@ -6,16 +6,16 @@ import java.util.Date;
 
 public class CommentModel {
 
-    String descr, photo, commenter_uid, owner_uid, commenter_username;
+    String descr, commenter_photo, commenter_uid, star_uid, commenter_username;
     Date date;
 
     public CommentModel(){};
 
-    public CommentModel(String descr, String photo, String commenter_uid, String owner_uid, String commenter_username, Date date) {
+    public CommentModel(String descr, String photo, String commenter_uid, String owner_uid, String commenter_username, Date date, String star_uid, String commenter_photo) {
         this.descr = descr;
-        this.photo = photo;
         this.commenter_uid = commenter_uid;
-        this.owner_uid = owner_uid;
+        this.commenter_photo = commenter_photo;
+        this.star_uid = owner_uid;
         this.commenter_username = commenter_username;
         this.date = date;
     }
@@ -28,13 +28,6 @@ public class CommentModel {
         this.descr = descr;
     }
 
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
 
     public String getCommenter_uid() {
         return commenter_uid;
@@ -44,13 +37,6 @@ public class CommentModel {
         this.commenter_uid = commenter_uid;
     }
 
-    public String getOwner_uid() {
-        return owner_uid;
-    }
-
-    public void setOwner_uid(String owner_uid) {
-        this.owner_uid = owner_uid;
-    }
 
     public String getCommenter_username() {
         return commenter_username;
@@ -66,5 +52,21 @@ public class CommentModel {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getCommenter_photo() {
+        return commenter_photo;
+    }
+
+    public void setCommenter_photo(String commenter_photo) {
+        this.commenter_photo = commenter_photo;
+    }
+
+    public String getStar_uid() {
+        return star_uid;
+    }
+
+    public void setStar_uid(String star_uid) {
+        this.star_uid = star_uid;
     }
 }

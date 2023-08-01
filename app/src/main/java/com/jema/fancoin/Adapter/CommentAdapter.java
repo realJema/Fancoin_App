@@ -43,10 +43,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
         PrettyTime p = new PrettyTime();
 
-        holder.commentName.setText(commentModelArray.get(position).getDescr());
-        holder.commentComment.setText(commentModelArray.get(position).getCommenter_username());
+        holder.commentName.setText(commentModelArray.get(position).getCommenter_username());
+        holder.commentComment.setText(commentModelArray.get(position).getDescr());
         holder.commentDate.setText(p.format(commentModelArray.get(position).getDate()));
-        Picasso.get().load(commentModelArray.get(position).getPhoto()).into(holder.commentImage);
+        Picasso.get().load(commentModelArray.get(position).getCommenter_photo()).into(holder.commentImage);
 
     }
 

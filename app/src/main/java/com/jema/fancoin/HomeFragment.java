@@ -33,6 +33,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -41,8 +42,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.jema.fancoin.Adapter.PostAdapter;
 import com.jema.fancoin.Model.PostCard;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -105,11 +108,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-//
-//        progressDialog = new ProgressDialog(getContext());
-//        progressDialog.setCancelable(false);
-//        progressDialog.setMessage("Fetching data...");
-//        progressDialog.show();
+
 
         // Shimmer effect Find
         tiktokShimmer = (ShimmerFrameLayout)rootView.findViewById(R.id.shimmer_tiktok);
@@ -319,5 +318,6 @@ public class HomeFragment extends Fragment {
                     }
                 });
     }
+
 
 }

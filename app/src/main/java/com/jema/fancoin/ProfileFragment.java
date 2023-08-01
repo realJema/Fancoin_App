@@ -1,8 +1,17 @@
 package com.jema.fancoin;
 
 import static android.content.ContentValues.TAG;
+import static android.content.Context.MODE_PRIVATE;
+
+import static com.jema.fancoin.Home.SHARED_PREFS;
+import static com.jema.fancoin.Home.UBIO;
+import static com.jema.fancoin.Home.UFOLLOWERS;
+import static com.jema.fancoin.Home.UFOLLOWING;
+import static com.jema.fancoin.Home.UIMAGE;
+import static com.jema.fancoin.Home.UNAME;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -121,7 +130,20 @@ public class ProfileFragment extends Fragment {
         videosFeed = (RecyclerView) rootView.findViewById(R.id.profile_videos_feed);
 
 
-//        videos feed display
+        SharedPreferences mySharedPreferences = getActivity().getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        String myusername = mySharedPreferences.getString(UNAME, null);
+        String mybio = mySharedPreferences.getString(UBIO, null);
+        String myimage = mySharedPreferences.getString(UIMAGE, null);
+        String myfollowersnum = mySharedPreferences.getString(UFOLLOWERS, null);
+        String myfollowingnum = mySharedPreferences.getString(UFOLLOWING, null);
+
+
+        username.setText("@".concat(myusername));
+        usernametop.setText("@".concat(myusername));
+        bio.setText(mybio);
+        Picasso.get().load(myimage).into(pp);
+        followers.setText(myfollowersnum);
+        following.setText(myfollowingnum);
 
 
 //        videosFeed.setHasFixedSize(true);
@@ -163,7 +185,6 @@ public class ProfileFragment extends Fragment {
 
     }
 
-
     private void OrderChangeListener() {
 
         db.collection("Orders").whereEqualTo("star_uid", auth.getCurrentUser().getUid())
@@ -187,33 +208,7 @@ public class ProfileFragment extends Fragment {
                     }
                 });
     }
-
-/*
-    private void MyOrderChangeListener() {
-
-        db.collection("Orders").whereEqualTo("id", auth.getCurrentUser().getUid())
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-
-                        if(error != null) {
-//                            if(progressDialog.isShowing())
-//                                progressDialog.dismiss();
-                            Log.i("JemaTag", "error gettting data");
-                            return;
-                        }
-
-                        for(DocumentChange dc : value.getDocumentChanges()){
-
-                            String numberOrders = String.valueOf(value.getDocuments().size());
-                            myOrdersBtnText.setText("My Orders (".concat(numberOrders).concat(")"));
-                        }
-                    }
-                });
-    }*/
-
     private void EventChangeListener() {
-
         db.collection("Users").document(auth.getCurrentUser().getUid())
                 .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
@@ -222,13 +217,6 @@ public class ProfileFragment extends Fragment {
                             Log.e("Firebase Error", error.getMessage());
                             return;
                         }
-
-
-                        String user = value.getString("username");
-                        String image = value.getString("image");
-                        String bio1 = value.getString("bio");
-                        List<String> myFollowers = (List<String>) value.get("followers");
-                        List<String> myFollowing = (List<String>) value.get("following");
                         List<String> group = (List<String>) value.get("showcase");
 
 //                        adding videos to profile
@@ -238,34 +226,7 @@ public class ProfileFragment extends Fragment {
                             }
                         }
                         videosAdapter.notifyDataSetChanged();
-
-
-                        if (user != null) {
-                            if (!user.equalsIgnoreCase(username.getText().toString())) {
-                                username.setText("@".concat(user));
-                                usernametop.setText("@".concat(user));
-                            }
-                        } else {
-                            username.setText("@".concat("username"));
-                            usernametop.setText("@".concat("username"));
-                        }
-                        if (bio1.equalsIgnoreCase("")) {
-                            bio.setText("No bio, add your bio in settings");
-                        } else if (!bio1.equalsIgnoreCase(bio.getText().toString())) {
-                            bio.setText(bio1);
-                        }
-                        if (!image.equalsIgnoreCase(currentPP)) {
-                            Picasso.get().load(image).into(pp);
-                            currentPP = value.getString("image");
-                        }
-                        if (myFollowers != null) {
-                            followers.setText(String.valueOf(myFollowers.size()));
-                        }
-                        if (myFollowing != null) {
-                            following.setText(String.valueOf(myFollowing.size()));
-                        }
                     }
-
                 });
     }
 

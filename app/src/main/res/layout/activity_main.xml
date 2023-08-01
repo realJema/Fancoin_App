@@ -7,10 +7,10 @@
     tools:context=".MainActivity">
 
     <ImageView
+        android:id="@+id/icon_image"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/icon"
         android:layout_centerInParent="true"
-        android:id="@+id/icon_image"/>
+        android:src="@drawable/icon" />
 
 </RelativeLayout>

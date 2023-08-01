@@ -33,6 +33,7 @@
             android:text="Details"
             android:textSize="@dimen/topbar_title"
             android:textStyle="bold"
+            android:textColor="@color/text_tint"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -46,6 +47,7 @@
             android:layout_marginEnd="16dp"
             android:text="Follow"
             android:textStyle="bold"
+            android:textColor="@color/text_tint"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -126,6 +128,7 @@
                     android:layout_marginEnd="16dp"
                     android:maxLines="5"
                     android:text="prodDesc"
+                    android:textColor="@color/text_tint"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/prodCategory"
@@ -152,7 +155,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:text="prodCategory"
-                    android:textColor="@color/grayHard"
+                    android:textColor="@color/text_tint_light"
                     app:layout_constraintEnd_toStartOf="@+id/details_profile_image"
                     app:layout_constraintStart_toStartOf="@+id/productName"
                     app:layout_constraintTop_toBottomOf="@+id/productName" />
@@ -164,6 +167,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="5dp"
                     android:text="Add Review"
+                    android:textColor="@color/text_tint"
                     app:layout_constraintBottom_toBottomOf="@+id/textView13"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/textView13" />
@@ -176,6 +180,7 @@
                     android:text="Reviews"
                     android:textSize="@dimen/topbar_title"
                     android:textStyle="bold"
+                    android:textColor="@color/text_tint"
                     app:layout_constraintStart_toStartOf="@+id/prodBio"
                     app:layout_constraintTop_toBottomOf="@+id/prodBio" />
 
@@ -213,6 +218,7 @@
         android:layout_height="wrap_content"
         app:cardBackgroundColor="#F4F4F4"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:backgroundTint="@color/cards_tint"
         tools:layout_editor_absoluteX="1dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -231,6 +237,7 @@
                 android:text="username"
                 android:textSize="14sp"
                 android:textStyle="bold"
+                android:textColor="@color/text_tint"
                 app:layout_constraintBottom_toTopOf="@+id/post_details_username_subtitle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -245,6 +252,7 @@
                 android:layout_marginBottom="8dp"
                 android:text="follow user"
                 android:textSize="10sp"
+                android:textColor="@color/text_tint"
                 app:layout_constraintBottom_toTopOf="@+id/details_get_video_btn"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/post_details_username"
@@ -258,10 +266,11 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
-                android:backgroundTint="@color/purple_700"
+                android:backgroundTint="@color/button_tint"
                 android:bottomLeftRadius="10dp"
                 android:bottomRightRadius="10dp"
                 android:text="Get Video"
+                android:textColor="@color/white"
                 android:topLeftRadius="10dp"
                 android:topRightRadius="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"

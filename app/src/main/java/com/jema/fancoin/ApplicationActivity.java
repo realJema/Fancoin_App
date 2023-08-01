@@ -1,10 +1,10 @@
 package com.jema.fancoin;
 
 import static com.jema.fancoin.Home.SHARED_PREFS;
-import static com.jema.fancoin.Home.USERAPPLICATIONSTATUS;
-import static com.jema.fancoin.Home.USEREMAIL;
-import static com.jema.fancoin.Home.USERIMAGE;
-import static com.jema.fancoin.Home.USERNAME;
+import static com.jema.fancoin.Home.UAPPLICATION_STATUS;
+import static com.jema.fancoin.Home.UEMAIL;
+import static com.jema.fancoin.Home.UIMAGE;
+import static com.jema.fancoin.Home.UNAME;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -59,9 +59,9 @@ public class ApplicationActivity extends AppCompatActivity {
 
         SharedPreferences mySharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = mySharedPreferences.edit();
-        String myName = mySharedPreferences.getString(USERNAME, null);
-        String myEmail = mySharedPreferences.getString(USEREMAIL, null);
-        String myPP = mySharedPreferences.getString(USERIMAGE, null);
+        String myName = mySharedPreferences.getString(UNAME, null);
+        String myEmail = mySharedPreferences.getString(UEMAIL, null);
+        String myPP = mySharedPreferences.getString(UIMAGE, null);
 
         name.setText(myName);
         email.setText(myEmail);
@@ -89,7 +89,7 @@ public class ApplicationActivity extends AppCompatActivity {
                     db.collection("Users").document(auth.getCurrentUser().getUid()).update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            editor.putString(USERAPPLICATIONSTATUS, "pending");
+                            editor.putString(UAPPLICATION_STATUS, "pending");
                             editor.commit(); // persist the values
 
                             Toast.makeText(ApplicationActivity.this, "Application Submitted", Toast.LENGTH_SHORT).show();

@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Order Video"
-            android:textColor="@android:color/background_dark"
+            android:textColor="@color/text_tint"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -76,6 +76,7 @@
                     android:text="TextView"
                     android:textSize="16sp"
                     android:textStyle="bold"
+                    android:textColor="@color/text_tint"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -87,6 +88,7 @@
                     android:layout_marginEnd="16dp"
                     android:maxLines="3"
                     android:text="TextView"
+                    android:textColor="@color/text_tint"
                     app:layout_constraintEnd_toStartOf="@+id/order_profile_image"
                     app:layout_constraintStart_toStartOf="@+id/order_star_name"
                     app:layout_constraintTop_toBottomOf="@+id/order_star_name" />
@@ -125,7 +127,7 @@
                     android:layout_marginEnd="16dp"
                     android:hint="Recipient"
                     app:counterMaxLength="100"
-                    app:hintTextColor="@color/colorPrimary"
+                    app:counterTextColor="@color/colorAccent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView20"
@@ -135,6 +137,7 @@
                         android:id="@+id/order_recipient_input"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:textColor="@color/text_tint"
                         android:maxLines="1"
                         android:inputType="text"
                         android:maxLength="100" />
@@ -151,17 +154,16 @@
                     android:hint="Description"
                     app:counterEnabled="true"
                     app:counterMaxLength="500"
-                    app:counterTextColor="@color/colorPrimary"
-                    app:hintTextColor="@color/colorPrimary"
+                    app:counterTextColor="@color/text_tint"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/order_recipient"
-                    app:startIconDrawable="@drawable/ic_mail_black">
+                    app:layout_constraintTop_toBottomOf="@+id/order_recipient">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/order_description_input"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:textColor="@color/text_tint"
                         android:gravity="left|top"
                         android:maxLength="100"
                         android:maxLines="10"
@@ -176,10 +178,11 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
-                    android:backgroundTint="@color/purple_700"
+                    android:backgroundTint="@color/button_tint"
                     android:bottomLeftRadius="10dp"
                     android:bottomRightRadius="10dp"
                     android:text="Order"
+                    android:textColor="@color/white"
                     android:topLeftRadius="10dp"
                     android:topRightRadius="10dp"
                     app:layout_constraintEnd_toEndOf="parent"

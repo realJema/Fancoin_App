@@ -21,8 +21,7 @@
             android:elevation="3dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="@drawable/ic_menu"
-            app:tint="@color/icon_tint" />
+            app:navigationIcon="@drawable/ic_menu" />
 
 
     <FrameLayout
@@ -45,6 +44,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:labelVisibilityMode="labeled"
+        app:itemIconSize="20dp"
+        android:paddingVertical="10dp"
         app:menu="@menu/bottom_nav_menu"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,5 +1,9 @@
 package com.jema.fancoin;
 
+import static com.jema.fancoin.Home.SHARED_PREFS;
+import static com.jema.fancoin.Home.UIMAGE;
+import static com.jema.fancoin.Home.UNAME;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -16,6 +21,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -61,6 +67,7 @@ public class PostDetails extends AppCompatActivity {
     CommentAdapter commentAdapter;
     private RecyclerView showcaseFeed;
     private VideoSliderAdapter myAdapter;
+    BottomSheetDialog dialog;
     ArrayList<String> videoPaths;
 
     @Override
@@ -70,6 +77,7 @@ public class PostDetails extends AppCompatActivity {
 
 //        viewPager = findViewById(R.id.videoViewPager);
         showcaseFeed = findViewById(R.id.showcaseFeed);
+        dialog = new BottomSheetDialog(this);
 
         videoPaths = new ArrayList<>();
 
@@ -184,7 +192,7 @@ public class PostDetails extends AppCompatActivity {
 
     private void CommentsChangeListener() {
         db.collection("Comments")
-                .whereEqualTo("owner_uid", artistId)
+                .whereEqualTo("star_uid", artistId)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -331,9 +339,7 @@ public class PostDetails extends AppCompatActivity {
     }
 
     private String showDialog() {
-        final BottomSheetDialog dialog = new BottomSheetDialog(this);
         View view = getLayoutInflater().inflate(R.layout.comment_bottomsheet, null);
-        dialog.setContentView(R.layout.order_bottomsheet);
         Button sendComment = view.findViewById(R.id.comment_send_btn);
         TextView descr = view.findViewById(R.id.comment_text);
 
@@ -347,12 +353,20 @@ public class PostDetails extends AppCompatActivity {
                 }
                 dialog.dismiss();
 
+
+                SharedPreferences mySharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+                String uname = mySharedPreferences.getString(UNAME, null);
+                String uimage = mySharedPreferences.getString(UIMAGE, null);
+
+
                 HashMap<String, Object> order = new HashMap<>();
 
                 order.put("commenter_uid", currentUserId);
+                order.put("commenter_username", uname);
+                order.put("commenter_photo", uimage);
                 order.put("date", new Date());
                 order.put("descr", descr.getText().toString());
-                order.put("owner_uid", artistId);
+                order.put("star_uid", artistId);
 
                 db.collection("Comments").add(order).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override

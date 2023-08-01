@@ -1,6 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.Fancoin" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
+
         <item name="android:fontFamily">@font/roboto</item>
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -22,4 +24,7 @@
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
+    <style name="Toolbar.Button.Navigation.Tinted" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="tint">@color/white_black</item>
+    </style>
 </resources>

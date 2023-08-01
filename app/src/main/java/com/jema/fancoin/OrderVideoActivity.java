@@ -1,10 +1,10 @@
 package com.jema.fancoin;
 
 import static com.jema.fancoin.Home.SHARED_PREFS;
-import static com.jema.fancoin.Home.USEREMAIL;
-import static com.jema.fancoin.Home.USERIMAGE;
-import static com.jema.fancoin.Home.USERNAME;
-import static com.jema.fancoin.Home.USERPHONENUMBER;
+import static com.jema.fancoin.Home.UEMAIL;
+import static com.jema.fancoin.Home.UIMAGE;
+import static com.jema.fancoin.Home.UNAME;
+import static com.jema.fancoin.Home.UPHONE;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -81,10 +81,10 @@ public class OrderVideoActivity extends AppCompatActivity {
 //                get client info from local preferences
         SharedPreferences mySharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
 
-        username = mySharedPreferences.getString(USERNAME, null);
-        useremail = mySharedPreferences.getString(USEREMAIL, null);
-        userimage = mySharedPreferences.getString(USERIMAGE, null);
-        userphone = mySharedPreferences.getString(USERPHONENUMBER, null);
+        username = mySharedPreferences.getString(UNAME, null);
+        useremail = mySharedPreferences.getString(UEMAIL, null);
+        userimage = mySharedPreferences.getString(UIMAGE, null);
+        userphone = mySharedPreferences.getString(UPHONE, null);
 
         orderVideo.setOnClickListener(new View.OnClickListener() {
             @Override

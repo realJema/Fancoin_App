@@ -33,6 +33,7 @@
             android:text="Wallet"
             android:textSize="@dimen/topbar_title"
             android:textStyle="bold"
+            android:textColor="@color/text_tint"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -71,6 +72,7 @@
                     android:layout_marginEnd="16dp"
                     android:text="Coming soon"
                     android:textAlignment="center"
+                    android:textColor="@color/text_tint"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
