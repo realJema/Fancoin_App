@@ -1,22 +1,24 @@
 package com.jema.fancoin.SettingsActivity;
 
-import static android.content.ContentValues.TAG;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import static com.jema.fancoin.Home.SHARED_PREFS;
+import static com.jema.fancoin.Home.UIMAGE;
+import static com.jema.fancoin.Home.UNAME;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -25,21 +27,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.jema.fancoin.AddShowcaseActivity;
-import com.jema.fancoin.Home;
-import com.jema.fancoin.PostDetails;
 import com.jema.fancoin.R;
-import com.jema.fancoin.Register;
 import com.jema.fancoin.databinding.ActivityMainBinding;
 import com.squareup.picasso.Picasso;
 
@@ -47,8 +39,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class SettingsProfileActivity extends AppCompatActivity {
 
@@ -62,9 +52,11 @@ public class SettingsProfileActivity extends AppCompatActivity {
     TextInputEditText username;
     TextInputLayout usernameContainer;
     Button saveBtn;
-    private String currentName, imageSelected, currentPP;
+    private String currentName, currentPP;
+    private Boolean imageSelected = false;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +72,12 @@ public class SettingsProfileActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+        sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+
+        String myUsername = sharedPreferences.getString(UNAME, null);
+        String myPP = sharedPreferences.getString(UIMAGE, null);
+        username.setText(myUsername);
+        Picasso.get().load(myPP).into(pp);
 
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -88,10 +86,6 @@ public class SettingsProfileActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-
-        EventChangeListener();
-
 
         changeImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +98,8 @@ public class SettingsProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                Log.d("JemaTag", imageSelected.toString());
+
                 usernameContainer.setError("");
                 usernameContainer.setErrorEnabled(false);
 
@@ -113,12 +109,15 @@ public class SettingsProfileActivity extends AppCompatActivity {
                     return;
                 }
 
-                if(imageSelected == "true" )
+                if(imageSelected == true){
+                    Log.d("JemaTag", "uploading image");
                     uploadImage();
-                if(!currentName.equalsIgnoreCase(username.getText().toString())){
+                }
+                if(!myUsername.equalsIgnoreCase(username.getText().toString())){
+                    Log.d("JemaTag", "Saving name");
                     saveName();
                 }
-                else if(imageSelected == "false")
+                else if(imageSelected == false)
                     Toast.makeText(SettingsProfileActivity.this,"No changes",Toast.LENGTH_SHORT).show();
             }
         });
@@ -126,9 +125,10 @@ public class SettingsProfileActivity extends AppCompatActivity {
     }
 
     private void uploadImage() {
-
         progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Uploading File....");
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Image uploading ...");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA);
@@ -156,6 +156,9 @@ public class SettingsProfileActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
 
+                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                        editor.putString(UIMAGE, downloadUrl);
+                                        editor.commit(); // persist the values
 //                                        finish(); // goes to previous activity
 
                                     }
@@ -168,7 +171,7 @@ public class SettingsProfileActivity extends AppCompatActivity {
                             }
                         });
 
-                        imageSelected = "false";
+                        imageSelected = false;
                         if (progressDialog.isShowing())
                             progressDialog.dismiss();
 
@@ -195,7 +198,9 @@ public class SettingsProfileActivity extends AppCompatActivity {
         db.collection("Users").document(auth.getCurrentUser().getUid()).update(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString(UNAME, username.getText().toString());
+                        editor.commit(); // persist the values
                         finish(); // goes to previous activity
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -224,45 +229,9 @@ public class SettingsProfileActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 100 && data != null && data.getData() != null){
-
             imageUri = data.getData();
             pp.setImageURI(imageUri);
-            imageSelected = "true";
+            imageSelected = true;
         }
     }
-
-
-
-    private void EventChangeListener() {
-
-        db.collection("Users").document(auth.getCurrentUser().getUid())
-                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                        if(error != null) {
-                            Log.e("Firebase Error", error.getMessage());
-                            return;
-                        }
-
-                        String uname = value.getString("username");
-
-                        if(uname != null){
-                            if(!uname.equalsIgnoreCase(username.getText().toString())){
-                                username.setText(uname);
-                                currentName = uname;
-                            }
-
-                        } else {
-                            username.setText("username");
-                        }
-
-                        if(!value.getString("image").equalsIgnoreCase(currentPP)){
-                            Picasso.get().load(value.getString("image")).into(pp);
-                            currentPP = value.getString("image");
-                        }
-                    }
-
-                });
-    }
-
 }

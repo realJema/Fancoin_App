@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
@@ -69,8 +68,6 @@ public class AddShowcaseActivity extends AppCompatActivity {
     PlayerView playerView;
     ExoPlayer simpleExoPlayer;
     ProgressDialog progressBar;
-    private int progressBarStatus = 0;
-    private Handler progressBarHandler = new Handler();
     private static Uri contentUri = null;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
@@ -222,7 +219,7 @@ public class AddShowcaseActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     VideoCreationPayload videoCreationPayload = new VideoCreationPayload();
-                    videoCreationPayload.setTitle("My second Video");
+                    videoCreationPayload.setTitle("Showcase_".concat(auth.getCurrentUser().getUid()));
 
                     try {
                         Video video = apiInstance.create(videoCreationPayload);  // create video on server first

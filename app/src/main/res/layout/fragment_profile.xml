@@ -100,15 +100,15 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="0"
+                            android:textColor="@color/text_tint"
                             android:textSize="25sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/text_tint"/>
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Requests"
-                            android:textColor="@color/text_tint"/>
+                            android:textColor="@color/text_tint" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -123,9 +123,9 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="0"
+                            android:textColor="@color/text_tint"
                             android:textSize="25sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/text_tint" />
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -145,16 +145,16 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="0"
+                            android:textColor="@color/text_tint"
                             android:textSize="25sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/text_tint" />
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/textView7"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Following"
-                            android:textColor="@color/text_tint"/>
+                            android:textColor="@color/text_tint" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -222,6 +222,21 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+
+                <TextView
+                    android:id="@+id/profile_no_videos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/bordertop"
+                    android:paddingTop="10dp"
+                    android:text="No videos"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/profile_bio" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/profile_videos_feed"

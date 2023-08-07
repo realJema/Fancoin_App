@@ -59,7 +59,7 @@ public class ProfileFragment extends Fragment {
     private FirebaseAuth auth;
     private ProfileVideosAdapter videosAdapter;
     private ImageView pp;
-    private TextView username, usernametop, bio, followers, following, requests, requestsBtnText, myOrdersBtnText;
+    private TextView username, usernametop, noVideos, bio, followers, following, requests, requestsBtnText, myOrdersBtnText;
     private FirebaseFirestore db;
 
     public ProfileFragment() {
@@ -110,6 +110,7 @@ public class ProfileFragment extends Fragment {
         username = (TextView) rootView.findViewById(R.id.profile_username);
         usernametop = (TextView) rootView.findViewById(R.id.profile_username1);
         bio = (TextView) rootView.findViewById(R.id.profile_bio);
+        noVideos = (TextView) rootView.findViewById(R.id.profile_no_videos);
         followers = (TextView) rootView.findViewById(R.id.profile_followers_count);
         following = (TextView) rootView.findViewById(R.id.profile_following_count);
         requests = (TextView) rootView.findViewById(R.id.profile_requests_count);
@@ -128,7 +129,11 @@ public class ProfileFragment extends Fragment {
 
         username.setText("@".concat(myusername));
         usernametop.setText("@".concat(myusername));
-        bio.setText(mybio);
+        if(mybio.equalsIgnoreCase("")){
+            bio.setText("(no bio, update in settings)");
+        } else {
+            bio.setText(mybio);
+        }
         Picasso.get().load(myimage).into(pp);
         followers.setText(myfollowersnum);
         following.setText(myfollowingnum);
@@ -168,11 +173,14 @@ public class ProfileFragment extends Fragment {
         OrderChangeListener(); // listening for changes to orders collection to update requests counts and orders
 //        MyOrderChangeListener();
 
-
         return rootView;
 
     }
 
+
+    /**
+     * Listening on the data base of orders to count all the commands passed for this user
+     */
     private void OrderChangeListener() {
 
         db.collection("Orders").whereEqualTo("star_uid", auth.getCurrentUser().getUid())
@@ -196,6 +204,12 @@ public class ProfileFragment extends Fragment {
                     }
                 });
     }
+
+
+    /**
+     * Listen to changes in showcase videos on firebase for the current user
+     *
+     */
     private void EventChangeListener() {
         db.collection("Users").document(auth.getCurrentUser().getUid())
                 .addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -208,14 +222,15 @@ public class ProfileFragment extends Fragment {
                         List<String> group = (List<String>) value.get("showcase");
 
 //                        adding videos to profile
-                        if (group != null) {
+                        if (group != null && group.size() != 0) {
+                            noVideos.setVisibility(View.GONE);
                             for (int i = 0; i < group.size(); i++) {
                                 if(!videoPaths.contains(group.get(i))) {
                                     videoPaths.add(group.get(i));
                                 }
                             }
+                            videosAdapter.notifyDataSetChanged();
                         }
-                        videosAdapter.notifyDataSetChanged();
                     }
                 });
     }

@@ -1,7 +1,15 @@
 package com.jema.fancoin;
 
 import static com.jema.fancoin.SettingsActivity.SettingsThemeActivity.THEME;
-import static org.xmlpull.v1.XmlPullParser.TEXT;
+
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,20 +22,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Toolbar;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,7 +29,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.jema.fancoin.SettingsActivity.SettingsActivity;
 import com.jema.fancoin.databinding.ActivityHomeBinding;
 import com.squareup.picasso.Picasso;
 
@@ -181,6 +174,12 @@ public class Home extends AppCompatActivity {
                         break;
                     case R.id.sign_out:
                         FirebaseAuth.getInstance().signOut();
+
+//                        clear saved mySharedPreferences
+                        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.clear().commit();
+
                         Toast.makeText(Home.this, "Logged Out!", Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(Home.this, Login.class);
@@ -216,7 +215,6 @@ public class Home extends AppCompatActivity {
                     Log.e("Firebase Error", error.getMessage());
                     return;
                 }
-
 
                 String temp_username = value.getString("username");
                 String temp_fullname = value.getString("name");

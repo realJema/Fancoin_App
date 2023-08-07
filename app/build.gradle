@@ -75,4 +75,9 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.15.1'
     implementation "video.api:android-api-client:1.0.5"
     implementation 'org.apache.commons:commons-lang3:3.12.0'
+
+
+//    Room for using db to save data
+    implementation "androidx.room:room-runtime:2.5.2"
+    annotationProcessor "androidx.room:room-compiler:2.5.2"
 }
