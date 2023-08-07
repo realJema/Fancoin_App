@@ -1,19 +1,11 @@
 package com.jema.fancoin;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.media3.common.MediaItem;
-import androidx.media3.exoplayer.ExoPlayer;
-import androidx.media3.ui.PlayerView;
-
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,21 +13,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.media3.common.MediaItem;
+import androidx.media3.exoplayer.ExoPlayer;
+import androidx.media3.ui.PlayerView;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
+import video.api.client.ApiVideoClient;
+import video.api.client.api.ApiException;
+import video.api.client.api.clients.VideosApi;
+import video.api.client.api.models.Video;
+
 
 public class UploadVideoActivity extends AppCompatActivity {
 
@@ -180,8 +177,6 @@ public class UploadVideoActivity extends AppCompatActivity {
 //        String str = DateUtils.getRelativeDateTimeString(UploadVideoActivity.this, now, DateUtils.MINUTE_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, 0);
 
         if (videoUri != null) {
-            UploadTask uploadTask = videoRef.putFile(videoUri);
-
             // creating progress bar dialog
             progressBar = new ProgressDialog(UploadVideoActivity.this);
             progressBar.setCancelable(true);
@@ -193,46 +188,30 @@ public class UploadVideoActivity extends AppCompatActivity {
             //reset progress bar and filesize status
             progressBarStatus = 0;
             fileSize = 0;
-            uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        progressBar.dismiss();
 
-//                        updating video url into the orders document
-                        HashMap<String , Object> order = new HashMap<>();
-                        order.put("video" , filename);
-                        order.put("upload_date", now);
-//                        Log.d("JemaTag", DocumentId);
-                        db.collection("Orders").document(DocumentId).update(order).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Toast.makeText(UploadVideoActivity.this, "Video Upload Completed", Toast.LENGTH_SHORT).show();
+            ApiVideoClient client = new ApiVideoClient("9WkC5F6s1UN4lOJywaK0YqaO56oXqYjTqouaYX6OKs9");
+            // if you rather like to use the sandbox environment:
+            // ApiVideoClient client = new ApiVideoClient("YOUR_SANDBOX_API_KEY", ApiVideoClient.Environment.SANDBOX);
 
-                                new SweetAlertDialog(UploadVideoActivity.this, SweetAlertDialog.SUCCESS_TYPE)
-                                        .setTitleText("Video Uploaded")
-                                        .setContentText("Your video was uploaded successfully")
-                                        .setConfirmText("Ok")
-                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                            @Override
-                                            public void onClick(SweetAlertDialog sDialog) {
+            VideosApi apiInstance = client.videos();
 
-                                                finish(); // goes to previous activity
-                                            }
-                                        })
-                                        .show();
-                            }
-                        });
+            String videoId = "vEUuaTdRAEjQ4Jfrgz"; // Enter the videoId you want to use to upload your video.
+            File file = new File(videoUri.getPath()); // The path to the video you would like to upload. The path must be local. If you want to use a video from an online source, you must use the "/videos" endpoint and add the "source" parameter when you create a new video.
 
-                    }
-                }
-            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                    double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-                    progressBar.setProgress((int) progress);
-                }
-            });
+            try {
+                Video result = apiInstance.upload(videoId, file);
+                Log.d("JemaTag", String.valueOf(result));
+            } catch (ApiException e) {
+                Log.d("JemaTag", "Exception when calling VideosApi#upload");
+                Log.d("JemaTag", "Status code: " + e.getCode());
+                Log.d("JemaTag", "Reason: " + e.getMessage());
+                Log.d("JemaTag", "Response headers: " + e.getResponseHeaders());
+                e.printStackTrace();
+                Toast.makeText(UploadVideoActivity.this, "upload success!", Toast.LENGTH_SHORT).show();
+                progressBar.dismiss();
+            }
+
+
         } else {
             progressBar.dismiss();
             Toast.makeText(UploadVideoActivity.this, "upload failed!", Toast.LENGTH_SHORT).show();

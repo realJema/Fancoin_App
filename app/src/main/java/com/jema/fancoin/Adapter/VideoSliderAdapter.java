@@ -2,14 +2,14 @@ package com.jema.fancoin.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,15 +17,14 @@ import androidx.core.content.ContextCompat;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.Player;
 import androidx.media3.exoplayer.ExoPlayer;
-import androidx.media3.exoplayer.SimpleExoPlayer;
 import androidx.media3.ui.PlayerView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-
+import com.bumptech.glide.Glide;
 import com.jema.fancoin.R;
+import com.squareup.picasso.Picasso;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 
@@ -60,14 +59,25 @@ public class VideoSliderAdapter extends RecyclerView.Adapter<VideoSliderAdapter.
         // get data
         Uri videoUri = Uri.parse(pathsList.get(position));
 
+        String substring1 = "vod/";
+        String substring2 = "/mp4";
+
+        String videoId = StringUtils.substringBetween(videoUri.toString(), substring1, substring2);
+        String Thumbnail = "https://vod.api.video/vod/" + videoId + "/thumbnail.jpg";
+
+
+        Glide.with(context)
+                .load(Thumbnail)
+                .into(holder.thumbnailImage);
         holder.simpleExoPlayer = new ExoPlayer.Builder(context).build();
 
         holder.playerView.setPlayer(holder.simpleExoPlayer);
 
         MediaItem mediaItem = MediaItem.fromUri(videoUri);
         holder.simpleExoPlayer.setMediaItem(mediaItem);
-        holder.simpleExoPlayer.prepare();
-        holder.simpleExoPlayer.seekTo(10);
+
+//        Picasso.get().load(Thumbnail).into(holder.thumbnailImage);
+
 
         holder.bt_fullscreen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,7 +100,10 @@ public class VideoSliderAdapter extends RecyclerView.Adapter<VideoSliderAdapter.
                 holder.playPauseBtn.setVisibility(View.GONE);
                 holder.bt_pause.setVisibility(View.VISIBLE);
 
+                holder.simpleExoPlayer.prepare();
+                holder.simpleExoPlayer.play();
                 holder.simpleExoPlayer.setPlayWhenReady(true);
+                holder.thumbnailImage.setVisibility(View.GONE);
 
 //                holder.simpleExoPlayer.play();
                 holder.simpleExoPlayer.addListener(new Player.Listener() {

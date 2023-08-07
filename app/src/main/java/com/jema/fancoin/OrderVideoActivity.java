@@ -43,6 +43,7 @@ public class OrderVideoActivity extends AppCompatActivity {
     Button bottomsheet;
 
     FirebaseFirestore db;
+    BottomSheetDialog dialog;
     private FirebaseAuth auth;
     private String username, useremail, userphone, userimage;
 
@@ -50,6 +51,10 @@ public class OrderVideoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_video);
+        dialog = new BottomSheetDialog(
+                this,
+                R.style.ThemeOverlay_App_BottomSheetDialog
+        );
 
         Intent i = getIntent();
 
@@ -116,13 +121,13 @@ public class OrderVideoActivity extends AppCompatActivity {
     }
 
     private String showDialog() {
-        final BottomSheetDialog dialog = new BottomSheetDialog(this);
         View view = getLayoutInflater().inflate(R.layout.order_bottomsheet, null);
-        dialog.setContentView(R.layout.order_bottomsheet);
         Button sendOrder = view.findViewById(R.id.order_send_order_btn);
         TextView descr = view.findViewById(R.id.order_bottomsheet_descr);
+        TextView pricing = view.findViewById(R.id.order_bottomsheet_pricing);
 
         descr.setText("Your are about to order from ".concat(name));
+        pricing.setText("Pricing : ".concat(price).concat(" XAF"));
 
         sendOrder.setOnClickListener(new View.OnClickListener() {
             @Override

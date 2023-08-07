@@ -4,28 +4,22 @@ import static com.jema.fancoin.Home.SHARED_PREFS;
 import static com.jema.fancoin.Home.UIMAGE;
 import static com.jema.fancoin.Home.UNAME;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.app.Dialog;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -77,7 +71,10 @@ public class PostDetails extends AppCompatActivity {
 
 //        viewPager = findViewById(R.id.videoViewPager);
         showcaseFeed = findViewById(R.id.showcaseFeed);
-        dialog = new BottomSheetDialog(this);
+        dialog = new BottomSheetDialog(
+                this,
+                R.style.ThemeOverlay_App_BottomSheetDialog
+        );
 
         videoPaths = new ArrayList<>();
 
@@ -256,21 +253,16 @@ public class PostDetails extends AppCompatActivity {
 
 
 //                        displaying showcase videos
-                        if (shocaseVideos != null) {
-//                            Log.d("JemaTag", "Contains Showcase");
+                        if (shocaseVideos != null && shocaseVideos.size() != 0) {
                             for (int j = 0; j < shocaseVideos.size(); j++) {
                                 videoPaths.add(shocaseVideos.get(j));
-//                                Log.d("JemaTag", shocaseVideos.get(j));
                             }
-
                             showcaseFeed.setVisibility(View.VISIBLE);
                             noShowcase.setVisibility(View.GONE);
                         } else {
                             showcaseFeed.setVisibility(View.GONE);
                             noShowcase.setVisibility(View.VISIBLE);
                         }
-
-
 //                        settings following status
                         if (group != null) {
                             if (group.contains(auth.getCurrentUser().getUid())) {
@@ -278,23 +270,17 @@ public class PostDetails extends AppCompatActivity {
                             } else {
                                 follow.setText("Follow");
                             }
-
                         }
-
-//                        displaying comments
-
-
                     }
 
                 });
     }
 
     private void AddFollowing() {
-        db.collection("Users").document(currentUserId).update("following", FieldValue.arrayUnion(artistId)).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("Users").document(artistId).update("followers", FieldValue.arrayUnion(currentUserId)).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-
-                db.collection("Users").document(artistId).update("followers", FieldValue.arrayUnion(currentUserId)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                db.collection("Users").document(currentUserId).update("following", FieldValue.arrayUnion(artistId)).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         Toast.makeText(PostDetails.this, "Followed", Toast.LENGTH_SHORT).show();
@@ -313,6 +299,7 @@ public class PostDetails extends AppCompatActivity {
             }
         });
     }
+
 
     private void RemoveFollowing() {
         db.collection("Users").document(artistId).update("followers", FieldValue.arrayRemove(currentUserId)).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -343,6 +330,8 @@ public class PostDetails extends AppCompatActivity {
         Button sendComment = view.findViewById(R.id.comment_send_btn);
         TextView descr = view.findViewById(R.id.comment_text);
 
+        view.setBackgroundColor(Color.TRANSPARENT);
+
         sendComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -357,7 +346,6 @@ public class PostDetails extends AppCompatActivity {
                 SharedPreferences mySharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
                 String uname = mySharedPreferences.getString(UNAME, null);
                 String uimage = mySharedPreferences.getString(UIMAGE, null);
-
 
                 HashMap<String, Object> order = new HashMap<>();
 

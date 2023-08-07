@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
@@ -19,7 +18,10 @@ import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.ui.PlayerView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.jema.fancoin.R;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 
@@ -54,14 +56,23 @@ public class ManageVideosAdapter extends RecyclerView.Adapter<ManageVideosAdapte
         // get data
         Uri videoUri = Uri.parse(pathsList.get(position));
 
+        String substring1 = "vod/";
+        String substring2 = "/mp4";
+
+        String videoId = StringUtils.substringBetween(videoUri.toString(), substring1, substring2);
+        String Thumbnail = "https://vod.api.video/vod/" + videoId + "/thumbnail.jpg";
+
+
+        Glide.with(context)
+                .load(Thumbnail)
+                .into(holder.manage_thumbnailImage);
+
         holder.manage_simpleExoPlayer = new ExoPlayer.Builder(context).build();
 
         holder.manage_playerView.setPlayer(holder.manage_simpleExoPlayer);
 
         MediaItem mediaItem = MediaItem.fromUri(videoUri);
         holder.manage_simpleExoPlayer.setMediaItem(mediaItem);
-        holder.manage_simpleExoPlayer.prepare();
-        holder.manage_simpleExoPlayer.seekTo(10);
 
         holder.manage_bt_fullscreen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,7 +95,10 @@ public class ManageVideosAdapter extends RecyclerView.Adapter<ManageVideosAdapte
                 holder.manage_playPauseBtn.setVisibility(View.GONE);
                 holder.manage_bt_pause.setVisibility(View.VISIBLE);
 
+                holder.manage_simpleExoPlayer.prepare();
+                holder.manage_simpleExoPlayer.play();
                 holder.manage_simpleExoPlayer.setPlayWhenReady(true);
+                holder.manage_thumbnailImage.setVisibility(View.GONE);
 
 //                holder.manage_simpleExoPlayer.play();
                 holder.manage_simpleExoPlayer.addListener(new Player.Listener() {
@@ -130,11 +144,14 @@ public class ManageVideosAdapter extends RecyclerView.Adapter<ManageVideosAdapte
         ImageView manage_playPauseBtn;
         ImageView manage_bt_fullscreen, manage_bt_pause, manage_bt_play;
         ExoPlayer manage_simpleExoPlayer;
-        ProgressBar manage_progressBar; 
+        ProgressBar manage_progressBar;
+        ImageView manage_thumbnailImage;
+
 
         public ViewHolder(@NonNull View view) {
             super(view);
             manage_playerView = view.findViewById(R.id.statusSliderVideo);
+            manage_thumbnailImage = view.findViewById(R.id.statusSliderThumbnailImage);
             manage_playPauseBtn = view.findViewById(R.id.playPauseBtn);
             manage_progressBar = view.findViewById(R.id.progress_bar);
             manage_bt_fullscreen = view.findViewById(R.id.bt_fullscreen);

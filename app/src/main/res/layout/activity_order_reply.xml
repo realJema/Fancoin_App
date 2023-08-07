@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Placeholder Name"
-            android:textColor="#000000"
+            android:textColor="@color/text_tint"
             app:layout_constraintStart_toStartOf="@+id/textView18"
             app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
@@ -95,7 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="placeholder pricing"
-            android:textColor="#000000"
+            android:textColor="@color/text_tint"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/order_details_star_name"
             app:layout_constraintTop_toBottomOf="@+id/order_details_star_name" />

@@ -19,7 +19,10 @@ import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.ui.PlayerView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.jema.fancoin.R;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 
@@ -54,14 +57,23 @@ public class ProfileVideosAdapter extends RecyclerView.Adapter<ProfileVideosAdap
         // get data
         Uri videoUri = Uri.parse(pathsList.get(position));
 
+        String substring1 = "vod/";
+        String substring2 = "/mp4";
+
+        String videoId = StringUtils.substringBetween(videoUri.toString(), substring1, substring2);
+        String Thumbnail = "https://vod.api.video/vod/" + videoId + "/thumbnail.jpg";
+
+
+        Glide.with(context)
+                .load(Thumbnail)
+                .into(holder.profile_thumbnailImage);
+
         holder.profile_simpleExoPlayer = new ExoPlayer.Builder(context).build();
 
         holder.profile_playerView.setPlayer(holder.profile_simpleExoPlayer);
 
         MediaItem mediaItem = MediaItem.fromUri(videoUri);
         holder.profile_simpleExoPlayer.setMediaItem(mediaItem);
-        holder.profile_simpleExoPlayer.prepare();
-        holder.profile_simpleExoPlayer.seekTo(10);
 
         holder.profile_bt_fullscreen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,7 +96,11 @@ public class ProfileVideosAdapter extends RecyclerView.Adapter<ProfileVideosAdap
                 holder.profile_playPauseBtn.setVisibility(View.GONE);
                 holder.profile_bt_pause.setVisibility(View.VISIBLE);
 
+
+                holder.profile_simpleExoPlayer.prepare();
+                holder.profile_simpleExoPlayer.play();
                 holder.profile_simpleExoPlayer.setPlayWhenReady(true);
+                holder.profile_thumbnailImage.setVisibility(View.GONE);
 
 //                holder.profile_simpleExoPlayer.play();
                 holder.profile_simpleExoPlayer.addListener(new Player.Listener() {
@@ -131,10 +147,12 @@ public class ProfileVideosAdapter extends RecyclerView.Adapter<ProfileVideosAdap
         ImageView profile_bt_fullscreen, profile_bt_pause, profile_bt_play;
         ExoPlayer profile_simpleExoPlayer;
         ProgressBar profile_progressBar;
+        ImageView profile_thumbnailImage;
 
         public ViewHolder(@NonNull View view) {
             super(view);
            profile_playerView = view.findViewById(R.id.statusSliderVideo);
+            profile_thumbnailImage = view.findViewById(R.id.statusSliderThumbnailImage);
            profile_playPauseBtn = view.findViewById(R.id.playPauseBtn);
            profile_progressBar = view.findViewById(R.id.progress_bar);
            profile_bt_fullscreen = view.findViewById(R.id.bt_fullscreen);
