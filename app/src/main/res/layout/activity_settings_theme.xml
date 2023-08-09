@@ -30,7 +30,7 @@
             android:id="@+id/textView8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Theme Settings"
+            android:text="@string/settingsTheme_title"
             android:textSize="@dimen/topbar_title"
             android:textStyle="bold"
             android:textColor="@color/text_tint"
@@ -80,7 +80,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="2dp"
-                android:text="Light"
+                android:text="@string/light"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView41"
                 app:layout_constraintStart_toEndOf="@+id/imageView41"
                 app:layout_constraintTop_toTopOf="@+id/imageView41" />
@@ -125,7 +125,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="Dark"
+                android:text="@string/dark"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView4"
                 app:layout_constraintStart_toEndOf="@+id/imageView4"
                 app:layout_constraintTop_toTopOf="@+id/imageView4" />
@@ -170,7 +170,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="System"
+                android:text="@string/system"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView412"
                 app:layout_constraintStart_toEndOf="@+id/imageView412"
                 app:layout_constraintTop_toTopOf="@+id/imageView412" />

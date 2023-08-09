@@ -1,4 +1,4 @@
-package com.jema.fancoin;
+package com.jema.fancoin.Auth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +17,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.jema.fancoin.SettingsActivity.SettingsEmailActivity;
+import com.jema.fancoin.R;
 
 public class ForgotPassActivity extends AppCompatActivity {
 

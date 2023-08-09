@@ -1,4 +1,4 @@
-package com.jema.fancoin;
+package com.jema.fancoin.MainTabs;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.jema.fancoin.Home.SHARED_PREFS;
@@ -32,6 +32,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.jema.fancoin.Adapter.ProfileVideosAdapter;
+import com.jema.fancoin.AdminActivity;
+import com.jema.fancoin.R;
+import com.jema.fancoin.RequestsActivity;
 import com.jema.fancoin.SettingsActivity.SettingsActivity;
 import com.squareup.picasso.Picasso;
 

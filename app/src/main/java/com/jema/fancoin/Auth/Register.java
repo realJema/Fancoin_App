@@ -1,9 +1,8 @@
-package com.jema.fancoin;
+package com.jema.fancoin.Auth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -20,11 +19,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.jema.fancoin.R;
+import com.jema.fancoin.UnverifiedEmailActivity;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class Register extends AppCompatActivity {
     private Button signUp;

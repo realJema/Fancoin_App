@@ -26,7 +26,7 @@
             android:id="@+id/textView8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Settings"
+            android:text="@string/settings_title"
             android:textSize="@dimen/topbar_title"
             android:textStyle="bold"
             android:textColor="@color/text_tint"
@@ -65,7 +65,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
-                    android:text="Account Settings"
+                    android:text="@string/settings_subtitle_1"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/profileSetting"
                     app:layout_constraintStart_toStartOf="parent"
@@ -94,7 +94,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="Profile"
+                        android:text="@string/settings_menuitem_profile"
                         app:layout_constraintBottom_toBottomOf="@+id/profileIcon"
                         app:layout_constraintStart_toEndOf="@+id/profileIcon"
                         app:layout_constraintTop_toTopOf="@+id/profileIcon" />
@@ -135,7 +135,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginBottom="5dp"
-                        android:text="Account Information"
+                        android:text="@string/settings_menuitem_account"
                         app:layout_constraintBottom_toBottomOf="@+id/imageView4"
                         app:layout_constraintStart_toEndOf="@+id/imageView4"
                         app:layout_constraintTop_toTopOf="@+id/imageView4" />
@@ -175,7 +175,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="Manage Videos"
+                        android:text="@string/settings_menuitem_manage"
                         app:layout_constraintBottom_toBottomOf="@+id/manageVideosIcon"
                         app:layout_constraintStart_toEndOf="@+id/manageVideosIcon"
                         app:layout_constraintTop_toTopOf="@+id/manageVideosIcon" />
@@ -199,7 +199,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
-                    android:text="Contact Details"
+                    android:text="@string/settings_subtitle_2"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/emailSetting"
                     app:layout_constraintStart_toStartOf="parent"
@@ -228,7 +228,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="Email Address"
+                        android:text="@string/settings_menuitem_mail"
                         app:layout_constraintBottom_toBottomOf="@+id/imageView41"
                         app:layout_constraintStart_toEndOf="@+id/imageView41"
                         app:layout_constraintTop_toTopOf="@+id/imageView41" />
@@ -269,7 +269,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="Phone Number"
+                        android:text="@string/settings_menuitem_phone"
                         app:layout_constraintBottom_toBottomOf="@+id/imageView42"
                         app:layout_constraintStart_toEndOf="@+id/imageView42"
                         app:layout_constraintTop_toTopOf="@+id/imageView42" />
@@ -293,7 +293,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
-                    android:text="App Settings"
+                    android:text="@string/settings_subtitle_3"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/languageSetting"
                     app:layout_constraintStart_toStartOf="parent"
@@ -322,7 +322,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="Language"
+                        android:text="@string/settings_menu_item_language"
                         app:layout_constraintBottom_toBottomOf="@+id/imageView411"
                         app:layout_constraintStart_toEndOf="@+id/imageView411"
                         app:layout_constraintTop_toTopOf="@+id/imageView411" />
@@ -334,7 +334,8 @@
                         android:src="@drawable/ic_forward_caret"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/icon_tint"  />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

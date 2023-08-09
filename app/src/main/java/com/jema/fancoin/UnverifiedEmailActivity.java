@@ -12,13 +12,10 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import cn.pedant.SweetAlert.SweetAlertDialog;
+import com.jema.fancoin.Auth.Login;
 
 public class UnverifiedEmailActivity extends AppCompatActivity {
 

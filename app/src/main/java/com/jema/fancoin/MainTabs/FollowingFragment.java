@@ -1,4 +1,4 @@
-package com.jema.fancoin;
+package com.jema.fancoin.MainTabs;
 
 import android.os.Bundle;
 
@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -24,8 +23,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.jema.fancoin.Adapter.FollowingAdapter;
-import com.jema.fancoin.Adapter.PostAdapter;
 import com.jema.fancoin.Model.PostCard;
+import com.jema.fancoin.R;
 
 import java.util.ArrayList;
 import java.util.List;

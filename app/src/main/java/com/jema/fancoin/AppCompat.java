@@ -11,6 +11,9 @@ public class AppCompat extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LanguageManager lang = new LanguageManager(this);
+        ThemeManager theme = new ThemeManager(this);
+
         lang.updateResource(lang.getLang());
+        theme.updateTheme(theme.getTheme());
     }
 }

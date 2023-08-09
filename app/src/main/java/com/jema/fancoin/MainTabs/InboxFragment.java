@@ -1,4 +1,4 @@
-package com.jema.fancoin;
+package com.jema.fancoin.MainTabs;
 
 import android.os.Bundle;
 
@@ -21,8 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.jema.fancoin.Adapter.OrderAdapter;
 import com.jema.fancoin.Model.OrderModel;
-
-import org.w3c.dom.Text;
+import com.jema.fancoin.R;
 
 import java.util.ArrayList;
 

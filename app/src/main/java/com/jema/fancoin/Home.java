@@ -1,7 +1,5 @@
 package com.jema.fancoin;
 
-import static com.jema.fancoin.SettingsActivity.SettingsThemeActivity.THEME;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,7 +12,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -28,6 +25,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.jema.fancoin.Auth.Login;
+import com.jema.fancoin.MainTabs.FollowingFragment;
+import com.jema.fancoin.MainTabs.HomeFragment;
+import com.jema.fancoin.MainTabs.InboxFragment;
+import com.jema.fancoin.MainTabs.ProfileFragment;
 import com.jema.fancoin.databinding.ActivityHomeBinding;
 import com.squareup.picasso.Picasso;
 
@@ -58,6 +60,7 @@ public class Home extends AppCompat {
     public static final String UPHONE = "phone";
     public static final String UPRICING = "pricing";
     public static final String LANG = "en";
+    public static final String THEME = "1"; // 1 is light mode, 2 is dark mode, 3 is system
     String applicationStat = "default";
     private FirebaseAuth firebaseAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
@@ -72,20 +75,6 @@ public class Home extends AppCompat {
         String myName = mySharedPreferences.getString(UNAME, null);
         String myEmail = mySharedPreferences.getString(UEMAIL, null);
         String myPP = mySharedPreferences.getString(UIMAGE, null);
-        String theme = mySharedPreferences.getString(THEME, null);
-
-
-//        block used to check the default theme setting of user and start off the app with that
-        if(theme != null) {
-            if (theme.equalsIgnoreCase("1")) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            } else if (theme.equalsIgnoreCase("2")){
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY);
-            }
-        }
-
 
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();

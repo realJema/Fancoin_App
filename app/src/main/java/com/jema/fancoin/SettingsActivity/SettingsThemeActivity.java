@@ -1,26 +1,19 @@
 package com.jema.fancoin.SettingsActivity;
 
-import static com.jema.fancoin.Home.SHARED_PREFS;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-
-import com.jema.fancoin.Home;
-import com.jema.fancoin.Login;
 import com.jema.fancoin.R;
+import com.jema.fancoin.ThemeManager;
 
 public class SettingsThemeActivity extends AppCompatActivity {
-    private ImageView lightCheck, darkCheck, systemCheck;
+    private ImageView lightCheck, darkCheck, systemCheck, backBtn;
     ConstraintLayout lightBtn, darkBtn, systemBtn;
-    public static final String THEME = "1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,42 +26,47 @@ public class SettingsThemeActivity extends AppCompatActivity {
         lightBtn = findViewById(R.id.settings_theme_light_btn);
         darkBtn  = findViewById(R.id.settings_theme_dark_btn);
         systemBtn  = findViewById(R.id.settings_theme_system_btn);
+        backBtn = findViewById(R.id.back2);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        ThemeManager theme = new ThemeManager(this);
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         lightBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                theme.updateTheme("1");
                 lightCheck.setVisibility(View.VISIBLE);
                 darkCheck.setVisibility(View.GONE);
                 systemCheck.setVisibility(View.GONE);
-                editor.putString(THEME, "1");
-                editor.commit(); // persist the values
+                recreate();
             }
         });
 
         darkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                theme.updateTheme("2");
                 lightCheck.setVisibility(View.GONE);
                 darkCheck.setVisibility(View.VISIBLE);
                 systemCheck.setVisibility(View.GONE);
-                editor.putString(THEME, "2");
-                editor.commit(); // persist the values
+                recreate();
             }
         });
 
         systemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY);
+                theme.updateTheme("3");
                 lightCheck.setVisibility(View.GONE);
                 darkCheck.setVisibility(View.GONE);
                 systemCheck.setVisibility(View.VISIBLE);
-                editor.putString(THEME, "3");
-                editor.commit(); // persist the values
+                recreate();
             }
         });
 
