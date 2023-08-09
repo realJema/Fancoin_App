@@ -16,4 +16,10 @@
         <item>Instagram</item>
         <item>Youtube</item>
     </string-array>
+
+
+
+
+
+    <string name="settings_language_title">Language Settings</string>
 </resources>

@@ -1,15 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="star_categories">
-        <item>Select a Categoryfr</item>
-        <item>Tiktokfr</item>
-        <item>Entertainmentfr</item>
-        <item>Musicfr</item>
-    </string-array>
-    <string-array name="social_options">
-        <item>Select a Social Mediafr</item>
-        <item>Tiktokfr</item>
-        <item>Instagramfr</item>
-        <item>Youtubefr</item>
-    </string-array>
+    <string name="settings_language_title">Parametres Langue</string>
 </resources>

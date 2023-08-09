@@ -14,7 +14,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -34,7 +33,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class Home extends AppCompatActivity {
+public class Home extends AppCompat {
 
     ActivityHomeBinding binding;
     DrawerLayout drawerLayout;
@@ -58,6 +57,7 @@ public class Home extends AppCompatActivity {
     public static final String UIMAGE = "image";
     public static final String UPHONE = "phone";
     public static final String UPRICING = "pricing";
+    public static final String LANG = "en";
     String applicationStat = "default";
     private FirebaseAuth firebaseAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
