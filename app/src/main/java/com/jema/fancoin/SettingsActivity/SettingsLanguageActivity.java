@@ -41,7 +41,6 @@ public class SettingsLanguageActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent myIntent = new Intent(SettingsLanguageActivity.this, SettingsActivity.class);
                 startActivity(myIntent);
 

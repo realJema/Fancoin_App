@@ -92,7 +92,7 @@
         android:layout_marginTop="50dp"
         android:layout_marginEnd="16dp"
         android:textColor="@color/white"
-        android:backgroundTint="@color/colorPrimary"
+        android:backgroundTint="@color/button_tint"
         android:bottomLeftRadius="10dp"
         android:bottomRightRadius="10dp"
         android:text="@string/login_signIn"

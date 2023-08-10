@@ -6,19 +6,18 @@ import static com.jema.fancoin.Home.UIMAGE;
 import static com.jema.fancoin.Home.UNAME;
 import static com.jema.fancoin.Home.UPHONE;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,12 +35,9 @@ public class OrderVideoActivity extends AppCompatActivity {
     ImageView img, back, pp;
     TextView proName, proPrice, proDesc, proCategory;
     EditText recipient, description;
-
     String name, price, desc, cat, image, id;
     Button orderVideo;
-
     Button bottomsheet;
-
     FirebaseFirestore db;
     BottomSheetDialog dialog;
     private FirebaseAuth auth;

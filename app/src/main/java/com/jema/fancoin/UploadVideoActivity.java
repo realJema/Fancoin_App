@@ -1,12 +1,9 @@
 package com.jema.fancoin;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,17 +18,10 @@ import androidx.media3.ui.PlayerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import video.api.client.ApiVideoClient;
-import video.api.client.api.ApiException;
-import video.api.client.api.clients.VideosApi;
-import video.api.client.api.models.Video;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 
 public class UploadVideoActivity extends AppCompatActivity {
@@ -43,14 +33,9 @@ public class UploadVideoActivity extends AppCompatActivity {
     TextView selector;
     CardView bottomCard;
     StorageReference videoRef;
-
     Uri vidUri = null;
     PlayerView playerView;
     ExoPlayer simpleExoPlayer;
-    ProgressDialog progressBar;
-    private int progressBarStatus = 0;
-    private Handler progressBarHandler = new Handler();
-    private long fileSize = 0;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
 
@@ -76,6 +61,8 @@ public class UploadVideoActivity extends AppCompatActivity {
         selector = findViewById(R.id.upload_video_selector);
         bottomCard = findViewById(R.id.upload_video_bottom_card);
 
+        UploadManager uploader = new UploadManager(this);
+
         simpleExoPlayer = new ExoPlayer.Builder(UploadVideoActivity.this).build();
 
         playerView.setClipToOutline(true);
@@ -94,7 +81,14 @@ public class UploadVideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(!vidUri.toString().equalsIgnoreCase("")){
-                    uploadVideo(vidUri);
+                    try {
+                        uploader.uploadVideo(vidUri, "order", DocumentId);
+                    } catch (URISyntaxException e) {
+                        throw new RuntimeException(e);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+//                    finish();
                 }
                 else {
                     Toast.makeText(UploadVideoActivity.this, "Choose Valid Video", Toast.LENGTH_SHORT).show();
@@ -143,9 +137,6 @@ public class UploadVideoActivity extends AppCompatActivity {
 
             bottomCard.setVisibility(View.VISIBLE);
             selector.setVisibility(View.GONE);
-
-//            uploadVideo(vidUri);
-
         }
 
 
@@ -162,62 +153,4 @@ public class UploadVideoActivity extends AppCompatActivity {
 
     }
 
-    private void uploadVideo(Uri videoUri) {
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-
-//        the path of the video file is going to contain, the order's uid, date and time to make it unique
-        Date now = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yyyy_HH-m-s"); // we change the format to give a valid name string
-        String strDate= formatter.format(now);
-        String filename = DocumentId.concat("_" + strDate + ".mp4"); // the name containing the document id, date formatted and the extension
-
-        videoRef = storageRef.child("/orders/" + filename); // the directory on firebase
-
-
-//        String str = DateUtils.getRelativeDateTimeString(UploadVideoActivity.this, now, DateUtils.MINUTE_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, 0);
-
-        if (videoUri != null) {
-            // creating progress bar dialog
-            progressBar = new ProgressDialog(UploadVideoActivity.this);
-            progressBar.setCancelable(true);
-            progressBar.setMessage("File uploading ...");
-            progressBar.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            progressBar.setProgress(0);
-            progressBar.setMax(100);
-            progressBar.show();
-            //reset progress bar and filesize status
-            progressBarStatus = 0;
-            fileSize = 0;
-
-            ApiVideoClient client = new ApiVideoClient("9WkC5F6s1UN4lOJywaK0YqaO56oXqYjTqouaYX6OKs9");
-            // if you rather like to use the sandbox environment:
-            // ApiVideoClient client = new ApiVideoClient("YOUR_SANDBOX_API_KEY", ApiVideoClient.Environment.SANDBOX);
-
-            VideosApi apiInstance = client.videos();
-
-            String videoId = "vEUuaTdRAEjQ4Jfrgz"; // Enter the videoId you want to use to upload your video.
-            File file = new File(videoUri.getPath()); // The path to the video you would like to upload. The path must be local. If you want to use a video from an online source, you must use the "/videos" endpoint and add the "source" parameter when you create a new video.
-
-            try {
-                Video result = apiInstance.upload(videoId, file);
-                Log.d("JemaTag", String.valueOf(result));
-            } catch (ApiException e) {
-                Log.d("JemaTag", "Exception when calling VideosApi#upload");
-                Log.d("JemaTag", "Status code: " + e.getCode());
-                Log.d("JemaTag", "Reason: " + e.getMessage());
-                Log.d("JemaTag", "Response headers: " + e.getResponseHeaders());
-                e.printStackTrace();
-                Toast.makeText(UploadVideoActivity.this, "upload success!", Toast.LENGTH_SHORT).show();
-                progressBar.dismiss();
-            }
-
-
-        } else {
-            progressBar.dismiss();
-            Toast.makeText(UploadVideoActivity.this, "upload failed!", Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-// StorageReference videoRef;
 }

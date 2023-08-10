@@ -15,11 +15,14 @@
         android:icon="@mipmap/ic_icon"
         android:label="@string/app_name"
         android:largeHeap="true"
+        android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.Fancoin"
         android:usesCleartextTraffic="true"
-        android:requestLegacyExternalStorage="true"
         tools:targetApi="31">
+        <activity
+            android:name=".WatchVideoActivity"
+            android:exported="false" />
         <activity
             android:name=".Auth.ForgotPassActivity"
             android:exported="false" />

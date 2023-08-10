@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -35,7 +36,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class Home extends AppCompat {
+public class Home extends AppCompatActivity {
 
     ActivityHomeBinding binding;
     DrawerLayout drawerLayout;
@@ -69,6 +70,14 @@ public class Home extends AppCompat {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+
+//        changing the theme and language to match the user's configs
+        LanguageManager lang = new LanguageManager(this);
+        ThemeManager theme = new ThemeManager(this);
+
+        lang.updateResource(lang.getLang());
+        theme.updateTheme(theme.getTheme());
 
         SharedPreferences mySharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = mySharedPreferences.edit();

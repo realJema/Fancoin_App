@@ -79,6 +79,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                 i.putExtra("description", orderModelArrayList.get(position).getDescription());
                 i.putExtra("recipient", orderModelArrayList.get(position).getRecipient());
                 i.putExtra("id", orderModelArrayList.get(position).getId());
+                i.putExtra("DocumentId", orderModelArrayList.get(position).getDocumentId());
                 i.putExtra("star_uid", orderModelArrayList.get(position).getStar_uid());
                 i.putExtra("star_image", orderModelArrayList.get(position).getStar_image());
                 i.putExtra("star_pricing", orderModelArrayList.get(position).getStar_pricing());

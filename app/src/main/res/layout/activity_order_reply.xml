@@ -29,9 +29,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/orderReply_title"
-            android:textColor="@android:color/background_dark"
             android:textSize="@dimen/topbar_title"
             android:textStyle="bold"
+            android:textColor="@color/text_tint"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -255,7 +255,7 @@
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottom_card_height"
-        app:cardBackgroundColor="#F4F4F4"
+        app:cardBackgroundColor="@color/cards_tint"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="1dp">
 
@@ -274,7 +274,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:textColor="@color/white"
-                android:backgroundTint="@color/colorPrimary"
+                android:backgroundTint="@color/button_tint"
                 android:bottomLeftRadius="10dp"
                 android:bottomRightRadius="10dp"
                 android:text="@string/orderReply_bottomCardButton"

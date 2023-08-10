@@ -5,7 +5,7 @@
     <color name="icon_tint">#F6F6F6</color>
     <color name="text_tint">#E4E4E4</color>
     <color name="white_black">#FFFFFF</color>
-    <color name="cards_tint">#000d3d</color>
+    <color name="cards_tint">#011560</color>
     <color name="text_tint_light">#AFAFAF</color>
     <color name="rounded_rectange">#414141</color>
 </resources>

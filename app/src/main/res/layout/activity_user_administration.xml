@@ -273,82 +273,58 @@
             android:layout_height="match_parent"
             android:elevation="20dp">
 
-            <TextView
-                android:id="@+id/textView15"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="prodName"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/textView16"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="follow user"
-                app:layout_constraintStart_toStartOf="@+id/textView15"
-                app:layout_constraintTop_toBottomOf="@+id/textView15" />
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal"
 
-            <Button
-                android:id="@+id/admin_user_reject_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:backgroundTint="@color/red"
-                android:bottomLeftRadius="10dp"
-                android:bottomRightRadius="10dp"
-                android:text="@string/reject"
-                android:textColor="@color/white"
-                android:topLeftRadius="10dp"
-                android:topRightRadius="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView16" />
-            <Button
-                android:id="@+id/admin_user_confirm_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/colorPrimary"
-                android:bottomLeftRadius="10dp"
-                android:bottomRightRadius="10dp"
-                android:text="@string/confirm"
-                android:topLeftRadius="10dp"
-                android:topRightRadius="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView16" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <Button
-                android:id="@+id/admin_user_pending_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                android:backgroundTint="@color/yellow"
-                android:bottomLeftRadius="10dp"
-                android:bottomRightRadius="10dp"
-                android:text="@string/pending"
-                android:textColor="@color/black"
-                android:topLeftRadius="10dp"
-                android:topRightRadius="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+                <Button
+                    android:id="@+id/admin_user_reject_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/red"
+                    android:bottomLeftRadius="10dp"
+                    android:bottomRightRadius="10dp"
+                    android:text="@string/reject"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/admin_user_confirm_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:backgroundTint="@color/button_tint"
+                    android:bottomLeftRadius="10dp"
+                    android:layout_weight="1"
+                    android:bottomRightRadius="10dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:text="@string/confirm"
+                    android:textColor="@color/white"
+                    android:topLeftRadius="10dp"
+                    android:topRightRadius="10dp" />
+
+                <Button
+                    android:id="@+id/admin_user_pending_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/yellow"
+                    android:text="@string/pending"
+                    android:textColor="@color/black"
+                    android:topLeftRadius="10dp"
+                    android:topRightRadius="10dp" />
+            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>

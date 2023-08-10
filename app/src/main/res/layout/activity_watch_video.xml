@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UploadVideoActivity">
+    tools:context=".WatchVideoActivity">
 
-<!--    Correct Implementation of page -->
+    <!--    Correct Implementation of page -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/topNavbar"
         android:layout_width="match_parent"
@@ -22,13 +22,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_back_arrow"
-            app:tint="@color/icon_tint" />
+            app:tint="@color/icon_tint"/>
 
         <TextView
             android:id="@+id/textView8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/addShowcaseVideo_upload"
+            android:text="Watch Video"
             android:textSize="@dimen/topbar_title"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -51,15 +51,15 @@
 
 
         <androidx.media3.ui.PlayerView
-            android:id="@+id/upload_video_selected"
+            android:id="@+id/download_video_selected"
             android:layout_width="300dp"
             android:layout_height="450dp"
             android:layout_centerInParent="true"
             android:background="@android:color/background_dark"
-            android:visibility="gone"
             app:controller_layout_id="@layout/custom_controller_fullsize"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -68,6 +68,29 @@
             app:resize_mode="fixed_width"
             app:use_controller="true" />
 
+        <ImageView
+            android:id="@+id/statusSliderThumbnailImage"
+            android:layout_width="300dp"
+            android:layout_height="450dp"
+            android:layout_centerInParent="true"
+            android:scaleType="fitXY"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/download_video_selected"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/download_video_selected" />
+
+        <ImageView
+            android:id="@+id/playPauseBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_play"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/white" />
 
         <ImageView
             android:id="@+id/upload_playPauseBtn"
@@ -84,7 +107,7 @@
 
 
         <ImageView
-            android:id="@+id/upload_video_icon"
+            android:id="@+id/download_video_icon"
             android:layout_width="100dp"
             android:layout_height="100dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -92,23 +115,36 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_file_upload"
+            app:srcCompat="@drawable/ic_download"
             app:tint="@color/gray" />
 
         <TextView
-            android:id="@+id/upload_video_selector"
+            android:id="@+id/download_video_selector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/borderbottom"
             android:paddingVertical="5dp"
-            android:text="@string/addShowcaseVideo_select"
+            android:text="Download Video"
             android:textSize="18dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/upload_video_icon" />
+            app:layout_constraintTop_toBottomOf="@+id/download_video_icon" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -116,7 +152,6 @@
         android:id="@+id/upload_video_bottom_card"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottom_card_height"
-        android:visibility="gone"
         app:cardBackgroundColor="@color/cards_tint"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -129,7 +164,7 @@
 
 
             <Button
-                android:id="@+id/reply_upload_btn"
+                android:id="@+id/reply_download_btn"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginStart="16dp"
@@ -140,7 +175,7 @@
                 android:backgroundTint="@color/button_tint"
                 android:bottomLeftRadius="10dp"
                 android:bottomRightRadius="10dp"
-                android:text="Upload Video"
+                android:text="Download Video"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
