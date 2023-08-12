@@ -29,7 +29,7 @@ public class UploadVideoActivity extends AppCompatActivity {
     private static final int PICK_FROM_FILE = 1;
     private Button uploadVideo;
     private ImageView iconUpload, playBtn, pauseBtn, backBtn;
-    String DocumentId;
+    String DocumentId, client_name, star_image;
     TextView selector;
     CardView bottomCard;
     StorageReference videoRef;
@@ -51,6 +51,8 @@ public class UploadVideoActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         DocumentId = i.getStringExtra("DocumentId");
+        star_image = i.getStringExtra("star_image");
+        client_name = i.getStringExtra("client_name");
 
         uploadVideo = findViewById(R.id.reply_upload_btn);
         playerView = findViewById(R.id.upload_video_selected);
@@ -89,6 +91,12 @@ public class UploadVideoActivity extends AppCompatActivity {
                         throw new RuntimeException(e);
                     }
 //                    finish();
+
+                    Intent myIntent = new Intent(UploadVideoActivity.this, ActionSuccessActivity.class);
+                    myIntent.putExtra("title", "You replied to ".concat(client_name));
+                    myIntent.putExtra("subtitle", "Your video was uploaded successfully");
+                    myIntent.putExtra("image", star_image);
+                    startActivity(myIntent);
                 }
                 else {
                     Toast.makeText(UploadVideoActivity.this, "Choose Valid Video", Toast.LENGTH_SHORT).show();

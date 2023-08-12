@@ -21,6 +21,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ActionSuccessActivity"
+            android:exported="false" />
+        <activity
             android:name=".WatchVideoActivity"
             android:exported="false" />
         <activity

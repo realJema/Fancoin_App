@@ -129,4 +129,5 @@
     <string name="edit_profile">Edit Profile</string>
     <string name="your_order">Your order</string>
     <string name="orderBottomSheet_subtitle">You are about to order from ,</string>
+    <string name="hello_world">Hello world</string>
 </resources>

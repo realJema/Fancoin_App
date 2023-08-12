@@ -123,15 +123,16 @@ public class ProfileFragment extends Fragment {
 
 
         SharedPreferences mySharedPreferences = getActivity().getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        String myusername = mySharedPreferences.getString(UNAME, null);
+        String myusername = mySharedPreferences.getString(UNAME, "username");
         String mybio = mySharedPreferences.getString(UBIO, null);
         String myimage = mySharedPreferences.getString(UIMAGE, null);
-        String myfollowersnum = mySharedPreferences.getString(UFOLLOWERS, null);
-        String myfollowingnum = mySharedPreferences.getString(UFOLLOWING, null);
+        String myfollowersnum = mySharedPreferences.getString(UFOLLOWERS, "0");
+        String myfollowingnum = mySharedPreferences.getString(UFOLLOWING, "0");
 
 
         username.setText("@".concat(myusername));
         usernametop.setText("@".concat(myusername));
+
         if(mybio.equalsIgnoreCase("")){
             bio.setText("(no bio, update in settings)");
         } else {

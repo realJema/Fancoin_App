@@ -57,12 +57,12 @@ public class VideoSliderAdapter extends RecyclerView.Adapter<VideoSliderAdapter.
 //        holder.thumbnailImage.setImageBitmap(ThumbnailUtils.createVideoThumbnail(pathsList.get(position),MediaStore.Video.Thumbnails.FULL_SCREEN_KIND));
 
         // get data
-        Uri videoUri = Uri.parse(pathsList.get(position));
+        String videoUri = pathsList.get(position);
 
         String substring1 = "vod/";
         String substring2 = "/mp4";
 
-        String videoId = StringUtils.substringBetween(videoUri.toString(), substring1, substring2);
+        String videoId = StringUtils.substringBetween(videoUri, substring1, substring2);
         String Thumbnail = "https://vod.api.video/vod/" + videoId + "/thumbnail.jpg";
 
 

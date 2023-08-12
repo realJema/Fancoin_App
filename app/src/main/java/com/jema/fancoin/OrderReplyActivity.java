@@ -29,6 +29,7 @@ public class OrderReplyActivity extends AppCompatActivity {
         String iRecipient = i.getStringExtra("recipient");
         String iId = i.getStringExtra("id");
         String DocumentId = i.getStringExtra("DocumentId");
+        String client_name = i.getStringExtra("client_name");
         String star_image = i.getStringExtra("star_image");
         String star_pricing = i.getStringExtra("star_pricing");
         String star_name = i.getStringExtra("star_name");
@@ -61,6 +62,8 @@ public class OrderReplyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(OrderReplyActivity.this, UploadVideoActivity.class);
                 i.putExtra("DocumentId", DocumentId);
+                i.putExtra("star_image", star_image);
+                i.putExtra("client_name", client_name);
                 startActivity(i);
                 finish();
 
