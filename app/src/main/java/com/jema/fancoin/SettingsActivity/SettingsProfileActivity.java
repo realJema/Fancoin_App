@@ -1,12 +1,7 @@
 package com.jema.fancoin.SettingsActivity;
 
-import static com.jema.fancoin.Home.SHARED_PREFS;
-import static com.jema.fancoin.Home.UIMAGE;
-import static com.jema.fancoin.Home.UNAME;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +14,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -32,6 +29,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.jema.fancoin.R;
+import com.jema.fancoin.database.User;
+import com.jema.fancoin.database.UserViewModel;
 import com.jema.fancoin.databinding.ActivityMainBinding;
 import com.squareup.picasso.Picasso;
 
@@ -56,8 +55,8 @@ public class SettingsProfileActivity extends AppCompatActivity {
     private Boolean imageSelected = false;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
-    SharedPreferences sharedPreferences;
-
+    private UserViewModel viewModel;
+    String myUsername;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,13 +71,19 @@ public class SettingsProfileActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
 
-        String myUsername = sharedPreferences.getString(UNAME, null);
-        String myPP = sharedPreferences.getString(UIMAGE, null);
-        username.setText(myUsername);
-        Picasso.get().load(myPP).into(pp);
 
+        viewModel = new ViewModelProvider(SettingsProfileActivity.this).get(UserViewModel.class);
+        viewModel.getUserInfo().observe(SettingsProfileActivity.this, new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                if (user.username != null) {
+                    username.setText(user.username);
+                    Picasso.get().load(user.image).into(pp);
+                    myUsername = user.username;
+                }
+            }
+        });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,12 +160,8 @@ public class SettingsProfileActivity extends AppCompatActivity {
                                 db.collection("Users").document(auth.getCurrentUser().getUid()).update(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-
-                                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                                        editor.putString(UIMAGE, downloadUrl);
-                                        editor.commit(); // persist the values
-//                                        finish(); // goes to previous activity
-
+//                                        add image url to room db
+                                        viewModel.updateImage(downloadUrl);
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override
@@ -198,9 +199,6 @@ public class SettingsProfileActivity extends AppCompatActivity {
         db.collection("Users").document(auth.getCurrentUser().getUid()).update(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString(UNAME, username.getText().toString());
-                        editor.commit(); // persist the values
                         finish(); // goes to previous activity
                     }
                 }).addOnFailureListener(new OnFailureListener() {

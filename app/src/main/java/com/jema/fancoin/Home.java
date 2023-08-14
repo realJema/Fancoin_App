@@ -26,21 +26,27 @@ import androidx.room.Room;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.jema.fancoin.Auth.Login;
 import com.jema.fancoin.MainTabs.FollowingFragment;
 import com.jema.fancoin.MainTabs.HomeFragment;
 import com.jema.fancoin.MainTabs.InboxFragment;
 import com.jema.fancoin.MainTabs.ProfileFragment;
+import com.jema.fancoin.Model.PostCard;
 import com.jema.fancoin.database.AppDatabase;
+import com.jema.fancoin.database.Post;
+import com.jema.fancoin.database.PostViewModel;
 import com.jema.fancoin.database.User;
 import com.jema.fancoin.database.UserViewModel;
 import com.jema.fancoin.databinding.ActivityHomeBinding;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Home extends AppCompatActivity {
@@ -55,18 +61,6 @@ public class Home extends AppCompatActivity {
     private FirebaseFirestore db;
 
     public static final String SHARED_PREFS = "sharedPrefs";
-    public static final String UNAME = "username";
-    public static final String UFULLNAME = "name";
-    public static final String UAPPLICATION_STATUS = "application_status";
-    public static final String UBIO = "bio";
-    public static final String UCATEGORY = "category";
-    public static final String UEMAIL = "email";
-    public static final String UFOLLOWERS = "followers";
-    public static final String UFOLLOWING = "following";
-    public static final String UID = "id";
-    public static final String UIMAGE = "image";
-    public static final String UPHONE = "phone";
-    public static final String UPRICING = "pricing";
     public static final String LANG = "en";
     public static final String THEME = "1"; // 1 is light mode, 2 is dark mode, 3 is system
     String applicationStat = "default";
@@ -75,6 +69,7 @@ public class Home extends AppCompatActivity {
     AppDatabase localDb;
 
     private UserViewModel viewModel;
+    private PostViewModel postModel;
     private Boolean applied = false;
 
     @Override
@@ -152,6 +147,7 @@ public class Home extends AppCompatActivity {
         applyItem = (MenuItem) navigationView.getMenu().findItem(R.id.applyPage);
 
         viewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        postModel = new ViewModelProvider(this).get(PostViewModel.class);
         viewModel.getUserInfo().observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {
@@ -167,10 +163,10 @@ public class Home extends AppCompatActivity {
 
                 }
 
-                if(user.application_status.equalsIgnoreCase("confirmed")){
+                if (user.application_status.equalsIgnoreCase("confirmed")) {
                     applyItem.setTitle("Application Confirmed");
                     applied = true;
-                } else if (user.application_status.equalsIgnoreCase("pending")){
+                } else if (user.application_status.equalsIgnoreCase("pending")) {
                     applyItem.setTitle("Application Pending");
                     applied = true;
                 }
@@ -217,7 +213,7 @@ public class Home extends AppCompatActivity {
         });
 //        download user data from firestore and save it locally
         UserDataListener();
-
+        EventChangeListener();
     }
 
     private void replaceFragment(Fragment fragment) {
@@ -228,9 +224,6 @@ public class Home extends AppCompatActivity {
     }
 
     public void UserDataListener() {
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
 //        we will get all the data about the current user and store it locally
         db.collection("Users").document(auth.getCurrentUser().getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -265,62 +258,80 @@ public class Home extends AppCompatActivity {
                 theUser.phone = temp_phone;
                 theUser.pricing = temp_pricing;
                 theUser.uid = temp_uid;
+                theUser.followers = String.valueOf(myFollowers.size());
+                theUser.following = String.valueOf(myFollowing.size());
 //                AsyncTask.execute(() -> Log.d("JemaTag", String.valueOf(viewModel.check4User(temp_uid))));
-//                AsyncTask.execute(() -> localDb.userDao().insertUser(theUser));
+
 
                 Boolean result = viewModel.check4User(); // check if user already exists in db
-                if(result){
+                if (result) {
                     viewModel.updateUser(temp_username, temp_full_name, temp_email);
                 } else {
-                    AsyncTask.execute(() -> localDb.userDao().insertUser(theUser));
+                    AsyncTask.execute(() -> localDb.allDao().insertUser(theUser));
                 }
 
-
-                if (temp_uid != null) {
-                    editor.putString(UID, temp_uid);
-                }
-                if (temp_username != null) {
-                    editor.putString(UNAME, temp_username);
-                }
-                if (temp_full_name != null) {
-                    editor.putString(UFULLNAME, temp_full_name);
-                }
-                if (temp_application_status != null) {
-                    editor.putString(UAPPLICATION_STATUS, temp_application_status);
-                }
-                if (temp_bio != null) {
-                    editor.putString(UBIO, temp_bio);
-                }
-                if (temp_category != null) {
-                    editor.putString(UCATEGORY, temp_category);
-                }
-                if (temp_email != null) {
-                    editor.putString(UEMAIL, temp_email);
-                }
-                if (temp_bio != null) {
-                    editor.putString(UID, temp_bio);
-                }
-                if (temp_image != null) {
-                    editor.putString(UIMAGE, temp_image);
-                }
-                if (temp_phone != null) {
-                    editor.putString(UPHONE, temp_phone);
-                }
-                if (temp_pricing != null) {
-                    editor.putString(UPRICING, temp_pricing);
-                }
-
-
-                if (myFollowers != null) {
-                    editor.putString(UFOLLOWERS, String.valueOf(myFollowers.size()));
-                }
-                if (myFollowers != null) {
-                    editor.putString(UFOLLOWING, String.valueOf(myFollowing.size()));
-                }
-                editor.commit(); // persist the values
 
             }
         });
     }
 
+    private void EventChangeListener() {
+
+        db.collection("Users").whereEqualTo("application_status", "confirmed")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+                        if (error != null) {
+//                            if(progressDialog.isShowing())
+//                                progressDialog.dismiss();
+                            Log.i("JemaTag", "error gettting data");
+                            return;
+                        }
+                        ArrayList<Post> allPosts = new ArrayList<Post>();
+                        PostCard data = new PostCard();
+                        AsyncTask.execute(() -> localDb.allDao().deletePost());
+
+                        for (DocumentChange dc : value.getDocumentChanges()) {
+
+                            String id = dc.getDocument().getId();
+                            data = dc.getDocument().toObject(PostCard.class);
+
+                            Post post = new Post();
+                            post.username = data.getUsername();
+                            post.full_name = data.getName();
+                            post.application_status = data.getApplication_status();
+                            post.category = data.getCategory();
+                            post.email = data.getEmail();
+                            post.bio = data.getBio();
+                            post.image = data.getImage();
+                            post.phone = data.getPhone();
+                            post.pricing = data.getPricing();
+                            post.uid = data.getId();
+                            Boolean postExist = postModel.check4Post(data.getId()); // check if user already exists in db
+
+                            Integer position = 0;
+                            PostCard finalData = data;
+
+                            allPosts.add(post);
+
+//                            switch (dc.getType()) {
+//                                case ADDED:
+//                                    if(!postExist){
+//                                    }
+//                                    break;
+//                                case MODIFIED:
+////                                    allPosts.set(position, post);
+////                                    Log.d("JemaTag", position.toString());
+////                                    Log.d("JemaTag", allPosts.get(position).username);
+//                                    break;
+//                                case REMOVED:
+//                                    allPosts.remove(Integer.parseInt(id));
+//                                    break;
+//                            }
+                        }
+                        postModel.insertPosts(allPosts);
+                    }
+                });
+    }
 }

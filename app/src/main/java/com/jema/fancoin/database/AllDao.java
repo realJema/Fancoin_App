@@ -9,7 +9,7 @@ import androidx.room.Query;
 import java.util.List;
 
 @Dao
-public interface UserDao {
+public interface AllDao {
 
     @Query("SELECT * FROM user")
     List<User> getAllUsers();
@@ -40,4 +40,20 @@ public interface UserDao {
 
     @Query("DELETE FROM User")
     void delete();
+
+
+//    add posts data
+
+    @Insert
+    void insertPost(Post post);
+
+    @Insert
+    void insertPosts(List<Post> posts);
+    @Query("SELECT * FROM post  WHERE uid == :uuid")
+    List<User> check4Post(String uuid);
+    @Query("DELETE FROM Post")
+    void deletePost();
+
+    @Query("SELECT * FROM post")
+    LiveData<Post> getAllPosts();
 }

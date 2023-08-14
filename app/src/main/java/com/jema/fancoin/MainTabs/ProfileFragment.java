@@ -1,15 +1,6 @@
 package com.jema.fancoin.MainTabs;
 
-import static android.content.Context.MODE_PRIVATE;
-import static com.jema.fancoin.Home.SHARED_PREFS;
-import static com.jema.fancoin.Home.UBIO;
-import static com.jema.fancoin.Home.UFOLLOWERS;
-import static com.jema.fancoin.Home.UFOLLOWING;
-import static com.jema.fancoin.Home.UIMAGE;
-import static com.jema.fancoin.Home.UNAME;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -127,14 +118,6 @@ public class ProfileFragment extends Fragment {
         requestsPage = (Button) rootView.findViewById(R.id.profile_requests);
         videosFeed = (RecyclerView) rootView.findViewById(R.id.profile_videos_feed);
 
-
-        SharedPreferences mySharedPreferences = getActivity().getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        String myusername = mySharedPreferences.getString(UNAME, "username");
-        String mybio = mySharedPreferences.getString(UBIO, null);
-        String myimage = mySharedPreferences.getString(UIMAGE, null);
-        String myfollowersnum = mySharedPreferences.getString(UFOLLOWERS, "0");
-        String myfollowingnum = mySharedPreferences.getString(UFOLLOWING, "0");
-
         viewModel = new ViewModelProvider(this).get(UserViewModel.class);
         viewModel.getUserInfo().observe(getViewLifecycleOwner(), new Observer<User>() {
             @Override
@@ -142,6 +125,17 @@ public class ProfileFragment extends Fragment {
                 if (user.username != null) {
                     username.setText("@".concat(user.username));
                     usernametop.setText("@".concat(user.username));
+
+                    if(user.bio.equalsIgnoreCase("")){
+                        bio.setText("(no bio, update in settings)");
+                    } else {
+                        bio.setText(user.bio);
+                    }
+
+                    Picasso.get().load(user.image).into(pp);
+                    followers.setText(user.followers);
+                    following.setText(user.following);
+
                 } else {
                     username.setText("@".concat("empty"));
                     usernametop.setText("@".concat("empty"));
@@ -149,15 +143,6 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
-
-        if(mybio.equalsIgnoreCase("")){
-            bio.setText("(no bio, update in settings)");
-        } else {
-            bio.setText(mybio);
-        }
-        Picasso.get().load(myimage).into(pp);
-        followers.setText(myfollowersnum);
-        following.setText(myfollowingnum);
 
 
 //        videosFeed.setHasFixedSize(true);

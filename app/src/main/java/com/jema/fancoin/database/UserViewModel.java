@@ -19,7 +19,7 @@ public class UserViewModel extends AndroidViewModel {
 
         appDatabase = AppDatabase.getDbInstance(this.getApplication());
 
-        userInfo = appDatabase.userDao().getUserInfo();
+        userInfo = appDatabase.allDao().getUserInfo();
     }
 
 
@@ -28,21 +28,68 @@ public class UserViewModel extends AndroidViewModel {
     }
 
     public Boolean check4User() {
-        List<User> userExist = appDatabase.userDao().check4User();
-        if(userExist.size() != 0){
-            return true;
+        try {
+            List<User> userExist = appDatabase.allDao().check4User();
+            if(userExist.size() != 0){
+                return true;
+            }
+            return false;
+        } catch (Exception e){
+
+            return false;
         }
-        return false;
     }
 
     public void delete(User user) {
         new deleteAsyncTask(appDatabase).execute(user);
     }
 
+    public void updateUsername(String username) {
+        new updateNameAsyncTask(appDatabase).execute(username);
+    }
+
+    public void updateImage(String image) {
+        new updateImageAsyncTask(appDatabase).execute(image);
+    }
+
     public void updateUser(String uname, String ufullname, String uemail) {
         new updateUserAsyncTask(appDatabase).execute(uname, ufullname, uemail);
     }
 
+    private static class updateNameAsyncTask extends AsyncTask<User, Void, Void> {
+
+        private AppDatabase db;
+
+        updateNameAsyncTask(AppDatabase appDatabase) {
+            db = appDatabase;
+        }
+
+        public void execute(String username) {
+            db.allDao().updateImage(username);
+        }
+
+        @Override
+        protected Void doInBackground(User... users) {
+            return null;
+        }
+    }
+    private static class updateImageAsyncTask extends AsyncTask<User, Void, Void> {
+
+        private AppDatabase db;
+
+        updateImageAsyncTask(AppDatabase appDatabase) {
+            db = appDatabase;
+        }
+
+        public void execute(String image) {
+            db.allDao().updateImage(image);
+        }
+
+        @Override
+        protected Void doInBackground(User... users) {
+            return null;
+        }
+    }
     private static class updateUserAsyncTask extends AsyncTask<User, Void, Void> {
 
         private AppDatabase db;
@@ -53,12 +100,12 @@ public class UserViewModel extends AndroidViewModel {
 
         @Override
         protected Void doInBackground(final User... params) {
-            db.userDao().delete(params[0]);
+            db.allDao().delete(params[0]);
             return null;
         }
 
         public void execute(String uname, String ufullname, String uemail) {
-            db.userDao().updateUser(uname, ufullname, uemail);
+            db.allDao().updateUser(uname, ufullname, uemail);
         }
     }
     private static class deleteAsyncTask extends AsyncTask<User, Void, Void> {
@@ -71,7 +118,7 @@ public class UserViewModel extends AndroidViewModel {
 
         @Override
         protected Void doInBackground(final User... params) {
-            db.userDao().delete(params[0]);
+            db.allDao().delete(params[0]);
             return null;
         }
 

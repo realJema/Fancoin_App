@@ -5,7 +5,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class User {
+public class Post {
 
     @PrimaryKey(autoGenerate = true)
     public int id;
@@ -29,12 +29,8 @@ public class User {
     public String pricing;
     @ColumnInfo(name = "uid")
     public String uid;
-    @ColumnInfo(name = "followers")
-    public String followers;
-    @ColumnInfo(name = "following")
-    public String following;
 
-    public User(int id, String username, String full_name, String application_status, String category, String email, String bio, String image, String phone, String pricing, String uid, String followers, String following) {
+    public Post(int id, String username, String full_name, String application_status, String category, String email, String bio, String image, String phone, String pricing, String uid) {
         this.id = id;
         this.username = username;
         this.full_name = full_name;
@@ -46,11 +42,9 @@ public class User {
         this.phone = phone;
         this.pricing = pricing;
         this.uid = uid;
-        this.followers = followers;
-        this.following = following;
     }
 
-    public User() {
+    public Post() {
 
     }
 }
