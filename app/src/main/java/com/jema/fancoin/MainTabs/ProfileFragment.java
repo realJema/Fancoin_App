@@ -21,6 +21,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,6 +38,8 @@ import com.jema.fancoin.AdminActivity;
 import com.jema.fancoin.R;
 import com.jema.fancoin.RequestsActivity;
 import com.jema.fancoin.SettingsActivity.SettingsActivity;
+import com.jema.fancoin.database.User;
+import com.jema.fancoin.database.UserViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -64,6 +68,8 @@ public class ProfileFragment extends Fragment {
     private ImageView pp;
     private TextView username, usernametop, noVideos, bio, followers, following, requests, requestsBtnText, myOrdersBtnText;
     private FirebaseFirestore db;
+
+    private UserViewModel viewModel;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -129,9 +135,20 @@ public class ProfileFragment extends Fragment {
         String myfollowersnum = mySharedPreferences.getString(UFOLLOWERS, "0");
         String myfollowingnum = mySharedPreferences.getString(UFOLLOWING, "0");
 
+        viewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        viewModel.getUserInfo().observe(getViewLifecycleOwner(), new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                if (user.username != null) {
+                    username.setText("@".concat(user.username));
+                    usernametop.setText("@".concat(user.username));
+                } else {
+                    username.setText("@".concat("empty"));
+                    usernametop.setText("@".concat("empty"));
 
-        username.setText("@".concat(myusername));
-        usernametop.setText("@".concat(myusername));
+                }
+            }
+        });
 
         if(mybio.equalsIgnoreCase("")){
             bio.setText("(no bio, update in settings)");

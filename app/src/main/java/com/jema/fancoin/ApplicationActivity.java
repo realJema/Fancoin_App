@@ -1,18 +1,7 @@
 package com.jema.fancoin;
 
-import static com.jema.fancoin.Home.SHARED_PREFS;
-import static com.jema.fancoin.Home.UAPPLICATION_STATUS;
-import static com.jema.fancoin.Home.UEMAIL;
-import static com.jema.fancoin.Home.UIMAGE;
-import static com.jema.fancoin.Home.UNAME;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,12 +9,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.jema.fancoin.SettingsActivity.SettingsAccountInformationActivity;
-import com.jema.fancoin.SettingsActivity.SettingsActivity;
+import com.jema.fancoin.database.User;
+import com.jema.fancoin.database.UserViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -38,6 +32,8 @@ public class ApplicationActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseFirestore db;
 
+    private UserViewModel viewModel;
+    String myName, myPP;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,16 +53,25 @@ public class ApplicationActivity extends AppCompatActivity {
         submit = findViewById(R.id.apply_submit_btn);
         pp = findViewById(R.id.application_profile_image);
 
-        SharedPreferences mySharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        SharedPreferences.Editor editor = mySharedPreferences.edit();
-        String myName = mySharedPreferences.getString(UNAME, null);
-        String myEmail = mySharedPreferences.getString(UEMAIL, null);
-        String myPP = mySharedPreferences.getString(UIMAGE, null);
+        viewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        viewModel.getUserInfo().observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                if (user.username != null) {
+//        setting elements in drawer
+                    name.setText(user.full_name);
+                    email.setText(user.email);
+                    Picasso.get().load(user.image).into(pp);
 
-        name.setText(myName);
-        email.setText(myEmail);
-
-        Picasso.get().load(myPP).into(pp);
+                    myName = user.full_name;
+                    myPP = user.image;
+                } else {
+                    name.setText("empty");
+                    email.setText("empty");
+//                    Picasso.get().load(user.image).into(draw_pp); // put local image
+                }
+            }
+        });
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,9 +94,6 @@ public class ApplicationActivity extends AppCompatActivity {
                     db.collection("Users").document(auth.getCurrentUser().getUid()).update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            editor.putString(UAPPLICATION_STATUS, "pending");
-                            editor.commit(); // persist the values
-
                             Toast.makeText(ApplicationActivity.this, "Application Submitted", Toast.LENGTH_SHORT).show();
                             Intent myIntent = new Intent(ApplicationActivity.this, ApplicationSuccessActivity.class);
                             myIntent.putExtra("name", myName);
@@ -102,7 +104,6 @@ public class ApplicationActivity extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-
                             Toast.makeText(ApplicationActivity.this, "Unable to Submit", Toast.LENGTH_SHORT).show();
                         }
                     });

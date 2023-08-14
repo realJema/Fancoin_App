@@ -1,5 +1,6 @@
 package com.jema.fancoin.database;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -12,9 +13,11 @@ public interface UserDao {
 
     @Query("SELECT * FROM user")
     List<User> getAllUsers();
+    @Query("SELECT * FROM user  WHERE id == 1")
+    List<User> check4User();
 
-    @Query("SELECT EXISTS(SELECT * FROM user WHERE uid = :uuid)")
-    Boolean isExists(String uuid);
+    @Query("SELECT * FROM user")
+    LiveData<User> getUserInfo();
 
     @Insert
     void insertUser(User user);
@@ -25,6 +28,6 @@ public interface UserDao {
     @Delete
     void delete(User user);
 
-    @Query("UPDATE User SET username = :uname, full_name = :ufullname, email = :uemail WHERE uid = :uuid")
-    void updateUser(String uname, String ufullname, String uemail, String uuid);
+    @Query("UPDATE User SET username = :uname, full_name = :ufullname, email = :uemail WHERE id == 1")
+    void updateUser(String uname, String ufullname, String uemail);
 }

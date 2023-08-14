@@ -2,6 +2,7 @@ package com.jema.fancoin;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -18,6 +19,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.room.Room;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,6 +35,9 @@ import com.jema.fancoin.MainTabs.FollowingFragment;
 import com.jema.fancoin.MainTabs.HomeFragment;
 import com.jema.fancoin.MainTabs.InboxFragment;
 import com.jema.fancoin.MainTabs.ProfileFragment;
+import com.jema.fancoin.database.AppDatabase;
+import com.jema.fancoin.database.User;
+import com.jema.fancoin.database.UserViewModel;
 import com.jema.fancoin.databinding.ActivityHomeBinding;
 import com.squareup.picasso.Picasso;
 
@@ -65,12 +72,18 @@ public class Home extends AppCompatActivity {
     String applicationStat = "default";
     private FirebaseAuth firebaseAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
+    AppDatabase localDb;
+
+    private UserViewModel viewModel;
+    private Boolean applied = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        localDb = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "Fancoin_DB").build();
 
 //        changing the theme and language to match the user's configs
         LanguageManager lang = new LanguageManager(this);
@@ -78,12 +91,6 @@ public class Home extends AppCompatActivity {
 
         lang.updateResource(lang.getLang());
         theme.updateTheme(theme.getTheme());
-
-        SharedPreferences mySharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        SharedPreferences.Editor editor = mySharedPreferences.edit();
-        String myName = mySharedPreferences.getString(UNAME, null);
-        String myEmail = mySharedPreferences.getString(UEMAIL, null);
-        String myPP = mySharedPreferences.getString(UIMAGE, null);
 
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -127,7 +134,6 @@ public class Home extends AppCompatActivity {
         });
 
 
-
         navigationView = findViewById(R.id.navigation_view);
         drawerLayout = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.toolbar);
@@ -140,33 +146,52 @@ public class Home extends AppCompatActivity {
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.colorAccent));
 
         navigationView.getMenu().getItem(0).setChecked(true);
-        TextView draw_name =  (TextView) navigationView.getHeaderView(0).findViewById(R.id.drawer_name);
-        TextView draw_email =  (TextView) navigationView.getHeaderView(0).findViewById(R.id.drawer_email);
-        ImageView draw_pp =  (ImageView) navigationView.getHeaderView(0).findViewById(R.id.drawer_pp);
+        TextView draw_name = (TextView) navigationView.getHeaderView(0).findViewById(R.id.drawer_name);
+        TextView draw_email = (TextView) navigationView.getHeaderView(0).findViewById(R.id.drawer_email);
+        ImageView draw_pp = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.drawer_pp);
         applyItem = (MenuItem) navigationView.getMenu().findItem(R.id.applyPage);
 
-
-
+        viewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        viewModel.getUserInfo().observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                if (user.username != null) {
 //        setting elements in drawer
-        draw_name.setText(myName);
-        draw_email.setText(myEmail);
+                    draw_name.setText(user.full_name);
+                    draw_email.setText(user.email);
+                    Picasso.get().load(user.image).into(draw_pp);
+                } else {
+                    draw_name.setText("empty");
+                    draw_email.setText("empty");
+//                    Picasso.get().load(user.image).into(draw_pp); // put local image
 
-        Picasso.get().load(myPP).into(draw_pp);
+                }
+
+                if(user.application_status.equalsIgnoreCase("confirmed")){
+                    applyItem.setTitle("Application Confirmed");
+                    applied = true;
+                } else if (user.application_status.equalsIgnoreCase("pending")){
+                    applyItem.setTitle("Application Pending");
+                    applied = true;
+                }
+            }
+        });
+
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.walletPage:
                         Intent i = new Intent(Home.this, WalletActivity.class);
                         startActivity(i);
                         break;
                     case R.id.applyPage:
-                        if(statusApplication.equalsIgnoreCase("pending")){
+                        if (applied) {
                             Toast.makeText(Home.this, "Application Submitted", Toast.LENGTH_SHORT).show();
-                            finish();
                             break;
                         }
+
                         Intent j = new Intent(Home.this, ApplicationActivity.class);
                         startActivity(j);
                         break;
@@ -195,12 +220,13 @@ public class Home extends AppCompatActivity {
 
     }
 
-    private void replaceFragment(Fragment fragment){
+    private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayout,fragment);
+        fragmentTransaction.replace(R.id.frameLayout, fragment);
         fragmentTransaction.commit();
     }
+
     public void UserDataListener() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -215,29 +241,52 @@ public class Home extends AppCompatActivity {
                 }
 
                 String temp_username = value.getString("username");
-                String temp_fullname = value.getString("name");
-                String temp_status = value.getString("application_status");
+                String temp_full_name = value.getString("name");
+                String temp_application_status = value.getString("application_status");
                 String temp_bio = value.getString("bio");
                 String temp_category = value.getString("category");
                 String temp_email = value.getString("email");
                 String temp_phone = value.getString("phone");
                 String temp_pricing = value.getString("pricing");
-                String temp_id = value.getString("id");
+                String temp_uid = value.getString("id");
                 String temp_image = value.getString("image");
                 List<String> myFollowers = (List<String>) value.get("followers");
                 List<String> myFollowing = (List<String>) value.get("following");
 
-                if (temp_id != null) {
-                    editor.putString(UID, temp_id);
+                User theUser = new User();
+
+                theUser.username = temp_username;
+                theUser.full_name = temp_full_name;
+                theUser.application_status = temp_application_status;
+                theUser.category = temp_category;
+                theUser.email = temp_email;
+                theUser.bio = temp_bio;
+                theUser.image = temp_image;
+                theUser.phone = temp_phone;
+                theUser.pricing = temp_pricing;
+                theUser.uid = temp_uid;
+//                AsyncTask.execute(() -> Log.d("JemaTag", String.valueOf(viewModel.check4User(temp_uid))));
+//                AsyncTask.execute(() -> localDb.userDao().insertUser(theUser));
+
+                Boolean result = viewModel.check4User(); // check if user already exists in db
+                if(result){
+                    viewModel.updateUser(temp_username, temp_full_name, temp_email);
+                } else {
+                    AsyncTask.execute(() -> localDb.userDao().insertUser(theUser));
+                }
+
+
+                if (temp_uid != null) {
+                    editor.putString(UID, temp_uid);
                 }
                 if (temp_username != null) {
                     editor.putString(UNAME, temp_username);
                 }
-                if (temp_fullname != null) {
-                    editor.putString(UFULLNAME, temp_fullname);
+                if (temp_full_name != null) {
+                    editor.putString(UFULLNAME, temp_full_name);
                 }
-                if (temp_status != null) {
-                    editor.putString(UAPPLICATION_STATUS, temp_status);
+                if (temp_application_status != null) {
+                    editor.putString(UAPPLICATION_STATUS, temp_application_status);
                 }
                 if (temp_bio != null) {
                     editor.putString(UBIO, temp_bio);
@@ -262,15 +311,14 @@ public class Home extends AppCompatActivity {
                 }
 
 
-                if(myFollowers != null) {
+                if (myFollowers != null) {
                     editor.putString(UFOLLOWERS, String.valueOf(myFollowers.size()));
                 }
-                if(myFollowers != null) {
+                if (myFollowers != null) {
                     editor.putString(UFOLLOWING, String.valueOf(myFollowing.size()));
                 }
                 editor.commit(); // persist the values
 
-                Log.d("JemaTag", "User Data Retrieved");
             }
         });
     }
