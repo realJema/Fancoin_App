@@ -52,8 +52,8 @@ public class UserViewModel extends AndroidViewModel {
         new updateImageAsyncTask(appDatabase).execute(image);
     }
 
-    public void updateUser(String uname, String ufullname, String uemail) {
-        new updateUserAsyncTask(appDatabase).execute(uname, ufullname, uemail);
+    public void updateUser(String username, String full_name, String application_status, String category, String email, String bio, String image, String phone, String pricing, String myfollo, String myfolli){
+        new updateUserAsyncTask(appDatabase).execute(username, full_name, application_status, category, email, bio, image, phone, pricing, myfollo, myfolli);
     }
 
     private static class updateNameAsyncTask extends AsyncTask<User, Void, Void> {
@@ -104,8 +104,8 @@ public class UserViewModel extends AndroidViewModel {
             return null;
         }
 
-        public void execute(String uname, String ufullname, String uemail) {
-            db.allDao().updateUser(uname, ufullname, uemail);
+        public void execute(String username, String full_name, String application_status, String category, String email, String bio, String image, String phone, String pricing, String myfollo, String myfolli) {
+            db.allDao().updateUser(username, full_name, application_status, category, email, bio, image, phone, pricing, myfollo, myfolli);
         }
     }
     private static class deleteAsyncTask extends AsyncTask<User, Void, Void> {

@@ -38,11 +38,13 @@ import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import video.api.client.ApiVideoClient;
-import video.api.client.api.ApiException;
 import video.api.client.api.clients.VideosApi;
-import video.api.client.api.models.Video;
-import video.api.client.api.models.VideoCreationPayload;
 
 public class UploadManager {
     private Context ct;
@@ -64,7 +66,7 @@ public class UploadManager {
         Date now = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yyyy_HH-m-s"); // we change the format to give a valid name string
         String strDate= formatter.format(now);
-        String filename = auth.getCurrentUser().getUid().concat("_" + strDate + ".mp4"); // the name containing the user's id, date formatted and the extension
+        String filename = "showcase_" + auth.getCurrentUser().getUid().concat("_" + strDate   + ".mp4"); // the name containing the user's id, date formatted and the extension
 
 //        String str = DateUtils.getRelativeDateTimeString(UploadVideoActivity.this, now, DateUtils.MINUTE_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, 0);
 
@@ -89,6 +91,32 @@ public class UploadManager {
 
                 @Override
                 public void run() {
+//                    upload to bunnynet cdn
+                    OkHttpClient client = new OkHttpClient();
+
+                    MediaType mediaType = MediaType.parse("application/octet-stream");
+                    RequestBody body = RequestBody.create(mediaType, file);
+                    Request request = new Request.Builder()
+                            .url("https://storage.bunnycdn.com/fancoinapp/showcases/" + filename)
+                            .put(body)
+                            .addHeader("content-type", "application/octet-stream")
+                            .addHeader("AccessKey", "28d255f9-bf88-499c-91efc4205d8a-e9fb-4783")
+                            .build();
+
+                    try {
+                        Response response = client.newCall(request).execute();
+
+                        if(uploadType.equalsIgnoreCase("showcase")){
+                            updateShowcaseList("https://fancoinpull.b-cdn.net/showcases/".concat(filename), documentId);
+                        } else if(uploadType.equalsIgnoreCase("order")){
+                            updateShowcaseList("https://fancoinpull.b-cdn.net/orders/".concat(filename), documentId);
+                        }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+
+/*
                     VideoCreationPayload videoCreationPayload = new VideoCreationPayload();
                     videoCreationPayload.setTitle("Showcase_".concat(auth.getCurrentUser().getUid()));
 
@@ -105,7 +133,7 @@ public class UploadManager {
                         // Manage error here
                         Log.d("JemaTag", "Reason: " + e.getMessage());
                         Log.d("JemaTag", "Response headers: " + e.getResponseHeaders());
-                    }
+                    }*/
                     progressBar.dismiss();
                 }
             });
@@ -492,7 +520,7 @@ public class UploadManager {
         return "com.google.android.apps.docs.storage".equals(uri.getAuthority()) || "com.google.android.apps.docs.storage.legacy".equals(uri.getAuthority());
     }
 
-
+/*
     private void updateShowcaseList(String videoId, String docId) {
         String videoLink = "https://vod.api.video/vod/" + videoId + "/mp4/source.mp4";
 
@@ -507,8 +535,22 @@ public class UploadManager {
                 Toast.makeText(ct, "upload failed!", Toast.LENGTH_SHORT).show();
             }
         });
-    }
+    }*/
 
+
+    private void updateShowcaseList(String videoUrl, String docId) {
+        db.collection("Users").document(docId).update("showcase",  FieldValue.arrayUnion(videoUrl)).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Toast.makeText(ct, "Video Uploaded Successfully!", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(ct, "upload failed!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 
     private void updateOrder(String videoId, String docId) {

@@ -246,27 +246,33 @@ public class Home extends AppCompatActivity {
                 List<String> myFollowers = (List<String>) value.get("followers");
                 List<String> myFollowing = (List<String>) value.get("following");
 
-                User theUser = new User();
+                String myfollo = String.valueOf(myFollowers.size());
+                String myfolli = String.valueOf(myFollowing.size());
 
-                theUser.username = temp_username;
-                theUser.full_name = temp_full_name;
-                theUser.application_status = temp_application_status;
-                theUser.category = temp_category;
-                theUser.email = temp_email;
-                theUser.bio = temp_bio;
-                theUser.image = temp_image;
-                theUser.phone = temp_phone;
-                theUser.pricing = temp_pricing;
-                theUser.uid = temp_uid;
-                theUser.followers = String.valueOf(myFollowers.size());
-                theUser.following = String.valueOf(myFollowing.size());
+
+                Log.d("JemaTag", String.valueOf(myFollowing.size()));
+
 //                AsyncTask.execute(() -> Log.d("JemaTag", String.valueOf(viewModel.check4User(temp_uid))));
 
 
                 Boolean result = viewModel.check4User(); // check if user already exists in db
                 if (result) {
-                    viewModel.updateUser(temp_username, temp_full_name, temp_email);
+                    viewModel.updateUser(temp_username, temp_full_name, temp_application_status, temp_category, temp_email, temp_bio, temp_image, temp_phone, temp_pricing, myfollo, myfolli);
                 } else {
+                    User theUser = new User();
+
+                    theUser.username = temp_username;
+                    theUser.full_name = temp_full_name;
+                    theUser.application_status = temp_application_status;
+                    theUser.category = temp_category;
+                    theUser.email = temp_email;
+                    theUser.bio = temp_bio;
+                    theUser.image = temp_image;
+                    theUser.phone = temp_phone;
+                    theUser.pricing = temp_pricing;
+                    theUser.uid = temp_uid;
+                    theUser.followers = String.valueOf(myFollowers.size());
+                    theUser.following = String.valueOf(myFollowing.size());
                     AsyncTask.execute(() -> localDb.allDao().insertUser(theUser));
                 }
 

@@ -1,8 +1,11 @@
 package com.jema.fancoin.Adapter;
 
+import static android.provider.MediaStore.Video.Thumbnails.MINI_KIND;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +24,8 @@ import androidx.media3.ui.PlayerView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.jema.fancoin.R;
-import com.squareup.picasso.Picasso;
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 
@@ -59,15 +60,16 @@ public class VideoSliderAdapter extends RecyclerView.Adapter<VideoSliderAdapter.
         // get data
         String videoUri = pathsList.get(position);
 
-        String substring1 = "vod/";
-        String substring2 = "/mp4";
-
-        String videoId = StringUtils.substringBetween(videoUri, substring1, substring2);
-        String Thumbnail = "https://vod.api.video/vod/" + videoId + "/thumbnail.jpg";
+//        String substring1 = "vod/";
+//        String substring2 = "/mp4";
+//
+//        String videoId = StringUtils.substringBetween(videoUri, substring1, substring2);
+//        String Thumbnail = "https://vod.api.video/vod/" + videoId + "/thumbnail.jpg";
 
 
         Glide.with(context)
-                .load(Thumbnail)
+                .load(videoUri)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.thumbnailImage);
         holder.simpleExoPlayer = new ExoPlayer.Builder(context).build();
 

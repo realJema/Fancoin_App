@@ -28,8 +28,8 @@ public interface AllDao {
     @Delete
     void delete(User user);
 
-    @Query("UPDATE User SET username = :uname, full_name = :ufullname, email = :uemail WHERE id == 1")
-    void updateUser(String uname, String ufullname, String uemail);
+    @Query("UPDATE User SET username = :username, full_name = :full_name, application_status = :application_status, category = :category, email = :email, bio = :bio, image = :image, phone = :phone, pricing = :pricing, following = :myfolli, followers = :myfollo WHERE id == 1")
+    void updateUser(String username, String full_name, String application_status, String category, String email, String bio, String image, String phone, String pricing, String myfollo, String myfolli);
 
 
     @Query("UPDATE User SET image = :image WHERE id == 1")
