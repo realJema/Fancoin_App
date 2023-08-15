@@ -239,12 +239,13 @@ public class Home extends AppCompatActivity {
                 String temp_bio = value.getString("bio");
                 String temp_category = value.getString("category");
                 String temp_email = value.getString("email");
-                String temp_phone = value.getString("phone");
+                String temp_phone = value.getString("phoneNumber");
                 String temp_pricing = value.getString("pricing");
                 String temp_uid = value.getString("id");
                 String temp_image = value.getString("image");
                 List<String> myFollowers = (List<String>) value.get("followers");
                 List<String> myFollowing = (List<String>) value.get("following");
+
 
                 String myfollo = String.valueOf(myFollowers.size());
                 String myfolli = String.valueOf(myFollowing.size());
@@ -340,4 +341,5 @@ public class Home extends AppCompatActivity {
                     }
                 });
     }
+
 }

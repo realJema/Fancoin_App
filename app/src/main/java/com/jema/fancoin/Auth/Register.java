@@ -1,8 +1,5 @@
 package com.jema.fancoin.Auth;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,6 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -23,6 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.jema.fancoin.R;
 import com.jema.fancoin.UnverifiedEmailActivity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Register extends AppCompatActivity {
@@ -85,14 +86,20 @@ public class Register extends AppCompatActivity {
                 if (task.isSuccessful()) {
 //                    add info to users collection
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                    ArrayList<String> emptyList = new ArrayList<>();
                     HashMap<String , Object> user = new HashMap<>();
                     user.put("name" , name);
+                    user.put("username" , auth.getCurrentUser().getUid());
                     user.put("email", email);
                     user.put("phoneNumber" , phoneNumber);
                     user.put("id", auth.getCurrentUser().getUid());
                     user.put("bio", "");
                     user.put("pricing", "0");
+                    user.put("following", emptyList);
+                    user.put("followers", emptyList);
                     user.put("category", "default");
+                    user.put("application_status", "default");
                     user.put("image" , "https://firebasestorage.googleapis.com/v0/b/fancoin-98406.appspot.com/o/pp%2Fdefault_user.jpg?alt=media&token=4e4ab45d-3650-4969-8fef-27f8d9782278");
 
                     db.collection("Users").document(auth.getCurrentUser().getUid()).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
