@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.jema.fancoin.Auth.Login;
+import com.jema.fancoin.Onboarding.Auth.Login;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         iconImage = findViewById(R.id.icon_image);
 

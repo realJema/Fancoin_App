@@ -26,11 +26,15 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.jema.fancoin.Auth.Login;
-import com.jema.fancoin.MainTabs.FollowingFragment;
-import com.jema.fancoin.MainTabs.HomeFragment;
-import com.jema.fancoin.MainTabs.InboxFragment;
-import com.jema.fancoin.MainTabs.ProfileFragment;
+import com.jema.fancoin.Onboarding.Auth.Login;
+import com.jema.fancoin.HomeTabs.FollowingFragment;
+import com.jema.fancoin.HomeTabs.HomeFragment;
+import com.jema.fancoin.HomeTabs.InboxFragment;
+import com.jema.fancoin.HomeTabs.ProfileFragment;
+import com.jema.fancoin.UserProfile.UserApplicationActivity;
+import com.jema.fancoin.Utils.LanguageManager;
+import com.jema.fancoin.Utils.ThemeManager;
+import com.jema.fancoin.Wallet.WalletActivity;
 import com.jema.fancoin.databinding.ActivityHomeBinding;
 import com.squareup.picasso.Picasso;
 
@@ -167,7 +171,7 @@ public class Home extends AppCompatActivity {
                             finish();
                             break;
                         }
-                        Intent j = new Intent(Home.this, ApplicationActivity.class);
+                        Intent j = new Intent(Home.this, UserApplicationActivity.class);
                         startActivity(j);
                         break;
                     case R.id.sign_out:

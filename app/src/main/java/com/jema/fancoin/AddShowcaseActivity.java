@@ -19,6 +19,7 @@ import androidx.media3.ui.PlayerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.jema.fancoin.Utils.UploadManager;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

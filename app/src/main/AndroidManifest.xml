@@ -24,10 +24,10 @@
             android:name=".ActionSuccessActivity"
             android:exported="false" />
         <activity
-            android:name=".WatchVideoActivity"
+            android:name=".Utils.WatchVideoActivity"
             android:exported="false" />
         <activity
-            android:name=".Auth.ForgotPassActivity"
+            android:name=".Onboarding.Auth.ForgotPassActivity"
             android:exported="false" />
         <activity
             android:name=".UnverifiedEmailActivity"
@@ -36,64 +36,64 @@
             android:name=".AddShowcaseActivity"
             android:exported="false" />
         <activity
-            android:name=".UploadVideoActivity"
+            android:name=".Utils.UploadVideoActivity"
             android:exported="false" />
         <activity
-            android:name=".OrderReplyActivity"
+            android:name=".Order.OrderReplyActivity"
             android:exported="false" />
         <activity
-            android:name=".UserAdministrationActivity"
+            android:name=".UserProfile.Admin.UserAdministrationActivity"
             android:exported="false" />
         <activity
-            android:name=".AdminActivity"
+            android:name=".UserProfile.Admin.AdminActivity"
             android:exported="false" />
         <activity
-            android:name=".MyOrdersActivity"
+            android:name=".Order.MyOrdersActivity"
             android:exported="false" />
         <activity
-            android:name=".RequestsActivity"
+            android:name=".UserProfile.RequestsActivity"
             android:exported="false" />
         <activity
-            android:name=".OrderDetailsActivity"
+            android:name=".Order.OrderDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".ApplicationSuccessActivity"
+            android:name=".UserProfile.UserApplicationSuccessActivity"
             android:exported="false" />
         <activity
-            android:name=".SuccessOrderActivity"
+            android:name=".Order.SuccessOrderActivity"
             android:exported="false" />
         <activity
-            android:name=".OrderVideoActivity"
+            android:name=".Order.OrderVideoActivity"
             android:exported="false" />
         <activity
-            android:name=".ApplicationActivity"
+            android:name=".UserProfile.UserApplicationActivity"
             android:exported="false" />
         <activity
-            android:name=".WalletActivity"
+            android:name=".Wallet.WalletActivity"
             android:exported="false" />
         <activity
-            android:name=".SettingsActivity.SettingsThemeActivity"
+            android:name=".UserProfile.SettingsActivity.SettingsThemeActivity"
             android:exported="false" />
         <activity
-            android:name=".SettingsActivity.SettingsLanguageActivity"
+            android:name=".UserProfile.SettingsActivity.SettingsLanguageActivity"
             android:exported="false" />
         <activity
-            android:name=".SettingsActivity.SettingsPhoneActivity"
+            android:name=".UserProfile.SettingsActivity.SettingsPhoneActivity"
             android:exported="false" />
         <activity
-            android:name=".SettingsActivity.SettingsEmailActivity"
+            android:name=".UserProfile.SettingsActivity.SettingsEmailActivity"
             android:exported="false" />
         <activity
-            android:name=".SettingsActivity.SettingsManageVideosActivity"
+            android:name=".UserProfile.SettingsActivity.SettingsManageVideosActivity"
             android:exported="false" />
         <activity
-            android:name=".SettingsActivity.SettingsAccountInformationActivity"
+            android:name=".UserProfile.SettingsActivity.SettingsAccountInformationActivity"
             android:exported="false" />
         <activity
-            android:name=".SettingsActivity.SettingsProfileActivity"
+            android:name=".UserProfile.SettingsActivity.SettingsProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".SettingsActivity.SettingsActivity"
+            android:name=".UserProfile.SettingsActivity.SettingsActivity"
             android:exported="false" />
         <activity
             android:name=".PostDetails"
@@ -102,10 +102,10 @@
             android:name=".Home"
             android:exported="false" />
         <activity
-            android:name=".Auth.Register"
+            android:name=".Onboarding.Auth.Register"
             android:exported="false" />
         <activity
-            android:name=".Auth.Login"
+            android:name=".Onboarding.Auth.Login"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

@@ -2,9 +2,6 @@ package com.jema.fancoin.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.icu.text.RelativeDateTimeFormatter;
-import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,21 +12,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jema.fancoin.Model.OrderModel;
-import com.jema.fancoin.OrderDetailsActivity;
-import com.jema.fancoin.PostDetails;
+import com.jema.fancoin.Order.OrderDetailsActivity;
 import com.jema.fancoin.R;
 import com.squareup.picasso.Picasso;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
 
