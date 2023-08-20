@@ -92,11 +92,11 @@ public class OrderVideoActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if(recipient.getText().toString().matches("") ){
-                    Toast.makeText(OrderVideoActivity.this,"Please Input Recipient and Description",Toast.LENGTH_LONG).show();
+                    Toast.makeText(OrderVideoActivity.this, R.string.order_recipient_and_description,Toast.LENGTH_LONG).show();
                     return;
                 }
                 if( description.getText().toString().matches("")){
-                    Toast.makeText(OrderVideoActivity.this,"Please Input Recipient and Description",Toast.LENGTH_LONG).show();
+                    Toast.makeText(OrderVideoActivity.this,R.string.order_recipient_and_description,Toast.LENGTH_LONG).show();
                     return;
                 }
                 showDialog();
@@ -163,7 +163,7 @@ public class OrderVideoActivity extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(OrderVideoActivity.this, "Unable to send, Try again", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OrderVideoActivity.this, R.string.unable_to_send_order, Toast.LENGTH_SHORT).show();
                     }
                 });
 

@@ -58,7 +58,7 @@ public class ForgotPassActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                resetBtn.setText("Sending Email...");
+                resetBtn.setText(R.string.sending_email_text);
                 emailBox.setError("");
                 emailBox.setErrorEnabled(false);
 
@@ -72,19 +72,19 @@ public class ForgotPassActivity extends AppCompatActivity {
                             emailBox.setVisibility(View.GONE);
                             resetBtn.setVisibility(View.GONE);
                             checkMark.setVisibility(View.VISIBLE);
-                            subtitle.setText("Your reset link has been sent to your email, verify your inbox");
-                            Toast.makeText(ForgotPassActivity.this, "Reset Link sent", Toast.LENGTH_SHORT).show();
+                            subtitle.setText(R.string.reset_link_message);
+                            Toast.makeText(ForgotPassActivity.this, R.string.reset_link_sent, Toast.LENGTH_SHORT).show();
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(ForgotPassActivity.this, "User doesn't exist, try again ", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ForgotPassActivity.this, R.string.user_doesnt_exist_forgotpass, Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
                     emailBox.setError("Invalid Email");
                     emailBox.setErrorEnabled(true);
-                    Toast.makeText(ForgotPassActivity.this, "Invalid Email", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ForgotPassActivity.this, R.string.invalid_email_text, Toast.LENGTH_SHORT).show();
                     return;
                 }
             }

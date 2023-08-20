@@ -25,7 +25,7 @@ public class Login extends AppCompatActivity {
 
     private Button signIn;
     private EditText email, password;
-    private TextView forgoetPass;
+    private TextView forgotPass;
     private FirebaseAuth auth;
 
     @Override
@@ -49,9 +49,9 @@ public class Login extends AppCompatActivity {
         email = findViewById(R.id.mailSignIn);
         password = findViewById(R.id.passwordSignIn);
         signIn = findViewById(R.id.signInBtn);
-        forgoetPass = findViewById(R.id.redirectForgotPass);
+        forgotPass = findViewById(R.id.redirectForgotPass);
 
-        forgoetPass.setOnClickListener(new View.OnClickListener() {
+        forgotPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Login.this, ForgotPassActivity.class);
@@ -66,9 +66,9 @@ public class Login extends AppCompatActivity {
                 String txt_password = password.getText().toString();
 
                 if(TextUtils.isEmpty(txt_email) || TextUtils.isEmpty(txt_password)){
-                    Toast.makeText(Login.this, "Empty Credentials!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Login.this, R.string.empty_credentials, Toast.LENGTH_LONG).show();
                 } else if (txt_password.length() < 6) {
-                    Toast.makeText(Login.this, "Password too short", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, R.string.password_too_short, Toast.LENGTH_SHORT).show();
                 } else {
                     singInUser(txt_email, txt_password);
                 }
@@ -77,7 +77,7 @@ public class Login extends AppCompatActivity {
     }
 
     private void singInUser(String email, String password) {
-        signIn.setText("Signing In...");
+        signIn.setText(R.string.signing_in_text_loading);
         auth.signInWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
@@ -85,13 +85,13 @@ public class Login extends AppCompatActivity {
                 Boolean isEmailVerified = authResult.getUser().isEmailVerified();
 
                 if(isEmailVerified){
-                    Toast.makeText(Login.this, "Sign In Successful!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, R.string.sign_in_successful_message, Toast.LENGTH_SHORT).show();
                     Intent myIntent = new Intent(Login.this, Home.class);
                     startActivity(myIntent);
                     finish();
 
                 } else {
-                    Toast.makeText(Login.this, "Verify your email", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, R.string.verify_your_email_text, Toast.LENGTH_SHORT).show();
 //                    Intent myIntent = new Intent(Login.this, Home.class);
                     Intent myIntent = new Intent(Login.this, UnverifiedEmailActivity.class);
                     startActivity(myIntent);
@@ -101,10 +101,10 @@ public class Login extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(Login.this, "Sign In Failed!, please verify credentials", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Login.this, R.string.verify_credentials_signin, Toast.LENGTH_SHORT).show();
 
                 Log.d("JemaTag", e.getMessage());
-                signIn.setText("Sign In");
+                signIn.setText(R.string.sign_in);
             }
         });
     }

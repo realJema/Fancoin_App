@@ -32,7 +32,7 @@ public class SuccessOrderActivity extends AppCompatActivity {
         name = i.getStringExtra("name");
         image = i.getStringExtra("image");
 
-        title.setText("Order Successful to ".concat(name));
+        title.setText(getString(R.string.order_successful_to).concat(name));
         Picasso.get().load(image).into(pp);
 
         backBtn.setOnClickListener(new View.OnClickListener() {

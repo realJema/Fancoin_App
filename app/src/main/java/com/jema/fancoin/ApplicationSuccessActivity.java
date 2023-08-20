@@ -32,7 +32,7 @@ public class ApplicationSuccessActivity extends AppCompatActivity {
 
 
         Picasso.get().load(image).into(pp);
-        title.setText("Application Submitted for ".concat(name));
+        title.setText(getString(R.string.application_submitted_for).concat(name));
 
 
         backBtn.setOnClickListener(new View.OnClickListener() {

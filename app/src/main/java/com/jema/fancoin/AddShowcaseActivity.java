@@ -88,7 +88,7 @@ public class AddShowcaseActivity extends AppCompatActivity {
 //                    finish();
                 }
                 else {
-                    Toast.makeText(AddShowcaseActivity.this, "Choose Valid Video", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddShowcaseActivity.this, R.string.choose_valid_video, Toast.LENGTH_SHORT).show();
 
                 }
             }

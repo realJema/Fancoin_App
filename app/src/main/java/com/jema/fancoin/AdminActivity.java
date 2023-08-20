@@ -78,7 +78,7 @@ public class AdminActivity extends AppCompatActivity {
                         if(error != null) {
 //                            if(progressDialog.isShowing())
 //                                progressDialog.dismiss();
-                            Log.i("JemaTag", "error gettting data");
+                            Log.i("JemaTag", getString(R.string.error_getting_data));
                             return;
                         }
 

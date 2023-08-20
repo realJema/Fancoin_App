@@ -64,11 +64,11 @@ public class Register extends AppCompatActivity {
 
 
                 if(TextUtils.isEmpty(txt_email) || TextUtils.isEmpty(txt_password)){
-                    Toast.makeText(Register.this, "Empty Credentials!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Register.this, R.string.empty_credentials, Toast.LENGTH_SHORT).show();
                 } else if (txt_password.length() < 6) {
-                    Toast.makeText(Register.this, "Password too short", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Register.this, R.string.password_too_short, Toast.LENGTH_SHORT).show();
                 } else if (txt_phoneNumber.length() < 6) {
-                    Toast.makeText(Register.this, "Phone Number too short", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Register.this, R.string.phone_number_too_short, Toast.LENGTH_SHORT).show();
                 } else {
                     registerUser(txt_email, txt_password, txt_name, txt_phoneNumber);
                 }

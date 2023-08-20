@@ -93,13 +93,13 @@ public class UploadVideoActivity extends AppCompatActivity {
 //                    finish();
 
                     Intent myIntent = new Intent(UploadVideoActivity.this, ActionSuccessActivity.class);
-                    myIntent.putExtra("title", "You replied to ".concat(client_name));
-                    myIntent.putExtra("subtitle", "Your video was uploaded successfully");
+                    myIntent.putExtra("title", getString(R.string.you_replied_to).concat(client_name));
+                    myIntent.putExtra("subtitle",  R.string.video_uploaded_successfully);
                     myIntent.putExtra("image", star_image);
                     startActivity(myIntent);
                 }
                 else {
-                    Toast.makeText(UploadVideoActivity.this, "Choose Valid Video", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UploadVideoActivity.this, R.string.choose_valid_video, Toast.LENGTH_SHORT).show();
 
                 }
             }

@@ -117,11 +117,11 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 if(videoUrl != null && !videoUrl.equalsIgnoreCase("")){
                     personalized_video = videoUrl;
                     bottomTitle.setText(star_name.concat(" replied"));
-                    bottomSubtitle.setText("Your personallized video from ".concat(star_name).concat(" is ready!"));
+                    bottomSubtitle.setText(getString(R.string.your_personallized_video_from).concat(star_name).concat(getString(R.string.personalise_video_is_ready)));
                     bottomBtn.setVisibility(View.VISIBLE);
                 } else {
-                    bottomTitle.setText(star_name.concat(" has not replied to you yet"));
-                    bottomSubtitle.setText("Waiting for ".concat(star_name).concat(" to reply!"));
+                    bottomTitle.setText(star_name.concat(getString(R.string.star_hasnt_replied)));
+                    bottomSubtitle.setText(getString(R.string.waiting_for_star).concat(star_name).concat(getString(R.string.star_to_reply)));
                     bottomBtn.setVisibility(View.GONE);
                 }
             }

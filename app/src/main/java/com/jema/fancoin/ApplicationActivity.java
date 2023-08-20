@@ -77,7 +77,7 @@ public class ApplicationActivity extends AppCompatActivity {
                 String uSocial = social.getSelectedItem().toString();
 
                 if (uUseranme.equalsIgnoreCase("") || ufollowers.equalsIgnoreCase("") || uCategory.equalsIgnoreCase("Select a Category") || uSocial.equalsIgnoreCase("Select a Social Media")){
-                    Toast.makeText(ApplicationActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ApplicationActivity.this, R.string.please_fill_all_fields_form, Toast.LENGTH_SHORT).show();
                 } else {
                     HashMap<String , Object> user = new HashMap<>();
                     user.put("application_username" , uUseranme);
@@ -92,7 +92,7 @@ public class ApplicationActivity extends AppCompatActivity {
                             editor.putString(UAPPLICATION_STATUS, "pending");
                             editor.commit(); // persist the values
 
-                            Toast.makeText(ApplicationActivity.this, "Application Submitted", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ApplicationActivity.this, R.string.application_submitted, Toast.LENGTH_SHORT).show();
                             Intent myIntent = new Intent(ApplicationActivity.this, ApplicationSuccessActivity.class);
                             myIntent.putExtra("name", myName);
                             myIntent.putExtra("image", myPP);
@@ -103,7 +103,7 @@ public class ApplicationActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
 
-                            Toast.makeText(ApplicationActivity.this, "Unable to Submit", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ApplicationActivity.this, R.string.unable_to_submit_form, Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

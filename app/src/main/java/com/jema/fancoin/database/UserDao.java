@@ -10,12 +10,6 @@ import java.util.List;
 @Dao
 public interface UserDao {
 
-    @Query("SELECT * FROM user")
-    List<User> getAllUsers();
-
-    @Query("SELECT EXISTS(SELECT * FROM user WHERE uid = :uuid)")
-    Boolean isExists(String uuid);
-
     @Insert
     void insertUser(User user);
 
@@ -27,4 +21,11 @@ public interface UserDao {
 
     @Query("UPDATE User SET username = :uname, full_name = :ufullname, email = :uemail WHERE uid = :uuid")
     void updateUser(String uname, String ufullname, String uemail, String uuid);
+
+    @Query("SELECT * FROM user")
+    List<User> getAllUsers();
+
+    @Query("SELECT EXISTS(SELECT * FROM user WHERE uid = :uuid)")
+    Boolean isExists(String uuid);
+
 }

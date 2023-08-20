@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         iconImage = findViewById(R.id.icon_image);
 
         TranslateAnimation animation = new TranslateAnimation(0 , 0 , 0 , -700);
-        animation.setDuration(5000);
+        animation.setDuration(3000);
         animation.setFillAfter(false);
         animation.setAnimationListener(new MyAnimationListener());
 

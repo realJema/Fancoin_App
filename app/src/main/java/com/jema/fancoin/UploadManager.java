@@ -298,11 +298,6 @@ public class UploadManager {
         return null;
     }
 
-    /**
-     * Check if a file exists on device
-     *
-     * @param filePath The absolute file path
-     */
     private static boolean fileExists(String filePath) {
         File file = new File(filePath);
 
@@ -310,11 +305,6 @@ public class UploadManager {
     }
 
 
-    /**
-     * Get full file path from external storage
-     *
-     * @param pathData The storage type and the relative path
-     */
     private static String getPathFromExtSD(String[] pathData) {
         final String type = pathData[0];
         final String relativePath = "/" + pathData[1];
@@ -451,43 +441,23 @@ public class UploadManager {
         return null;
     }
 
-    /**
-     * @param uri - The Uri to check.
-     * @return - Whether the Uri authority is ExternalStorageProvider.
-     */
     private static boolean isExternalStorageDocument(Uri uri) {
         return "com.android.externalstorage.documents".equals(uri.getAuthority());
     }
 
-    /**
-     * @param uri - The Uri to check.
-     * @return - Whether the Uri authority is DownloadsProvider.
-     */
     private static boolean isDownloadsDocument(Uri uri) {
         return "com.android.providers.downloads.documents".equals(uri.getAuthority());
     }
 
-    /**
-     * @param uri - The Uri to check.
-     * @return - Whether the Uri authority is MediaProvider.
-     */
     private static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
 
-    /**
-     * @param uri - The Uri to check.
-     * @return - Whether the Uri authority is Google Photos.
-     */
+
     private static boolean isGooglePhotosUri(Uri uri) {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
     }
 
-
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is Google Drive.
-     */
     private static boolean isGoogleDriveUri(Uri uri) {
         return "com.google.android.apps.docs.storage".equals(uri.getAuthority()) || "com.google.android.apps.docs.storage.legacy".equals(uri.getAuthority());
     }
@@ -499,12 +469,12 @@ public class UploadManager {
         db.collection("Users").document(docId).update("showcase",  FieldValue.arrayUnion(videoLink)).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                Toast.makeText(ct, "Video Uploaded Successfully!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ct, R.string.video_uploaded_successfully, Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(ct, "upload failed!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ct, R.string.error_getting_data, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -519,12 +489,12 @@ public class UploadManager {
         db.collection("Orders").document(docId).update("video_url", videoLink).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                Toast.makeText(ct, "Video Uploaded Successfully!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ct, R.string.video_uploaded_successfully, Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(ct, "upload failed!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ct,  R.string.error_getting_data, Toast.LENGTH_SHORT).show();
             }
         });
     }

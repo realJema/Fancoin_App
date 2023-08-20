@@ -288,14 +288,14 @@ public class PostDetails extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(PostDetails.this, "Unable to update", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PostDetails.this, R.string.unable_to_update_post, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(PostDetails.this, "Unable to update", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PostDetails.this, R.string.unable_to_update_post, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -313,14 +313,14 @@ public class PostDetails extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(PostDetails.this, "Unable to update", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PostDetails.this, R.string.unable_to_update_post, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(PostDetails.this, "Unable to update", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PostDetails.this, R.string.unable_to_update_post, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -337,7 +337,7 @@ public class PostDetails extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (descr.getText().toString().equalsIgnoreCase("")) {
-                    Toast.makeText(PostDetails.this, "Please enter a comment", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PostDetails.this, R.string.please_enter_a_comment_post, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 dialog.dismiss();
@@ -359,12 +359,12 @@ public class PostDetails extends AppCompatActivity {
                 db.collection("Comments").add(order).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Toast.makeText(PostDetails.this, "Comment Sent", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PostDetails.this, R.string.comment_sent_post, Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(PostDetails.this, "Unable to send, Try again", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PostDetails.this, R.string.unable_to_submit_form, Toast.LENGTH_SHORT).show();
                     }
                 });
 

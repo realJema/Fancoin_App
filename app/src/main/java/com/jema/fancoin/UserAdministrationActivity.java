@@ -95,7 +95,7 @@ public class UserAdministrationActivity extends AppCompatActivity {
                 db.collection("Users").document(iId).update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Toast.makeText(UserAdministrationActivity.this, "Status Updated", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UserAdministrationActivity.this, R.string.status_updated, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -110,7 +110,7 @@ public class UserAdministrationActivity extends AppCompatActivity {
                 db.collection("Users").document(iId).update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Toast.makeText(UserAdministrationActivity.this, "Status Updated", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UserAdministrationActivity.this, R.string.status_updated, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -125,7 +125,7 @@ public class UserAdministrationActivity extends AppCompatActivity {
                 db.collection("Users").document(iId).update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Toast.makeText(UserAdministrationActivity.this, "Status Updated", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UserAdministrationActivity.this, R.string.status_updated, Toast.LENGTH_SHORT).show();
                     }
                 });
             }

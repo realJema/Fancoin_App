@@ -163,7 +163,7 @@ public class Home extends AppCompatActivity {
                         break;
                     case R.id.applyPage:
                         if(statusApplication.equalsIgnoreCase("pending")){
-                            Toast.makeText(Home.this, "Application Submitted", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Home.this, R.string.application_submitted, Toast.LENGTH_SHORT).show();
                             finish();
                             break;
                         }
@@ -178,7 +178,7 @@ public class Home extends AppCompatActivity {
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.clear().commit();
 
-                        Toast.makeText(Home.this, "Logged Out!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Home.this, R.string.logged_out_message, Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(Home.this, Login.class);
                         startActivity(intent);
@@ -187,7 +187,7 @@ public class Home extends AppCompatActivity {
                 }
                 drawerLayout.closeDrawer(GravityCompat.START);
 
-                return true;       //you need to return true here, not false
+                return true;   //you need to return true here, not false
             }
         });
 //        download user data from firestore and save it locally
