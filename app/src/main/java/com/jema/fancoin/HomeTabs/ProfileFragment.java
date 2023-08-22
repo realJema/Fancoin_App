@@ -1,15 +1,6 @@
 package com.jema.fancoin.HomeTabs;
 
-import static android.content.Context.MODE_PRIVATE;
-import static com.jema.fancoin.Home.SHARED_PREFS;
-import static com.jema.fancoin.Home.UBIO;
-import static com.jema.fancoin.Home.UFOLLOWERS;
-import static com.jema.fancoin.Home.UFOLLOWING;
-import static com.jema.fancoin.Home.UIMAGE;
-import static com.jema.fancoin.Home.UNAME;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +12,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,6 +29,8 @@ import com.jema.fancoin.UserProfile.Admin.AdminActivity;
 import com.jema.fancoin.R;
 import com.jema.fancoin.UserProfile.RequestsActivity;
 import com.jema.fancoin.UserProfile.SettingsActivity.SettingsActivity;
+import com.jema.fancoin.Database.User;
+import com.jema.fancoin.Database.UserViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -64,6 +59,8 @@ public class ProfileFragment extends Fragment {
     private ImageView pp;
     private TextView username, usernametop, noVideos, bio, followers, following, requests, requestsBtnText, myOrdersBtnText;
     private FirebaseFirestore db;
+
+    private UserViewModel viewModel;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -121,26 +118,31 @@ public class ProfileFragment extends Fragment {
         requestsPage = (Button) rootView.findViewById(R.id.profile_requests);
         videosFeed = (RecyclerView) rootView.findViewById(R.id.profile_videos_feed);
 
+        viewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        viewModel.getUserInfo().observe(getViewLifecycleOwner(), new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                if (user.username != null) {
+                    username.setText("@".concat(user.username));
+                    usernametop.setText("@".concat(user.username));
 
-        SharedPreferences mySharedPreferences = getActivity().getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        String myusername = mySharedPreferences.getString(UNAME, "username");
-        String mybio = mySharedPreferences.getString(UBIO, null);
-        String myimage = mySharedPreferences.getString(UIMAGE, null);
-        String myfollowersnum = mySharedPreferences.getString(UFOLLOWERS, "0");
-        String myfollowingnum = mySharedPreferences.getString(UFOLLOWING, "0");
+                    if(user.bio.equalsIgnoreCase("")){
+                        bio.setText("(no bio, update in settings)");
+                    } else {
+                        bio.setText(user.bio);
+                    }
 
+                    Picasso.get().load(user.image).into(pp);
+                    followers.setText(user.followers);
+                    following.setText(user.following);
 
-        username.setText("@".concat(myusername));
-        usernametop.setText("@".concat(myusername));
+                } else {
+                    username.setText("@".concat("empty"));
+                    usernametop.setText("@".concat("empty"));
 
-        if(mybio.equalsIgnoreCase("")){
-            bio.setText("(no bio, update in settings)");
-        } else {
-            bio.setText(mybio);
-        }
-        Picasso.get().load(myimage).into(pp);
-        followers.setText(myfollowersnum);
-        following.setText(myfollowingnum);
+                }
+            }
+        });
 
 
 //        videosFeed.setHasFixedSize(true);

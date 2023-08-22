@@ -2,6 +2,7 @@ package com.jema.fancoin;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -18,10 +19,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.room.Room;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -35,9 +40,18 @@ import com.jema.fancoin.UserProfile.UserApplicationActivity;
 import com.jema.fancoin.Utils.LanguageManager;
 import com.jema.fancoin.Utils.ThemeManager;
 import com.jema.fancoin.Wallet.WalletActivity;
+
+import com.google.firebase.firestore.QuerySnapshot;
+import com.jema.fancoin.Model.PostCard;
+import com.jema.fancoin.Database.AppDatabase;
+import com.jema.fancoin.Database.Post;
+import com.jema.fancoin.Database.PostViewModel;
+import com.jema.fancoin.Database.User;
+import com.jema.fancoin.Database.UserViewModel;
 import com.jema.fancoin.databinding.ActivityHomeBinding;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Home extends AppCompatActivity {
@@ -52,29 +66,24 @@ public class Home extends AppCompatActivity {
     private FirebaseFirestore db;
 
     public static final String SHARED_PREFS = "sharedPrefs";
-    public static final String UNAME = "username";
-    public static final String UFULLNAME = "name";
-    public static final String UAPPLICATION_STATUS = "application_status";
-    public static final String UBIO = "bio";
-    public static final String UCATEGORY = "category";
-    public static final String UEMAIL = "email";
-    public static final String UFOLLOWERS = "followers";
-    public static final String UFOLLOWING = "following";
-    public static final String UID = "id";
-    public static final String UIMAGE = "image";
-    public static final String UPHONE = "phone";
-    public static final String UPRICING = "pricing";
     public static final String LANG = "en";
     public static final String THEME = "1"; // 1 is light mode, 2 is dark mode, 3 is system
     String applicationStat = "default";
     private FirebaseAuth firebaseAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
+    AppDatabase localDb;
+
+    private UserViewModel viewModel;
+    private PostViewModel postModel;
+    private Boolean applied = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        localDb = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "Fancoin_DB").build();
 
 //        changing the theme and language to match the user's configs
         LanguageManager lang = new LanguageManager(this);
@@ -82,12 +91,6 @@ public class Home extends AppCompatActivity {
 
         lang.updateResource(lang.getLang());
         theme.updateTheme(theme.getTheme());
-
-        SharedPreferences mySharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        SharedPreferences.Editor editor = mySharedPreferences.edit();
-        String myName = mySharedPreferences.getString(UNAME, null);
-        String myEmail = mySharedPreferences.getString(UEMAIL, null);
-        String myPP = mySharedPreferences.getString(UIMAGE, null);
 
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -131,7 +134,6 @@ public class Home extends AppCompatActivity {
         });
 
 
-
         navigationView = findViewById(R.id.navigation_view);
         drawerLayout = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.toolbar);
@@ -144,23 +146,43 @@ public class Home extends AppCompatActivity {
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.colorAccent));
 
         navigationView.getMenu().getItem(0).setChecked(true);
-        TextView draw_name =  (TextView) navigationView.getHeaderView(0).findViewById(R.id.drawer_name);
-        TextView draw_email =  (TextView) navigationView.getHeaderView(0).findViewById(R.id.drawer_email);
-        ImageView draw_pp =  (ImageView) navigationView.getHeaderView(0).findViewById(R.id.drawer_pp);
+        TextView draw_name = (TextView) navigationView.getHeaderView(0).findViewById(R.id.drawer_name);
+        TextView draw_email = (TextView) navigationView.getHeaderView(0).findViewById(R.id.drawer_email);
+        ImageView draw_pp = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.drawer_pp);
         applyItem = (MenuItem) navigationView.getMenu().findItem(R.id.applyPage);
 
-
-
+        viewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        postModel = new ViewModelProvider(this).get(PostViewModel.class);
+        viewModel.getUserInfo().observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                if (user.username != null) {
 //        setting elements in drawer
-        draw_name.setText(myName);
-        draw_email.setText(myEmail);
+                    draw_name.setText(user.full_name);
+                    draw_email.setText(user.email);
+                    Picasso.get().load(user.image).into(draw_pp);
+                } else {
+                    draw_name.setText("empty");
+                    draw_email.setText("empty");
+//                    Picasso.get().load(user.image).into(draw_pp); // put local image
 
-        Picasso.get().load(myPP).into(draw_pp);
+                }
+
+                if (user.application_status.equalsIgnoreCase("confirmed")) {
+                    applyItem.setTitle("Application Confirmed");
+                    applied = true;
+                } else if (user.application_status.equalsIgnoreCase("pending")) {
+                    applyItem.setTitle("Application Pending");
+                    applied = true;
+                }
+            }
+        });
+
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.walletPage:
                         Intent i = new Intent(Home.this, WalletActivity.class);
                         startActivity(i);
@@ -196,19 +218,17 @@ public class Home extends AppCompatActivity {
         });
 //        download user data from firestore and save it locally
         UserDataListener();
-
+        EventChangeListener();
     }
 
-    private void replaceFragment(Fragment fragment){
+    private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayout,fragment);
+        fragmentTransaction.replace(R.id.frameLayout, fragment);
         fragmentTransaction.commit();
     }
-    public void UserDataListener() {
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
 
+    public void UserDataListener() {
 //        we will get all the data about the current user and store it locally
         db.collection("Users").document(auth.getCurrentUser().getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -219,64 +239,112 @@ public class Home extends AppCompatActivity {
                 }
 
                 String temp_username = value.getString("username");
-                String temp_fullname = value.getString("name");
-                String temp_status = value.getString("application_status");
+                String temp_full_name = value.getString("name");
+                String temp_application_status = value.getString("application_status");
                 String temp_bio = value.getString("bio");
                 String temp_category = value.getString("category");
                 String temp_email = value.getString("email");
-                String temp_phone = value.getString("phone");
+                String temp_phone = value.getString("phoneNumber");
                 String temp_pricing = value.getString("pricing");
-                String temp_id = value.getString("id");
+                String temp_uid = value.getString("id");
                 String temp_image = value.getString("image");
                 List<String> myFollowers = (List<String>) value.get("followers");
                 List<String> myFollowing = (List<String>) value.get("following");
 
-                if (temp_id != null) {
-                    editor.putString(UID, temp_id);
-                }
-                if (temp_username != null) {
-                    editor.putString(UNAME, temp_username);
-                }
-                if (temp_fullname != null) {
-                    editor.putString(UFULLNAME, temp_fullname);
-                }
-                if (temp_status != null) {
-                    editor.putString(UAPPLICATION_STATUS, temp_status);
-                }
-                if (temp_bio != null) {
-                    editor.putString(UBIO, temp_bio);
-                }
-                if (temp_category != null) {
-                    editor.putString(UCATEGORY, temp_category);
-                }
-                if (temp_email != null) {
-                    editor.putString(UEMAIL, temp_email);
-                }
-                if (temp_bio != null) {
-                    editor.putString(UID, temp_bio);
-                }
-                if (temp_image != null) {
-                    editor.putString(UIMAGE, temp_image);
-                }
-                if (temp_phone != null) {
-                    editor.putString(UPHONE, temp_phone);
-                }
-                if (temp_pricing != null) {
-                    editor.putString(UPRICING, temp_pricing);
+
+                String myfollo = String.valueOf(myFollowers.size());
+                String myfolli = String.valueOf(myFollowing.size());
+
+
+                Log.d("JemaTag", String.valueOf(myFollowing.size()));
+
+//                AsyncTask.execute(() -> Log.d("JemaTag", String.valueOf(viewModel.check4User(temp_uid))));
+
+
+                Boolean result = viewModel.check4User(); // check if user already exists in db
+                if (result) {
+                    viewModel.updateUser(temp_username, temp_full_name, temp_application_status, temp_category, temp_email, temp_bio, temp_image, temp_phone, temp_pricing, myfollo, myfolli);
+                } else {
+                    User theUser = new User();
+
+                    theUser.username = temp_username;
+                    theUser.full_name = temp_full_name;
+                    theUser.application_status = temp_application_status;
+                    theUser.category = temp_category;
+                    theUser.email = temp_email;
+                    theUser.bio = temp_bio;
+                    theUser.image = temp_image;
+                    theUser.phone = temp_phone;
+                    theUser.pricing = temp_pricing;
+                    theUser.uid = temp_uid;
+                    theUser.followers = String.valueOf(myFollowers.size());
+                    theUser.following = String.valueOf(myFollowing.size());
+                    AsyncTask.execute(() -> localDb.allDao().insertUser(theUser));
                 }
 
 
-                if(myFollowers != null) {
-                    editor.putString(UFOLLOWERS, String.valueOf(myFollowers.size()));
-                }
-                if(myFollowers != null) {
-                    editor.putString(UFOLLOWING, String.valueOf(myFollowing.size()));
-                }
-                editor.commit(); // persist the values
-
-                Log.d("JemaTag", "User Data Retrieved");
             }
         });
+    }
+
+    private void EventChangeListener() {
+
+        db.collection("Users").whereEqualTo("application_status", "confirmed")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+                        if (error != null) {
+//                            if(progressDialog.isShowing())
+//                                progressDialog.dismiss();
+                            Log.i("JemaTag", "error gettting data");
+                            return;
+                        }
+                        ArrayList<Post> allPosts = new ArrayList<Post>();
+                        PostCard data = new PostCard();
+                        AsyncTask.execute(() -> localDb.allDao().deletePost());
+
+                        for (DocumentChange dc : value.getDocumentChanges()) {
+
+                            String id = dc.getDocument().getId();
+                            data = dc.getDocument().toObject(PostCard.class);
+
+                            Post post = new Post();
+                            post.username = data.getUsername();
+                            post.full_name = data.getName();
+                            post.application_status = data.getApplication_status();
+                            post.category = data.getCategory();
+                            post.email = data.getEmail();
+                            post.bio = data.getBio();
+                            post.image = data.getImage();
+                            post.phone = data.getPhone();
+                            post.pricing = data.getPricing();
+                            post.uid = data.getId();
+                            Boolean postExist = postModel.check4Post(data.getId()); // check if user already exists in db
+
+                            Integer position = 0;
+                            PostCard finalData = data;
+
+                            allPosts.add(post);
+
+//                            switch (dc.getType()) {
+//                                case ADDED:
+//                                    if(!postExist){
+//                                    }
+//                                    break;
+//                                case MODIFIED:
+////                                    allPosts.set(position, post);
+////                                    Log.d("JemaTag", position.toString());
+////                                    Log.d("JemaTag", allPosts.get(position).username);
+//                                    break;
+//                                case REMOVED:
+//                                    allPosts.remove(Integer.parseInt(id));
+//                                    break;
+//                            }
+                        }
+                        postModel.insertPosts(allPosts);
+                    }
+                });
     }
 
 }

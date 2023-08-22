@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.jema.fancoin.Utils.LanguageManager;
+import com.jema.fancoin.Home;
 import com.jema.fancoin.R;
 
 public class SettingsLanguageActivity extends AppCompatActivity {
@@ -78,7 +79,8 @@ public class SettingsLanguageActivity extends AppCompatActivity {
         finish();
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
-        startActivity(getIntent());
+        Intent intent = new Intent(SettingsLanguageActivity.this, Home.class);
+        startActivity(intent);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
     }

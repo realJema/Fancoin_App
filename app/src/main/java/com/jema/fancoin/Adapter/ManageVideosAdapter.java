@@ -19,9 +19,8 @@ import androidx.media3.ui.PlayerView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.jema.fancoin.R;
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 
@@ -56,7 +55,7 @@ public class ManageVideosAdapter extends RecyclerView.Adapter<ManageVideosAdapte
         // get data
         Uri videoUri = Uri.parse(pathsList.get(position));
 
-        String substring1 = "vod/";
+        /*String substring1 = "vod/";
         String substring2 = "/mp4";
 
         String videoId = StringUtils.substringBetween(videoUri.toString(), substring1, substring2);
@@ -65,6 +64,12 @@ public class ManageVideosAdapter extends RecyclerView.Adapter<ManageVideosAdapte
 
         Glide.with(context)
                 .load(Thumbnail)
+                .into(holder.manage_thumbnailImage);*/
+
+
+        Glide.with(context)
+                .load(videoUri)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.manage_thumbnailImage);
 
         holder.manage_simpleExoPlayer = new ExoPlayer.Builder(context).build();

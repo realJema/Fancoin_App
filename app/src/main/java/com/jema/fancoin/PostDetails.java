@@ -1,11 +1,6 @@
 package com.jema.fancoin;
 
-import static com.jema.fancoin.Home.SHARED_PREFS;
-import static com.jema.fancoin.Home.UIMAGE;
-import static com.jema.fancoin.Home.UNAME;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,6 +34,8 @@ import com.jema.fancoin.Adapter.CommentAdapter;
 import com.jema.fancoin.Adapter.VideoSliderAdapter;
 import com.jema.fancoin.Model.CommentModel;
 import com.jema.fancoin.Order.OrderVideoActivity;
+import com.jema.fancoin.Database.User;
+import com.jema.fancoin.Database.UserViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -64,7 +63,8 @@ public class PostDetails extends AppCompatActivity {
     private VideoSliderAdapter myAdapter;
     BottomSheetDialog dialog;
     ArrayList<String> videoPaths;
-
+    private UserViewModel viewModel;
+    String uname, uimage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +94,19 @@ public class PostDetails extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         currentUserId = auth.getCurrentUser().getUid();
+
+
+        viewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        viewModel.getUserInfo().observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                if (user.username != null) {
+//        setting elements in drawer
+                    uname = user.username;
+                    uimage = user.image;
+                }
+            }
+        });
 
 //        getting post data and passing from previous activity
 
@@ -342,11 +355,6 @@ public class PostDetails extends AppCompatActivity {
                     return;
                 }
                 dialog.dismiss();
-
-
-                SharedPreferences mySharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-                String uname = mySharedPreferences.getString(UNAME, null);
-                String uimage = mySharedPreferences.getString(UIMAGE, null);
 
                 HashMap<String, Object> order = new HashMap<>();
 

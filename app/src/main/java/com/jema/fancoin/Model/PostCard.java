@@ -3,15 +3,18 @@ package com.jema.fancoin.Model;
 import java.util.ArrayList;
 
 public class PostCard {
-    String image, name, pricing, bio, category, id, application_followers, application_social, application_status, application_username;
+    String username, image, name, email, phone, pricing, bio, category, id, application_followers, application_social, application_status, application_username;
     ArrayList<String> followers, following;
 
     public PostCard(){};
 
-    public PostCard(String image, String name, String pricing, String bio, String category, String id, String application_followers, String application_social, String application_status, String application_username, ArrayList<String> followers, ArrayList<String> following) {
+    public PostCard(String username, String image, String phone, String email, String name, String pricing, String bio, String category, String id, String application_followers, String application_social, String application_status, String application_username, ArrayList<String> followers, ArrayList<String> following) {
+        this.username = username;
         this.image = image;
         this.name = name;
+        this.email = email;
         this.pricing = pricing;
+        this.phone = phone;
         this.bio = bio;
         this.category = category;
         this.id = id;
@@ -116,5 +119,29 @@ public class PostCard {
 
     public void setFollowing(ArrayList<String> following) {
         this.following = following;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

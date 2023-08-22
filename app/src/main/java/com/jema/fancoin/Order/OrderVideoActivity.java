@@ -1,10 +1,6 @@
 package com.jema.fancoin.Order;
 
 import static com.jema.fancoin.Home.SHARED_PREFS;
-import static com.jema.fancoin.Home.UEMAIL;
-import static com.jema.fancoin.Home.UIMAGE;
-import static com.jema.fancoin.Home.UNAME;
-import static com.jema.fancoin.Home.UPHONE;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,6 +14,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,6 +23,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.jema.fancoin.R;
+
+import com.jema.fancoin.Database.User;
+import com.jema.fancoin.Database.UserViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.Date;
@@ -43,7 +44,7 @@ public class OrderVideoActivity extends AppCompatActivity {
     BottomSheetDialog dialog;
     private FirebaseAuth auth;
     private String username, useremail, userphone, userimage;
-
+    private UserViewModel viewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,14 +80,19 @@ public class OrderVideoActivity extends AppCompatActivity {
         proDesc.setText(desc);
         Picasso.get().load(image).into(pp);
 
-
-//                get client info from local preferences
-        SharedPreferences mySharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-
-        username = mySharedPreferences.getString(UNAME, null);
-        useremail = mySharedPreferences.getString(UEMAIL, null);
-        userimage = mySharedPreferences.getString(UIMAGE, null);
-        userphone = mySharedPreferences.getString(UPHONE, null);
+        viewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        viewModel.getUserInfo().observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                if (user.username != null) {
+//        setting elements in drawer
+                    username = user.username;
+                    useremail = user.email;
+                    userimage = user.image;
+                    userphone = user.phone; // this might be null
+                }
+            }
+        });
 
         orderVideo.setOnClickListener(new View.OnClickListener() {
             @Override

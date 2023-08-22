@@ -1,3 +1,4 @@
+
 package com.jema.fancoin.Database;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
