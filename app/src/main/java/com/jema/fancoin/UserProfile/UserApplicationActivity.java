@@ -18,9 +18,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.jema.fancoin.R;
 import com.jema.fancoin.Database.User;
 import com.jema.fancoin.Database.UserViewModel;
+import com.jema.fancoin.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;

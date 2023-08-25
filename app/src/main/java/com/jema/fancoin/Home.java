@@ -31,6 +31,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.jema.fancoin.Database.User;
 import com.jema.fancoin.Onboarding.Auth.Login;
 import com.jema.fancoin.HomeTabs.FollowingFragment;
 import com.jema.fancoin.HomeTabs.HomeFragment;
@@ -46,7 +47,6 @@ import com.jema.fancoin.Model.PostCard;
 import com.jema.fancoin.Database.AppDatabase;
 import com.jema.fancoin.Database.Post;
 import com.jema.fancoin.Database.PostViewModel;
-import com.jema.fancoin.Database.User;
 import com.jema.fancoin.Database.UserViewModel;
 import com.jema.fancoin.databinding.ActivityHomeBinding;
 import com.squareup.picasso.Picasso;
@@ -156,7 +156,7 @@ public class Home extends AppCompatActivity {
         viewModel.getUserInfo().observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {
-                if (user.username != null) {
+                if (user != null) {
 //        setting elements in drawer
                     draw_name.setText(user.full_name);
                     draw_email.setText(user.email);
@@ -165,7 +165,6 @@ public class Home extends AppCompatActivity {
                     draw_name.setText("empty");
                     draw_email.setText("empty");
 //                    Picasso.get().load(user.image).into(draw_pp); // put local image
-
                 }
 
                 if (user.application_status.equalsIgnoreCase("confirmed")) {
