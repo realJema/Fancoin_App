@@ -31,18 +31,23 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.jema.fancoin.Database.User;
+import com.jema.fancoin.Onboarding.Auth.Login;
+import com.jema.fancoin.HomeTabs.FollowingFragment;
+import com.jema.fancoin.HomeTabs.HomeFragment;
+import com.jema.fancoin.HomeTabs.InboxFragment;
+import com.jema.fancoin.HomeTabs.ProfileFragment;
+import com.jema.fancoin.UserProfile.UserApplicationActivity;
+import com.jema.fancoin.Utils.LanguageManager;
+import com.jema.fancoin.Utils.ThemeManager;
+import com.jema.fancoin.Wallet.WalletActivity;
+
 import com.google.firebase.firestore.QuerySnapshot;
-import com.jema.fancoin.Auth.Login;
-import com.jema.fancoin.MainTabs.FollowingFragment;
-import com.jema.fancoin.MainTabs.HomeFragment;
-import com.jema.fancoin.MainTabs.InboxFragment;
-import com.jema.fancoin.MainTabs.ProfileFragment;
 import com.jema.fancoin.Model.PostCard;
-import com.jema.fancoin.database.AppDatabase;
-import com.jema.fancoin.database.Post;
-import com.jema.fancoin.database.PostViewModel;
-import com.jema.fancoin.database.User;
-import com.jema.fancoin.database.UserViewModel;
+import com.jema.fancoin.Database.AppDatabase;
+import com.jema.fancoin.Database.Post;
+import com.jema.fancoin.Database.PostViewModel;
+import com.jema.fancoin.Database.UserViewModel;
 import com.jema.fancoin.databinding.ActivityHomeBinding;
 import com.squareup.picasso.Picasso;
 
@@ -151,25 +156,26 @@ public class Home extends AppCompatActivity {
         viewModel.getUserInfo().observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {
-                if (user.username != null) {
+
+                if (user != null) {
 //        setting elements in drawer
                     draw_name.setText(user.full_name);
                     draw_email.setText(user.email);
                     Picasso.get().load(user.image).into(draw_pp);
+
+                    if (user.application_status.equalsIgnoreCase("confirmed")) {
+                        applyItem.setTitle("Application Confirmed");
+                        applied = true;
+                    } else if (user.application_status.equalsIgnoreCase("pending")) {
+                        applyItem.setTitle("Application Pending");
+                        applied = true;
+                    }
                 } else {
                     draw_name.setText("empty");
                     draw_email.setText("empty");
 //                    Picasso.get().load(user.image).into(draw_pp); // put local image
-
                 }
 
-                if (user.application_status.equalsIgnoreCase("confirmed")) {
-                    applyItem.setTitle("Application Confirmed");
-                    applied = true;
-                } else if (user.application_status.equalsIgnoreCase("pending")) {
-                    applyItem.setTitle("Application Pending");
-                    applied = true;
-                }
             }
         });
 
@@ -183,12 +189,12 @@ public class Home extends AppCompatActivity {
                         startActivity(i);
                         break;
                     case R.id.applyPage:
-                        if (applied) {
-                            Toast.makeText(Home.this, "Application Submitted", Toast.LENGTH_SHORT).show();
+                        if(statusApplication.equalsIgnoreCase("pending")){
+                            Toast.makeText(Home.this, R.string.application_submitted, Toast.LENGTH_SHORT).show();
+                            finish();
                             break;
                         }
-
-                        Intent j = new Intent(Home.this, ApplicationActivity.class);
+                        Intent j = new Intent(Home.this, UserApplicationActivity.class);
                         startActivity(j);
                         break;
                     case R.id.sign_out:
@@ -199,7 +205,7 @@ public class Home extends AppCompatActivity {
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.clear().commit();
 
-                        Toast.makeText(Home.this, "Logged Out!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Home.this, R.string.logged_out_message, Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(Home.this, Login.class);
                         startActivity(intent);
@@ -208,7 +214,7 @@ public class Home extends AppCompatActivity {
                 }
                 drawerLayout.closeDrawer(GravityCompat.START);
 
-                return true;       //you need to return true here, not false
+                return true;   //you need to return true here, not false
             }
         });
 //        download user data from firestore and save it locally
@@ -232,8 +238,9 @@ public class Home extends AppCompatActivity {
                     Log.e("Firebase Error", error.getMessage());
                     return;
                 }
+                Log.d("firebase value check", String.valueOf(value));
 
-                String temp_username = value.getString("username");
+                String temp_username = value.getString("application_username");
                 String temp_full_name = value.getString("name");
                 String temp_application_status = value.getString("application_status");
                 String temp_bio = value.getString("bio");
@@ -243,25 +250,22 @@ public class Home extends AppCompatActivity {
                 String temp_pricing = value.getString("pricing");
                 String temp_uid = value.getString("id");
                 String temp_image = value.getString("image");
-                List<String> myFollowers = (List<String>) value.get("followers");
+                String myFollowers =  value.getString("application_followers");
                 List<String> myFollowing = (List<String>) value.get("following");
 
-
-                String myfollo = String.valueOf(myFollowers.size());
+                String myfollo = String.valueOf(myFollowers);
                 String myfolli = String.valueOf(myFollowing.size());
-
 
                 Log.d("JemaTag", String.valueOf(myFollowing.size()));
 
 //                AsyncTask.execute(() -> Log.d("JemaTag", String.valueOf(viewModel.check4User(temp_uid))));
 
-
                 Boolean result = viewModel.check4User(); // check if user already exists in db
+                Log.d("check user tag", String.valueOf(result));
                 if (result) {
                     viewModel.updateUser(temp_username, temp_full_name, temp_application_status, temp_category, temp_email, temp_bio, temp_image, temp_phone, temp_pricing, myfollo, myfolli);
                 } else {
                     User theUser = new User();
-
                     theUser.username = temp_username;
                     theUser.full_name = temp_full_name;
                     theUser.application_status = temp_application_status;
@@ -272,12 +276,10 @@ public class Home extends AppCompatActivity {
                     theUser.phone = temp_phone;
                     theUser.pricing = temp_pricing;
                     theUser.uid = temp_uid;
-                    theUser.followers = String.valueOf(myFollowers.size());
+                    theUser.followers = String.valueOf(myFollowers);
                     theUser.following = String.valueOf(myFollowing.size());
                     AsyncTask.execute(() -> localDb.allDao().insertUser(theUser));
                 }
-
-
             }
         });
     }

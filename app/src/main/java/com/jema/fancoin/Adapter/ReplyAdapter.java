@@ -2,7 +2,6 @@ package com.jema.fancoin.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jema.fancoin.Model.OrderModel;
-import com.jema.fancoin.OrderDetailsActivity;
-import com.jema.fancoin.OrderReplyActivity;
+import com.jema.fancoin.Order.OrderReplyActivity;
 import com.jema.fancoin.R;
 import com.squareup.picasso.Picasso;
 

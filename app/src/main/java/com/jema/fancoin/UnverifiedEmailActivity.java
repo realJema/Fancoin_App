@@ -15,7 +15,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.jema.fancoin.Auth.Login;
+import com.jema.fancoin.Onboarding.Auth.Login;
 
 public class UnverifiedEmailActivity extends AppCompatActivity {
 

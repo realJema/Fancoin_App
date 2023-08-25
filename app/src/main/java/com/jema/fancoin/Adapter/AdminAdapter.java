@@ -12,9 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jema.fancoin.Model.PostCard;
-import com.jema.fancoin.PostDetails;
 import com.jema.fancoin.R;
-import com.jema.fancoin.UserAdministrationActivity;
+import com.jema.fancoin.UserProfile.Admin.UserAdministrationActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
