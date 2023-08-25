@@ -156,24 +156,26 @@ public class Home extends AppCompatActivity {
         viewModel.getUserInfo().observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {
+
                 if (user != null) {
 //        setting elements in drawer
                     draw_name.setText(user.full_name);
                     draw_email.setText(user.email);
                     Picasso.get().load(user.image).into(draw_pp);
+
+                    if (user.application_status.equalsIgnoreCase("confirmed")) {
+                        applyItem.setTitle("Application Confirmed");
+                        applied = true;
+                    } else if (user.application_status.equalsIgnoreCase("pending")) {
+                        applyItem.setTitle("Application Pending");
+                        applied = true;
+                    }
                 } else {
                     draw_name.setText("empty");
                     draw_email.setText("empty");
 //                    Picasso.get().load(user.image).into(draw_pp); // put local image
                 }
 
-                if (user.application_status.equalsIgnoreCase("confirmed")) {
-                    applyItem.setTitle("Application Confirmed");
-                    applied = true;
-                } else if (user.application_status.equalsIgnoreCase("pending")) {
-                    applyItem.setTitle("Application Pending");
-                    applied = true;
-                }
             }
         });
 
@@ -236,8 +238,9 @@ public class Home extends AppCompatActivity {
                     Log.e("Firebase Error", error.getMessage());
                     return;
                 }
+                Log.d("firebase value check", String.valueOf(value));
 
-                String temp_username = value.getString("username");
+                String temp_username = value.getString("application_username");
                 String temp_full_name = value.getString("name");
                 String temp_application_status = value.getString("application_status");
                 String temp_bio = value.getString("bio");
@@ -247,25 +250,22 @@ public class Home extends AppCompatActivity {
                 String temp_pricing = value.getString("pricing");
                 String temp_uid = value.getString("id");
                 String temp_image = value.getString("image");
-                List<String> myFollowers = (List<String>) value.get("followers");
+                String myFollowers =  value.getString("application_followers");
                 List<String> myFollowing = (List<String>) value.get("following");
 
-
-                String myfollo = String.valueOf(myFollowers.size());
+                String myfollo = String.valueOf(myFollowers);
                 String myfolli = String.valueOf(myFollowing.size());
-
 
                 Log.d("JemaTag", String.valueOf(myFollowing.size()));
 
 //                AsyncTask.execute(() -> Log.d("JemaTag", String.valueOf(viewModel.check4User(temp_uid))));
 
-
                 Boolean result = viewModel.check4User(); // check if user already exists in db
+                Log.d("check user tag", String.valueOf(result));
                 if (result) {
                     viewModel.updateUser(temp_username, temp_full_name, temp_application_status, temp_category, temp_email, temp_bio, temp_image, temp_phone, temp_pricing, myfollo, myfolli);
                 } else {
                     User theUser = new User();
-
                     theUser.username = temp_username;
                     theUser.full_name = temp_full_name;
                     theUser.application_status = temp_application_status;
@@ -276,12 +276,10 @@ public class Home extends AppCompatActivity {
                     theUser.phone = temp_phone;
                     theUser.pricing = temp_pricing;
                     theUser.uid = temp_uid;
-                    theUser.followers = String.valueOf(myFollowers.size());
+                    theUser.followers = String.valueOf(myFollowers);
                     theUser.following = String.valueOf(myFollowing.size());
                     AsyncTask.execute(() -> localDb.allDao().insertUser(theUser));
                 }
-
-
             }
         });
     }
