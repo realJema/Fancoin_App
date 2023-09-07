@@ -67,6 +67,7 @@ public class Home extends AppCompatActivity {
 
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String LANG = "en";
+    public static final String PLAYEDONBOARDING = "false";
     public static final String THEME = "1"; // 1 is light mode, 2 is dark mode, 3 is system
     String applicationStat = "default";
     private FirebaseAuth firebaseAuth;

@@ -1,6 +1,10 @@
 package com.jema.fancoin;
 
+import static com.jema.fancoin.Home.PLAYEDONBOARDING;
+import static com.jema.fancoin.Home.SHARED_PREFS;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -12,8 +16,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.jema.fancoin.Onboarding.Auth.Login;
 import com.jema.fancoin.Database.AppDatabase;
+import com.jema.fancoin.Onboarding.Auth.Login;
+import com.jema.fancoin.Onboarding.OnboardingActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,7 +54,17 @@ public class MainActivity extends AppCompatActivity {
         public void onAnimationEnd(Animation animation) {
             iconImage.clearAnimation();
             iconImage.setVisibility(View.INVISIBLE);
-            startActivity(new Intent(MainActivity.this, Login.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+
+            SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+            String onboard = sharedPreferences.getString(PLAYEDONBOARDING, "false");
+//        play onboarding
+            if (onboard != "false"){
+                startActivity(new Intent(MainActivity.this, OnboardingActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                finish();
+            } else {
+                startActivity(new Intent(MainActivity.this, Login.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+
+            }
         }
 
         @Override
@@ -68,5 +83,6 @@ public class MainActivity extends AppCompatActivity {
 //            Log.d("JemaTag", "user is logged in ");
             startActivity(new Intent(MainActivity.this, Home.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
         }
+
     }
 }
