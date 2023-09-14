@@ -31,23 +31,21 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.jema.fancoin.Database.AppDatabase;
+import com.jema.fancoin.Database.Post;
+import com.jema.fancoin.Database.PostViewModel;
 import com.jema.fancoin.Database.User;
-import com.jema.fancoin.Onboarding.Auth.Login;
+import com.jema.fancoin.Database.UserViewModel;
 import com.jema.fancoin.HomeTabs.FollowingFragment;
 import com.jema.fancoin.HomeTabs.HomeFragment;
 import com.jema.fancoin.HomeTabs.InboxFragment;
 import com.jema.fancoin.HomeTabs.ProfileFragment;
+import com.jema.fancoin.Model.PostCard;
+import com.jema.fancoin.Onboarding.Auth.Login;
 import com.jema.fancoin.UserProfile.UserApplicationActivity;
 import com.jema.fancoin.Utils.LanguageManager;
 import com.jema.fancoin.Utils.ThemeManager;
-import com.jema.fancoin.Wallet.WalletActivity;
-
-import com.google.firebase.firestore.QuerySnapshot;
-import com.jema.fancoin.Model.PostCard;
-import com.jema.fancoin.Database.AppDatabase;
-import com.jema.fancoin.Database.Post;
-import com.jema.fancoin.Database.PostViewModel;
-import com.jema.fancoin.Database.UserViewModel;
 import com.jema.fancoin.databinding.ActivityHomeBinding;
 import com.squareup.picasso.Picasso;
 
@@ -170,6 +168,11 @@ public class Home extends AppCompatActivity {
                     } else if (user.application_status.equalsIgnoreCase("pending")) {
                         applyItem.setTitle("Application Pending");
                         applied = true;
+                    } else if (user.application_status.equalsIgnoreCase("admin")) {
+                        applyItem.setTitle("You're an admin");
+                        applied = true;
+                    }else {
+                        applied = false;
                     }
                 } else {
                     draw_name.setText("empty");
@@ -185,14 +188,13 @@ public class Home extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.walletPage:
+                    /*case R.id.walletPage:
                         Intent i = new Intent(Home.this, WalletActivity.class);
                         startActivity(i);
-                        break;
+                        break;*/
                     case R.id.applyPage:
-                        if(statusApplication.equalsIgnoreCase("pending")){
+                        if(applied){
                             Toast.makeText(Home.this, R.string.application_submitted, Toast.LENGTH_SHORT).show();
-                            finish();
                             break;
                         }
                         Intent j = new Intent(Home.this, UserApplicationActivity.class);
@@ -241,7 +243,7 @@ public class Home extends AppCompatActivity {
                 }
                 Log.d("firebase value check", String.valueOf(value));
 
-                String temp_username = value.getString("application_username");
+                String temp_username = value.getString("username");
                 String temp_full_name = value.getString("name");
                 String temp_application_status = value.getString("application_status");
                 String temp_bio = value.getString("bio");
@@ -251,13 +253,17 @@ public class Home extends AppCompatActivity {
                 String temp_pricing = value.getString("pricing");
                 String temp_uid = value.getString("id");
                 String temp_image = value.getString("image");
-                String myFollowers =  value.getString("application_followers");
+                List<String> myFollowers =  (List<String>) value.get("followers");
                 List<String> myFollowing = (List<String>) value.get("following");
 
-                String myfollo = String.valueOf(myFollowers);
-                String myfolli = String.valueOf(myFollowing.size());
-
-                Log.d("JemaTag", String.valueOf(myFollowing.size()));
+                String myfollo = "0";
+                String myfolli = "0";
+                if(myFollowers != null){
+                    myfollo = String.valueOf(myFollowers.size());
+                }
+                if(myFollowing != null) {
+                    myfolli = String.valueOf(myFollowing.size());
+                }
 
 //                AsyncTask.execute(() -> Log.d("JemaTag", String.valueOf(viewModel.check4User(temp_uid))));
 
@@ -277,8 +283,12 @@ public class Home extends AppCompatActivity {
                     theUser.phone = temp_phone;
                     theUser.pricing = temp_pricing;
                     theUser.uid = temp_uid;
-                    theUser.followers = String.valueOf(myFollowers);
-                    theUser.following = String.valueOf(myFollowing.size());
+                    if(myFollowers != null) {
+                        theUser.followers = String.valueOf(myFollowers);
+                    }
+                    if(myFollowing != null) {
+                        theUser.following = String.valueOf(myFollowing.size());
+                    }
                     AsyncTask.execute(() -> localDb.allDao().insertUser(theUser));
                 }
             }

@@ -201,6 +201,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="2dp"
                         android:layout_marginLeft="5dp"
+                        android:visibility="gone"
                         android:layout_weight="1"
                         android:backgroundTint="@color/gray"
                         android:text="Admin"

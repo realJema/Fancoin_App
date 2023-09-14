@@ -38,6 +38,7 @@ import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -93,24 +94,28 @@ public class UploadManager {
                 @Override
                 public void run() {
 //                    upload to bunnynet cdn
-                    OkHttpClient client = new OkHttpClient();
+                    OkHttpClient client = new OkHttpClient.Builder()
+                            .connectTimeout(10, TimeUnit.SECONDS)
+                            .writeTimeout(10, TimeUnit.SECONDS)
+                            .readTimeout(30, TimeUnit.SECONDS)
+                            .build();;
 
                     MediaType mediaType = MediaType.parse("application/octet-stream");
                     RequestBody body = RequestBody.create(mediaType, file);
                     Request request = new Request.Builder()
-                            .url("https://storage.bunnycdn.com/fancoinapp/showcases/" + filename)
+                            .url("https://storage.bunnycdn.com/fancoinzone/showcases/" + filename)
                             .put(body)
                             .addHeader("content-type", "application/octet-stream")
-                            .addHeader("AccessKey", "28d255f9-bf88-499c-91efc4205d8a-e9fb-4783")
+                            .addHeader("AccessKey", "883fc900-31dc-401c-b5fe025521db-b007-4bf7")
                             .build();
 
                     try {
                         Response response = client.newCall(request).execute();
 
                         if(uploadType.equalsIgnoreCase("showcase")){
-                            updateShowcaseList("https://fancoinpull.b-cdn.net/showcases/".concat(filename), documentId);
+                            updateShowcaseList("https://fancoinzone.b-cdn.net/showcases/".concat(filename), documentId);
                         } else if(uploadType.equalsIgnoreCase("order")){
-                            updateShowcaseList("https://fancoinpull.b-cdn.net/orders/".concat(filename), documentId);
+                            updateShowcaseList("https://fancoinzone.b-cdn.net/orders/".concat(filename), documentId);
                         }
                     } catch (IOException e) {
                         throw new RuntimeException(e);

@@ -27,7 +27,7 @@
     <string name="application_socialInput">Où est votre plus grand suivi ?</string>
     <string name="application_usernameInput">Nombre d\'utilisateur pour le plus grand nombre d\'abonnés ?</string>
     <string name="application_usernameInput_placeholder">/@nom d\'utilisateur</string>
-    <string name="application_followersInput">Où est votre plus grand suivi ?</string>
+    <string name="application_followersInput">Nombre de followers?</string>
     <string name="application_apply">Appliquer</string>
     <string name="application_disclaimer">En postulant, vous acceptez les conditions d\'utilisation de fancoin, y compris les conditions et exigences supplémentaires</string>
     <string name="applicationSuccess_infoTitle">Application déposée</string>
@@ -62,8 +62,9 @@
     <string name="order">Commande</string>
     <string name="details">Détails</string>
     <string name="follow">Suivre</string>
-    <string name="reviews">Commentaires</string>
-    <string name="add_review">Ajouter un commentaire</string>
+    <string name="unfollow">Ne pas suivre</string>
+    <string name="reviews">Avis</string>
+    <string name="add_review">Ajouter un avis</string>
     <string name="no_comments">Sans commentaires</string>
     <string name="get_video">Obtenir la vidéo</string>
     <string name="name">nom</string>
@@ -99,7 +100,7 @@
     <string name="pending">En attente</string>
     <string name="wallet">Portefeuille</string>
     <string name="coming_soon">À venir</string>
-    <string name="write_a_review">Écrire une critique</string>
+    <string name="write_a_review">Écrire un avis</string>
     <string name="write_a_comment">Écrire un commentaire</string>
     <string name="send">Envoyer</string>
     <string name="following">Suivant</string>
@@ -109,7 +110,7 @@
     <string name="inbox">Boîte de réception</string>
     <string name="no_videos">Aucune vidéo</string>
     <string name="followers">Suiveurs</string>
-    <string name="edit_profile">Editer le profil</string>
+    <string name="edit_profile">Modifier profil</string>
     <string name="your_order">Votre commande</string>
     <string name="orderBottomSheet_subtitle">Vous êtes sur le point de commander chez ,</string>
     <string name="hello_world">Hello world</string>
@@ -160,5 +161,9 @@
     <string name="desc_two">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</string>
     <string name="desc_three">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</string>
     <string name="desc_fourth">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</string>
+    <string name="profile">Profil</string>
+    <string name="inbox2">Boite</string>
+    <string name="upload_successfull">Upload Successfull</string>
+    <string name="Upload_success_subtitle">You can view the video now on your profile</string>
 
 </resources>

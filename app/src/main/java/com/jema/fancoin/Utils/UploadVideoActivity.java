@@ -87,6 +87,7 @@ public class UploadVideoActivity extends AppCompatActivity {
                 if(!vidUri.toString().equalsIgnoreCase("")){
                     try {
                         uploader.uploadVideo(vidUri, "order", DocumentId);
+
                     } catch (URISyntaxException e) {
                         throw new RuntimeException(e);
                     } catch (IOException e) {

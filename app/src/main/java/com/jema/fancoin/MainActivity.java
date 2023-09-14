@@ -58,12 +58,12 @@ public class MainActivity extends AppCompatActivity {
             SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
             String onboard = sharedPreferences.getString(PLAYEDONBOARDING, "false");
 //        play onboarding
-            if (onboard != "false"){
+            if (onboard == "false"){
                 startActivity(new Intent(MainActivity.this, OnboardingActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
                 finish();
             } else {
                 startActivity(new Intent(MainActivity.this, Login.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
-
+                finish();
             }
         }
 

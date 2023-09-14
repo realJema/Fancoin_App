@@ -2,9 +2,9 @@ package com.jema.fancoin.UserProfile.SettingsActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,9 +29,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.jema.fancoin.R;
 import com.jema.fancoin.Database.User;
 import com.jema.fancoin.Database.UserViewModel;
+import com.jema.fancoin.R;
 import com.jema.fancoin.databinding.ActivityMainBinding;
 import com.squareup.picasso.Picasso;
 
@@ -46,8 +47,9 @@ public class SettingsProfileActivity extends AppCompatActivity {
     StorageReference storageReference;
     ProgressDialog progressDialog;
 
-    TextView changeImageBtn;
-    ImageView pp, back;
+    BottomSheetDialog dialog;
+    TextView profileName, profileEmail;
+    ImageView pp, back, editName, editEmail, changeImageBtn;
     TextInputEditText username;
     TextInputLayout usernameContainer;
     Button saveBtn;
@@ -62,11 +64,19 @@ public class SettingsProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_profile);
 
+
+        dialog = new BottomSheetDialog(
+                this,
+                R.style.ThemeOverlay_App_BottomSheetDialog
+        );
+
+
         pp = findViewById(R.id.settings_profile_image);
-        changeImageBtn = findViewById(R.id.settings_profile_change_image_textview);
-        username = findViewById(R.id.settings_profile_name_input);
-        usernameContainer = findViewById(R.id.settings_profile_username_container);
-        saveBtn = findViewById(R.id.settings_profile_save_btn);
+        profileName = findViewById(R.id.settings_profile_name);
+        profileEmail = findViewById(R.id.settings_profile_email);
+        editName = findViewById(R.id.edit_name);
+        editEmail = findViewById(R.id.edit_email);
+        changeImageBtn = findViewById(R.id.settings_profile_change_image);
         back = findViewById(R.id.back2);
 
         auth = FirebaseAuth.getInstance();
@@ -78,7 +88,8 @@ public class SettingsProfileActivity extends AppCompatActivity {
             @Override
             public void onChanged(User user) {
                 if (user.username != null) {
-                    username.setText(user.username);
+                    profileName.setText(user.username);
+                    profileEmail.setText(user.email);
                     Picasso.get().load(user.image).into(pp);
                     myUsername = user.username;
                 }
@@ -92,18 +103,28 @@ public class SettingsProfileActivity extends AppCompatActivity {
             }
         });
 
+        editName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog("username");
+            }
+        });
+        editEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog("email");
+            }
+        });
         changeImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectImage();
             }
         });
-
+       /*
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Log.d("JemaTag", imageSelected.toString());
 
                 usernameContainer.setError("");
                 usernameContainer.setErrorEnabled(false);
@@ -120,12 +141,11 @@ public class SettingsProfileActivity extends AppCompatActivity {
                 }
                 if(!myUsername.equalsIgnoreCase(username.getText().toString())){
                     Log.d("JemaTag", "Saving name");
-                    saveName();
                 }
                 else if(imageSelected == false)
                     Toast.makeText(SettingsProfileActivity.this,"No changes",Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
     }
 
@@ -189,29 +209,6 @@ public class SettingsProfileActivity extends AppCompatActivity {
 
     }
 
-
-    private void saveName() {
-
-//                        adding data into document of user
-        HashMap<String , Object> user = new HashMap<>();
-        user.put("username", username.getText().toString());
-
-        db.collection("Users").document(auth.getCurrentUser().getUid()).update(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        finish(); // goes to previous activity
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                        Toast.makeText(SettingsProfileActivity.this,"Update Failed",Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-    }
-
-
     private void selectImage() {
 
         pp.setImageURI(null);
@@ -231,5 +228,56 @@ public class SettingsProfileActivity extends AppCompatActivity {
             pp.setImageURI(imageUri);
             imageSelected = true;
         }
+    }
+
+
+    private String showDialog(String field) {
+
+        View view = getLayoutInflater().inflate(R.layout.comment_bottomsheet, null);
+        Button sendComment = view.findViewById(R.id.comment_send_btn);
+        TextInputEditText descr = view.findViewById(R.id.comment_text);
+        TextView title = view.findViewById(R.id.choosetxt);
+        TextInputLayout input = view.findViewById(R.id.comment);
+
+        sendComment.setText(R.string.save);
+        title.setText("Change ".concat(field));
+        input.setHint("New ".concat(field));
+
+
+        view.setBackgroundColor(Color.TRANSPARENT);
+
+        sendComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (descr.getText().toString().equalsIgnoreCase("")) {
+                    Toast.makeText(SettingsProfileActivity.this, "Enter a ".concat(field), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                dialog.dismiss();
+//                        adding data into document of user
+                HashMap<String , Object> user = new HashMap<>();
+                user.put(field, descr.getText().toString());
+
+                db.collection("Users").document(auth.getCurrentUser().getUid()).update(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(SettingsProfileActivity.this,field.concat(" Updated"),Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                        Toast.makeText(SettingsProfileActivity.this,"Update Failed",Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+        });
+        dialog.setCancelable(true);
+        dialog.setContentView(view);
+        descr.requestFocus();
+        dialog.show();
+        return null;
     }
 }

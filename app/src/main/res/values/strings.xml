@@ -44,7 +44,7 @@
     <string name="application_socialInput">Where is your largest Following?</string>
     <string name="application_usernameInput">Username for largest following?</string>
     <string name="application_usernameInput_placeholder">/@username</string>
-    <string name="application_followersInput">Where is your largest Following?</string>
+    <string name="application_followersInput">Number of Followers?</string>
     <string name="application_apply">Apply</string>
     <string name="application_disclaimer">By applying, you agree to the terms of services of fancoin, including the additional terms and requirements</string>
     <string name="applicationSuccess_infoTitle">Application Submitted</string>
@@ -79,6 +79,7 @@
     <string name="order">Order</string>
     <string name="details">Details</string>
     <string name="follow">Follow</string>
+    <string name="unfollow">unfollow</string>
     <string name="reviews">Reviews</string>
     <string name="add_review">Add Review</string>
     <string name="no_comments">No Comments</string>
@@ -166,17 +167,19 @@
     <string name="status_updated">Status Updated</string>
 
 
-
     //Headings
-    <string name="heading_one">Quick &amp; Easy Payments</string>
-    <string name="heading_two">Instant Notifications</string>
-    <string name="heading_three">Cashless Payment</string>
-    <string name="heading_fourth">Pay Anywhere</string>
+    <string name="heading_one">Personalized Videos</string>
+    <string name="heading_two">Discover New Artists</string>
+    <string name="heading_three">Share Special Moments</string>
+    <string name="heading_fourth">Discuss Privately</string>
 
     //Description
-    <string name="desc_one">Grow your Business By Accepting Card Payments with The New Card Reader</string>
-    <string name="desc_two">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</string>
-    <string name="desc_three">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</string>
-    <string name="desc_fourth">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</string>
-
+    <string name="desc_one">Get personalized videos and messages from your favorite artists</string>
+    <string name="desc_two">Discover some amazing upcoming artists</string>
+    <string name="desc_three">Share some special moments and creating unique memories</string>
+    <string name="desc_fourth">Talk with celebrities one on one</string>
+    <string name="profile">Profile</string>
+    <string name="inbox2">Inbox</string>
+    <string name="upload_successfull">Upload Successfull</string>
+    <string name="Upload_success_subtitle">You can view the video now on your profile</string>
 </resources>

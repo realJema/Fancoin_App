@@ -6,8 +6,6 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.jema.fancoin.Database.User;
-
 import java.util.List;
 
 @Dao
@@ -20,6 +18,9 @@ public interface AllDao {
 
     @Query("SELECT * FROM user")
     LiveData<User> getUserInfo();
+
+    @Query("SELECT * FROM user")
+    User getUserInfoNormal();
 
     @Insert
     void insertUser(User user);

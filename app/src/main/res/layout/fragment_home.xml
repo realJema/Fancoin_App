@@ -32,11 +32,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/wb"
         android:layout_marginTop="50dp">
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/wb"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent">
@@ -83,7 +85,7 @@
                             <View
                                 android:id="@+id/thumbnaili1"
                                 android:layout_width="150dp"
-                                android:layout_height="200dp"
+                                android:layout_height="170dp"
                                 android:background="@color/grayHard"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -102,9 +104,7 @@
                                 android:layout_width="50dp"
                                 android:layout_height="10dp"
                                 android:layout_marginTop="5dp"
-                                android:layout_marginBottom="4dp"
                                 android:background="@color/grayHard"
-                                app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/thumbnaili2" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -116,7 +116,7 @@
                             <View
                                 android:id="@+id/thumbnailj1"
                                 android:layout_width="150dp"
-                                android:layout_height="200dp"
+                                android:layout_height="170dp"
                                 android:background="@color/grayHard"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -135,9 +135,7 @@
                                 android:layout_width="50dp"
                                 android:layout_height="10dp"
                                 android:layout_marginTop="5dp"
-                                android:layout_marginBottom="4dp"
                                 android:background="@color/grayHard"
-                                app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/thumbnailj2" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -149,7 +147,7 @@
                             <View
                                 android:id="@+id/thumbnail"
                                 android:layout_width="150dp"
-                                android:layout_height="200dp"
+                                android:layout_height="170dp"
                                 android:background="@color/grayHard"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -180,7 +178,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/tiktokFeed"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="210dp"
                     android:layout_marginTop="16dp"
                     android:paddingRight="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -226,7 +224,7 @@
                             <View
                                 android:id="@+id/thumbnaili11"
                                 android:layout_width="150dp"
-                                android:layout_height="200dp"
+                                android:layout_height="170dp"
                                 android:background="@color/grayHard"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -259,7 +257,7 @@
                             <View
                                 android:id="@+id/thumbnailj11"
                                 android:layout_width="150dp"
-                                android:layout_height="200dp"
+                                android:layout_height="170dp"
                                 android:background="@color/grayHard"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -292,7 +290,7 @@
                             <View
                                 android:id="@+id/thumbnail1"
                                 android:layout_width="150dp"
-                                android:layout_height="200dp"
+                                android:layout_height="170dp"
                                 android:background="@color/grayHard"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -322,7 +320,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/entertainmentFeed"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="210dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
                     android:paddingRight="20dp"
@@ -347,10 +345,123 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/entertainmentFeed" />
 
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmer_music"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView5">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/padding_10"
+                        android:orientation="horizontal"
+                        >
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="20dp">
+
+                            <View
+                                android:id="@+id/thumbnail55"
+                                android:layout_width="150dp"
+                                android:layout_height="170dp"
+                                android:background="@color/grayHard"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <View
+                                android:id="@+id/thumbnail552"
+                                android:layout_width="120dp"
+                                android:layout_height="10dp"
+                                android:layout_marginTop="5dp"
+                                android:background="@color/grayHard"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/thumbnail55" />
+
+                            <View
+                                android:id="@+id/thumbnaili312"
+                                android:layout_width="50dp"
+                                android:layout_height="10dp"
+                                android:layout_marginTop="5dp"
+                                android:background="@color/grayHard"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/thumbnail552" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="20dp">
+
+                            <View
+                                android:id="@+id/thumbnailj12"
+                                android:layout_width="150dp"
+                                android:layout_height="170dp"
+                                android:background="@color/grayHard"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <View
+                                android:id="@+id/thumbnailj23"
+                                android:layout_width="120dp"
+                                android:layout_height="10dp"
+                                android:layout_marginTop="5dp"
+                                android:background="@color/grayHard"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/thumbnailj12" />
+
+                            <View
+                                android:id="@+id/thumbnailj33"
+                                android:layout_width="50dp"
+                                android:layout_height="10dp"
+                                android:layout_marginTop="5dp"
+                                android:background="@color/grayHard"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/thumbnailj23" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="20dp">
+
+                            <View
+                                android:id="@+id/thumbnail76"
+                                android:layout_width="150dp"
+                                android:layout_height="170dp"
+                                android:background="@color/grayHard"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <View
+                                android:id="@+id/thumbnail221"
+                                android:layout_width="120dp"
+                                android:layout_height="10dp"
+                                android:layout_marginTop="5dp"
+                                android:background="@color/grayHard"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/thumbnail76" />
+
+                            <View
+                                android:id="@+id/thumbnail23221"
+                                android:layout_width="50dp"
+                                android:layout_height="10dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="4dp"
+                                android:background="@color/grayHard"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/thumbnail221" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/musicFeed"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="250dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"

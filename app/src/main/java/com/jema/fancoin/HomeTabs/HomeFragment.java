@@ -2,16 +2,15 @@ package com.jema.fancoin.HomeTabs;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -48,7 +47,7 @@ public class HomeFragment extends Fragment {
     FirebaseFirestore db;
     ProgressDialog progressDialog;
     // Variables created for buttons and Shimmer
-    ShimmerFrameLayout tiktokShimmer, entShimmer;
+    ShimmerFrameLayout tiktokShimmer, entShimmer, musicShimmer;
     private FirebaseAuth auth;
     public HomeFragment() {
         // Required empty public constructor
@@ -92,11 +91,13 @@ public class HomeFragment extends Fragment {
         // Shimmer effect Find
         tiktokShimmer = (ShimmerFrameLayout)rootView.findViewById(R.id.shimmer_tiktok);
         entShimmer = (ShimmerFrameLayout)rootView.findViewById(R.id.shimmer_ent);
+        musicShimmer = (ShimmerFrameLayout)rootView.findViewById(R.id.shimmer_music);
 
 
         // Start Shimmer Effect
         tiktokShimmer.startShimmer();
         entShimmer.startShimmer();
+        musicShimmer.startShimmer();
 
         tiktokFeed = (RecyclerView)rootView.findViewById(R.id.tiktokFeed);
 //        tiktokFeed.setHasFixedSize(true);
@@ -133,12 +134,6 @@ public class HomeFragment extends Fragment {
         EventChangeListenerMus();
 
 //        hiding the shimmer
-        tiktokShimmer.stopShimmer();
-        tiktokShimmer.setShimmer(null);
-        entShimmer.stopShimmer();
-        entShimmer.setShimmer(null);
-        tiktokShimmer.setVisibility(View.GONE);
-        entShimmer.setVisibility(View.GONE);
         return rootView;
     }
 
@@ -187,6 +182,9 @@ public class HomeFragment extends Fragment {
 //                                    break;
                             }
                             tikAdapter.notifyDataSetChanged();
+                            tiktokShimmer.stopShimmer();
+                            tiktokShimmer.setShimmer(null);
+                            tiktokShimmer.setVisibility(View.GONE);
 //                            if(progressDialog.isShowing())
 //                                progressDialog.dismiss();
                         }
@@ -240,6 +238,9 @@ public class HomeFragment extends Fragment {
 
                             }
                             entAdapter.notifyDataSetChanged();
+                            entShimmer.stopShimmer();
+                            entShimmer.setShimmer(null);
+                            entShimmer.setVisibility(View.GONE);
 //                            if(progressDialog.isShowing())
 //                                progressDialog.dismiss();
                         }
@@ -291,6 +292,9 @@ public class HomeFragment extends Fragment {
 //                                    break;
                             }
                             musAdapter.notifyDataSetChanged();
+                            musicShimmer.stopShimmer();
+                            musicShimmer.setShimmer(null);
+                            musicShimmer.setVisibility(View.GONE);
 //                            if(progressDialog.isShowing())
 //                                progressDialog.dismiss();
                         }

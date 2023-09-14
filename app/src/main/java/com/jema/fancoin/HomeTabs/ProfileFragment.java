@@ -25,12 +25,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.jema.fancoin.Adapter.ProfileVideosAdapter;
-import com.jema.fancoin.UserProfile.Admin.AdminActivity;
-import com.jema.fancoin.R;
-import com.jema.fancoin.UserProfile.RequestsActivity;
-import com.jema.fancoin.UserProfile.SettingsActivity.SettingsActivity;
 import com.jema.fancoin.Database.User;
 import com.jema.fancoin.Database.UserViewModel;
+import com.jema.fancoin.R;
+import com.jema.fancoin.UserProfile.Admin.AdminActivity;
+import com.jema.fancoin.UserProfile.RequestsActivity;
+import com.jema.fancoin.UserProfile.SettingsActivity.SettingsActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -141,6 +141,10 @@ public class ProfileFragment extends Fragment {
                     usernametop.setText("@".concat("empty"));
 
                 }
+
+                if(user.application_status.equalsIgnoreCase("admin")){
+                    adminBtn.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -241,4 +245,10 @@ public class ProfileFragment extends Fragment {
                 });
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+
+    }
 }

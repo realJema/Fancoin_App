@@ -81,6 +81,8 @@ public class AddShowcaseActivity extends AppCompatActivity {
 //                        uploadVideo(vidUri);
                     try {
                         uploader.uploadVideo(vidUri, "showcase", auth.getCurrentUser().getUid());
+
+
                     } catch (URISyntaxException e) {
                         throw new RuntimeException(e);
                     } catch (IOException e) {

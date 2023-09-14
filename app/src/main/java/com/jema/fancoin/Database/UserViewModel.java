@@ -11,6 +11,7 @@ import java.util.List;
 public class UserViewModel extends AndroidViewModel {
 
     private final LiveData<User> userInfo;
+    private final User userinfonormal;
 
     private AppDatabase appDatabase;
 
@@ -20,11 +21,16 @@ public class UserViewModel extends AndroidViewModel {
         appDatabase = AppDatabase.getDbInstance(this.getApplication());
 
         userInfo = appDatabase.allDao().getUserInfo();
+        userinfonormal = appDatabase.allDao().getUserInfoNormal();
     }
 
 
     public LiveData<User> getUserInfo() {
         return userInfo;
+    }
+
+    public String getApplicationStatus() {
+        return userinfonormal.application_status;
     }
 
     public Boolean check4User() {

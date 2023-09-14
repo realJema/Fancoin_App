@@ -101,7 +101,7 @@ public class Login extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(Login.this, R.string.verify_credentials_signin, Toast.LENGTH_SHORT).show();
+                Toast.makeText(Login.this, e.getMessage(), Toast.LENGTH_SHORT).show();
 
                 Log.d("JemaTag", e.getMessage());
                 signIn.setText(R.string.sign_in);

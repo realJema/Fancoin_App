@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#000d3d</color>
+    <color name="colorPrimary">#455cde</color>
     <color name="colorAccent">#0036FF</color>
     <color name="icon_tint">#F6F6F6</color>
     <color name="text_tint">#E4E4E4</color>
     <color name="white_black">#FFFFFF</color>
+    <color name="wb">#000000</color>
     <color name="cards_tint">#011560</color>
     <color name="text_tint_light">#AFAFAF</color>
     <color name="rounded_rectange">#414141</color>
