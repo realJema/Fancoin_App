@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
@@ -28,6 +29,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.jema.fancoin.R;
+import com.jema.fancoin.UploadSuccessActivity;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -113,9 +115,9 @@ public class UploadManager {
                         Response response = client.newCall(request).execute();
 
                         if(uploadType.equalsIgnoreCase("showcase")){
-                            updateShowcaseList("https://fancoinzone.b-cdn.net/showcases/".concat(filename), documentId);
+                            updateShowcaseList(ct.getApplicationContext(), "https://fancoinzone.b-cdn.net/showcases/".concat(filename), documentId);
                         } else if(uploadType.equalsIgnoreCase("order")){
-                            updateShowcaseList("https://fancoinzone.b-cdn.net/orders/".concat(filename), documentId);
+                            updateShowcaseList(ct.getApplicationContext(), "https://fancoinzone.b-cdn.net/orders/".concat(filename), documentId);
                         }
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -510,11 +512,14 @@ public class UploadManager {
     }*/
 
 
-    private void updateShowcaseList(String videoUrl, String docId) {
+    private void updateShowcaseList(Context context, String videoUrl, String docId) {
         db.collection("Users").document(docId).update("showcase",  FieldValue.arrayUnion(videoUrl)).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Toast.makeText(ct, "Video Uploaded Successfully!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, UploadSuccessActivity.class)
+                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
