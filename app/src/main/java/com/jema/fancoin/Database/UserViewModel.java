@@ -18,6 +18,7 @@ public class UserViewModel extends AndroidViewModel {
     public UserViewModel(Application application) {
         super(application);
 
+
         appDatabase = AppDatabase.getDbInstance(this.getApplication());
 
         userInfo = appDatabase.allDao().getUserInfo();
@@ -27,6 +28,9 @@ public class UserViewModel extends AndroidViewModel {
 
     public LiveData<User> getUserInfo() {
         return userInfo;
+    }
+    public User getUser(){
+        return userinfonormal;
     }
 
     public String getApplicationStatus() {

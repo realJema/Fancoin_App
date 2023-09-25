@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.jema.fancoin.BuildConfig;
 import com.jema.fancoin.R;
 import com.jema.fancoin.UploadSuccessActivity;
 
@@ -47,8 +48,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import video.api.client.ApiVideoClient;
-import video.api.client.api.clients.VideosApi;
 
 public class UploadManager {
     private Context ct;
@@ -75,19 +74,13 @@ public class UploadManager {
 //        String str = DateUtils.getRelativeDateTimeString(UploadVideoActivity.this, now, DateUtils.MINUTE_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, 0);
 
         if (videoUri != null) {
+            Log.d("JemaTag", videoUri.getPath());
             // creating progress bar dialog
             progressBar = new ProgressDialog(ct);
             progressBar.setCancelable(true);
             progressBar.setMessage("Video uploading ...");
             progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressBar.show();
-            //reset progress bar and filesize status
-
-            ApiVideoClient client = new ApiVideoClient("9WkC5F6s1UN4lOJywaK0YqaO56oXqYjTqouaYX6OKs9");
-            // if you rather like to use the sandbox environment:
-            // ApiVideoClient client = new ApiVideoClient("YOUR_SANDBOX_API_KEY", ApiVideoClient.Environment.SANDBOX);
-
-            VideosApi apiInstance = client.videos();
 
             String videoPath = getPath(ct, videoUri);
             File file = convertVideoToFile(ct, videoPath);
@@ -105,43 +98,24 @@ public class UploadManager {
                     MediaType mediaType = MediaType.parse("application/octet-stream");
                     RequestBody body = RequestBody.create(mediaType, file);
                     Request request = new Request.Builder()
-                            .url("https://storage.bunnycdn.com/fancoinzone/showcases/" + filename)
+                            .url("https://storage.bunnycdn.com/".concat(BuildConfig.BUNNY_CDN_LIB).concat("/").concat(uploadType).concat("s/") + filename)
                             .put(body)
                             .addHeader("content-type", "application/octet-stream")
-                            .addHeader("AccessKey", "883fc900-31dc-401c-b5fe025521db-b007-4bf7")
+                            .addHeader("AccessKey", BuildConfig.BUNNY_CDN_API_KEY)
                             .build();
 
                     try {
                         Response response = client.newCall(request).execute();
 
                         if(uploadType.equalsIgnoreCase("showcase")){
+
                             updateShowcaseList(ct.getApplicationContext(), "https://fancoinzone.b-cdn.net/showcases/".concat(filename), documentId);
                         } else if(uploadType.equalsIgnoreCase("order")){
-                            updateShowcaseList(ct.getApplicationContext(), "https://fancoinzone.b-cdn.net/orders/".concat(filename), documentId);
+                            updateOrder(ct.getApplicationContext(), "https://fancoinzone.b-cdn.net/orders/".concat(filename), documentId);
                         }
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-
-
-/*
-                    VideoCreationPayload videoCreationPayload = new VideoCreationPayload();
-                    videoCreationPayload.setTitle("Showcase_".concat(auth.getCurrentUser().getUid()));
-
-                    try {
-                        Video video = apiInstance.create(videoCreationPayload);  // create video on server first
-                        Video result = apiInstance.upload(video.getVideoId(), file); // upload video to server
-                        if(uploadType.equalsIgnoreCase("showcase")){
-                            Log.d("JemaTag", "uploaded showcase");
-                            updateShowcaseList(video.getVideoId(), documentId);
-                        } else if(uploadType.equalsIgnoreCase("order")){
-                            updateOrder(video.getVideoId(), documentId);
-                        }
-                    } catch (ApiException e) {
-                        // Manage error here
-                        Log.d("JemaTag", "Reason: " + e.getMessage());
-                        Log.d("JemaTag", "Response headers: " + e.getResponseHeaders());
-                    }*/
                     progressBar.dismiss();
                 }
             });
@@ -150,6 +124,7 @@ public class UploadManager {
 
         } else {
             progressBar.dismiss();
+
             Toast.makeText(ct, "upload failed!", Toast.LENGTH_SHORT).show();
         }
 
@@ -524,21 +499,21 @@ public class UploadManager {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(ct, "upload failed!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ct, "upload path failed!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
 
-    private void updateOrder(String videoId, String docId) {
+    private void updateOrder(Context context, String videoUrl, String docId) {
 
-        Log.d("JemaTag", "uploading into order");
-        String videoLink = "https://vod.api.video/vod/" + videoId + "/mp4/source.mp4";
-
-        db.collection("Orders").document(docId).update("video_url", videoLink).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("Orders").document(docId).update("video_url", videoUrl).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Toast.makeText(ct, R.string.video_uploaded_successfully, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, UploadSuccessActivity.class)
+                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

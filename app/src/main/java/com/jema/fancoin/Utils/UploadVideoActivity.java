@@ -1,9 +1,14 @@
 package com.jema.fancoin.Utils;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -12,6 +17,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.media3.common.MediaItem;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.ui.PlayerView;
@@ -19,7 +26,6 @@ import androidx.media3.ui.PlayerView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.StorageReference;
-import com.jema.fancoin.ActionSuccessActivity;
 import com.jema.fancoin.R;
 
 import java.io.IOException;
@@ -40,6 +46,7 @@ public class UploadVideoActivity extends AppCompatActivity {
     ExoPlayer simpleExoPlayer;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
+    private int STORAGE_PERMISSION_CODE = 1;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -74,10 +81,16 @@ public class UploadVideoActivity extends AppCompatActivity {
         selector.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                iconUpload.setVisibility(View.GONE);
-                Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                i.setType("video/*");
-                startActivityForResult(i, PICK_FROM_FILE);
+                if (ContextCompat.checkSelfPermission(UploadVideoActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    iconUpload.setVisibility(View.GONE);
+                    Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    i.setType("video/*");
+                    startActivityForResult(i, PICK_FROM_FILE);
+                    Log.d("JemaTag", "Storage Permission granted");
+                } else {
+                    Log.d("JemaTag", "Storage Permission unavailable");
+                    requestStoragePermission();
+                }
             }
         });
 
@@ -94,12 +107,6 @@ public class UploadVideoActivity extends AppCompatActivity {
                         throw new RuntimeException(e);
                     }
 //                    finish();
-
-                    Intent myIntent = new Intent(UploadVideoActivity.this, ActionSuccessActivity.class);
-                    myIntent.putExtra("title", getString(R.string.you_replied_to).concat(client_name));
-                    myIntent.putExtra("subtitle",  R.string.video_uploaded_successfully);
-                    myIntent.putExtra("image", star_image);
-                    startActivity(myIntent);
                 }
                 else {
                     Toast.makeText(UploadVideoActivity.this, R.string.choose_valid_video, Toast.LENGTH_SHORT).show();
@@ -162,6 +169,34 @@ public class UploadVideoActivity extends AppCompatActivity {
         simpleExoPlayer.seekTo(1);
         simpleExoPlayer.play();
 
+    }
+
+    private void requestStoragePermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+            new AlertDialog.Builder(this)
+                    .setTitle("Permission needed")
+                    .setMessage("This permission is needed because of this and that")
+                    .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(UploadVideoActivity.this,
+                                    new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+                        }
+                    })
+                    .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create().show();
+
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+        }
     }
 
 }

@@ -15,6 +15,8 @@ import androidx.media3.common.Player;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.ui.PlayerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.storage.StorageReference;
 import com.jema.fancoin.R;
 import com.squareup.picasso.Picasso;
@@ -66,11 +68,17 @@ public class WatchVideoActivity extends AppCompatActivity {
         MediaItem mediaItem = MediaItem.fromUri(videoUrl);
         simpleExoPlayer.setMediaItem(mediaItem);
 
+
         if(!videoUrl.isEmpty()){
             iconUpload.setVisibility(View.GONE);
             selector.setVisibility(View.GONE);
             thumbnailImage.setVisibility(View.VISIBLE);
         }
+
+        Glide.with(WatchVideoActivity.this)
+                .load(videoUrl)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(thumbnailImage);
 
 //        settings the thumbnailImage
         String substring1 = "vod/";
@@ -78,8 +86,6 @@ public class WatchVideoActivity extends AppCompatActivity {
 
         String videoId = StringUtils.substringBetween(videoUrl, substring1, substring2);
         String Thumbnail = "https://vod.api.video/vod/" + videoId + "/thumbnail.jpg";
-
-        Picasso.get().load(Thumbnail).into(thumbnailImage);
 
 
         backBtn.setOnClickListener(new View.OnClickListener() {

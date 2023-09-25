@@ -25,6 +25,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.room.Room;
@@ -78,10 +80,14 @@ public class Home extends AppCompatActivity {
     FirebaseAuth.AuthStateListener mAuthListener;
     AppDatabase localDb;
 
+    public ArrayList<String> videoPaths;
+    private LiveData<ArrayList> data = new MutableLiveData<>();
     private UserViewModel viewModel;
     private PostViewModel postModel;
     private Boolean applied = false;
     private int STORAGE_PERMISSION_CODE = 1;
+    public User mydata;
+    public String numberOfRequests;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +108,10 @@ public class Home extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+        viewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        postModel = new ViewModelProvider(this).get(PostViewModel.class);
 
+        videoPaths = new ArrayList<String>();
         firebaseAuth = FirebaseAuth.getInstance();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -120,22 +129,32 @@ public class Home extends AppCompatActivity {
 //        bottom navigation inflater
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        replaceFragment(new HomeFragment());
+        Bundle arguments5 = new Bundle();
+        replaceFragment(new HomeFragment(), arguments5);
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
             switch (item.getItemId()) {
                 case R.id.homeMenu:
-                    replaceFragment(new HomeFragment());
+                    Bundle arguments = new Bundle();
+//                    arguments.putString( string_key , desired_string);
+                    replaceFragment(new HomeFragment(), arguments);
                     break;
                 case R.id.inboxMenu:
-                    replaceFragment(new InboxFragment());
+                    Bundle arguments2 = new Bundle();
+//                    arguments2.putString( string_key , desired_string);
+                    replaceFragment(new InboxFragment(), arguments2);
                     break;
                 case R.id.followingMenu:
-                    replaceFragment(new FollowingFragment());
+                    Bundle arguments3 = new Bundle();
+//                    arguments3.putString( string_key , desired_string);
+                    replaceFragment(new FollowingFragment(), arguments3);
                     break;
                 case R.id.profileMenu:
-                    replaceFragment(new ProfileFragment());
+                    Bundle arguments4 = new Bundle();
+                    User myData = viewModel.getUser();
+                    arguments4.putString("username", myData.username);
+                    replaceFragment(new ProfileFragment(), arguments4);
                     break;
             }
             return true;
@@ -159,8 +178,6 @@ public class Home extends AppCompatActivity {
         ImageView draw_pp = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.drawer_pp);
         applyItem = (MenuItem) navigationView.getMenu().findItem(R.id.applyPage);
 
-        viewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        postModel = new ViewModelProvider(this).get(PostViewModel.class);
         viewModel.getUserInfo().observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {
@@ -183,6 +200,7 @@ public class Home extends AppCompatActivity {
                     }else {
                         applied = false;
                     }
+                    mydata = user;
                 } else {
                     draw_name.setText("empty");
                     draw_email.setText("empty");
@@ -232,13 +250,16 @@ public class Home extends AppCompatActivity {
 //        download user data from firestore and save it locally
         UserDataListener();
         EventChangeListener();
+        RequestsListener();
     }
 
-    private void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayout, fragment);
-        fragmentTransaction.commit();
+    private void replaceFragment(Fragment fragment, Bundle bundle) {
+
+            fragment.setArguments(bundle);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frameLayout, fragment);
+            fragmentTransaction.commit();
     }
 
     public void UserDataListener() {
@@ -446,4 +467,30 @@ public class Home extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * Listening on the data base of orders to count all the commands passed for this user
+     */
+    private void RequestsListener() {
+
+        db.collection("Orders").whereEqualTo("star_uid", auth.getCurrentUser().getUid())
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+                        if (error != null) {
+//                            if(progressDialog.isShowing())
+//                                progressDialog.dismiss();
+                            Log.i("JemaTag", "error gettting data");
+                            return;
+                        }
+
+                        for (DocumentChange dc : value.getDocumentChanges()) {
+
+                            String numberOrders = String.valueOf(value.getDocuments().size());
+                            numberOfRequests = numberOrders;
+                         }
+                    }
+                });
+    }
 }

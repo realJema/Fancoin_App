@@ -12,21 +12,19 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.jema.fancoin.Adapter.ProfileVideosAdapter;
 import com.jema.fancoin.Database.User;
 import com.jema.fancoin.Database.UserViewModel;
+import com.jema.fancoin.Home;
 import com.jema.fancoin.R;
 import com.jema.fancoin.UserProfile.Admin.AdminActivity;
 import com.jema.fancoin.UserProfile.RequestsActivity;
@@ -53,14 +51,16 @@ public class ProfileFragment extends Fragment {
     private String mParam2, currentPP;
     private RecyclerView videosFeed;
     private Button editProfileBtn, adminBtn, requestsPage;
-    private ArrayList<String> videoPaths;
     private FirebaseAuth auth;
     private ProfileVideosAdapter videosAdapter;
     private ImageView pp;
+
+    private ArrayList<String> videoPaths;
+    private UserViewModel viewModel;
     private TextView username, usernametop, noVideos, bio, followers, following, requests, requestsBtnText, myOrdersBtnText;
     private FirebaseFirestore db;
 
-    private UserViewModel viewModel;
+    private ArrayList<String> videoPathslocal;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -96,6 +96,13 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        Home homeActivity = (Home) getActivity();
+        User iData = homeActivity.mydata;
+        String iRequests = homeActivity.numberOfRequests;
+
+        Log.d("JemaTag", iData.username);
+
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
 
@@ -105,6 +112,7 @@ public class ProfileFragment extends Fragment {
 
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+        viewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
         pp = (ImageView) rootView.findViewById(R.id.profile_imageview);
         username = (TextView) rootView.findViewById(R.id.profile_username);
@@ -118,36 +126,15 @@ public class ProfileFragment extends Fragment {
         requestsPage = (Button) rootView.findViewById(R.id.profile_requests);
         videosFeed = (RecyclerView) rootView.findViewById(R.id.profile_videos_feed);
 
-        viewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        viewModel.getUserInfo().observe(getViewLifecycleOwner(), new Observer<User>() {
-            @Override
-            public void onChanged(User user) {
-                if (user.username != null) {
-                    username.setText("@".concat(user.username));
-                    usernametop.setText("@".concat(user.username));
-
-                    if(user.bio.equalsIgnoreCase("")){
-                        bio.setText("(no bio, update in settings)");
-                    } else {
-                        bio.setText(user.bio);
-                    }
-
-                    Picasso.get().load(user.image).into(pp);
-                    followers.setText(user.followers);
-                    following.setText(user.following);
-
-                } else {
-                    username.setText("@".concat("empty"));
-                    usernametop.setText("@".concat("empty"));
-
-                }
-
-                if(user.application_status.equalsIgnoreCase("admin")){
-                    adminBtn.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
+        username.setText("@".concat(iData.username));
+        usernametop.setText("@".concat(iData.username));
+        bio.setText(iData.bio);
+        Picasso.get().load(iData.image).into(pp);
+        followers.setText(iData.followers);
+        following.setText(iData.following);
+        requests.setText(iRequests);
+        String requestStr = getString(R.string.requests);
+        requestsPage.setText(requestStr.concat(" (").concat(iRequests).concat(")"));
 
 //        videosFeed.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 3);
@@ -179,48 +166,17 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        EventChangeListener(); // listening for changes to update image, name and profile picture
-        OrderChangeListener(); // listening for changes to orders collection to update requests counts and orders
-//        MyOrderChangeListener();
+        ProfileVideosListener();
 
         return rootView;
 
     }
 
-
-    /**
-     * Listening on the data base of orders to count all the commands passed for this user
-     */
-    private void OrderChangeListener() {
-
-        db.collection("Orders").whereEqualTo("star_uid", auth.getCurrentUser().getUid())
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-
-                        if (error != null) {
-//                            if(progressDialog.isShowing())
-//                                progressDialog.dismiss();
-                            Log.i("JemaTag", "error gettting data");
-                            return;
-                        }
-
-                        for (DocumentChange dc : value.getDocumentChanges()) {
-
-                            String numberOrders = String.valueOf(value.getDocuments().size());
-                            requests.setText(numberOrders);
-                            requestsPage.setText("Requests (".concat(numberOrders).concat(")"));
-                        }
-                    }
-                });
-    }
-
-
     /**
      * Listen to changes in showcase videos on firebase for the current user
      *
      */
-    private void EventChangeListener() {
+    private void ProfileVideosListener() {
         db.collection("Users").document(auth.getCurrentUser().getUid())
                 .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
@@ -245,10 +201,5 @@ public class ProfileFragment extends Fragment {
                 });
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
 
-
-    }
 }

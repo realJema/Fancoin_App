@@ -147,6 +147,8 @@
     <string name="video_uploaded_successfully">Video Uploaded Successfully!</string>
     <string name="you_replied_to">"You replied to "</string>
     <string name="status_updated">Status Updated</string>
+    <string name="receive_updates"> to receive updates when they post</string>
+    <string name="no_bio">no bio, update in settings</string>
 
 
 

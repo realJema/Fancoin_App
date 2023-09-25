@@ -64,6 +64,7 @@ public class PostDetails extends AppCompatActivity {
     BottomSheetDialog dialog;
     ArrayList<String> videoPaths;
     private UserViewModel viewModel;
+    private Boolean ifollow = false;
     String uname, uimage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,7 +138,9 @@ public class PostDetails extends AppCompatActivity {
         proDesc.setText(desc);
         proCategory.setText(cat);
         bottomTitle.setText(name);
-        bottomSubtitle.setText("Follow ".concat(name).concat(" to receive updates when they post"));
+        String followStr = getString(R.string.follow);
+        String updatesStr = getString(R.string.receive_updates);
+        bottomSubtitle.setText(followStr.concat(" ").concat(name).concat(" ").concat(updatesStr));
 
 
         showcaseFeed.setVisibility(View.GONE);
@@ -165,8 +168,7 @@ public class PostDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                Log.d("JemaTag", "Follow button clicked");
-                String choice = follow.getText().toString();
-                if (choice.equalsIgnoreCase("follow")) {
+                if (!ifollow) {
                     AddFollowing();
                 } else {
                     RemoveFollowing();
@@ -280,9 +282,11 @@ public class PostDetails extends AppCompatActivity {
 //                        settings following status
                         if (group != null) {
                             if (group.contains(auth.getCurrentUser().getUid())) {
-                                follow.setText("Unfollow");
+                                ifollow = true;
+                                follow.setText(R.string.unfollow);
                             } else {
-                                follow.setText("Follow");
+                                ifollow = false;
+                                follow.setText(R.string.follow);
                             }
                         }
                     }
