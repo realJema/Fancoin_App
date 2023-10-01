@@ -87,6 +87,7 @@ public class Home extends AppCompatActivity {
     private Boolean applied = false;
     private int STORAGE_PERMISSION_CODE = 1;
     public User mydata;
+    public String myUsername = "username";
     public String numberOfRequests;
 
     @Override
@@ -94,7 +95,7 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
+        checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
 
         localDb = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, "Fancoin_DB").build();
@@ -152,8 +153,7 @@ public class Home extends AppCompatActivity {
                     break;
                 case R.id.profileMenu:
                     Bundle arguments4 = new Bundle();
-                    User myData = viewModel.getUser();
-                    arguments4.putString("username", myData.username);
+                    arguments4.putString("username", myUsername);
                     replaceFragment(new ProfileFragment(), arguments4);
                     break;
             }
@@ -187,6 +187,7 @@ public class Home extends AppCompatActivity {
                     draw_name.setText(user.full_name);
                     draw_email.setText(user.email);
                     Picasso.get().load(user.image).into(draw_pp);
+                    myUsername = user.username;
 
                     if (user.application_status.equalsIgnoreCase("confirmed")) {
                         applyItem.setTitle("Application Confirmed");
@@ -403,7 +404,7 @@ public class Home extends AppCompatActivity {
 
     private void requestStoragePermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
             new AlertDialog.Builder(this)
                     .setTitle("Permission needed")
@@ -412,7 +413,7 @@ public class Home extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             ActivityCompat.requestPermissions(Home.this,
-                                    new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+                                    new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
                         }
                     })
                     .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
@@ -425,7 +426,7 @@ public class Home extends AppCompatActivity {
 
         } else {
             ActivityCompat.requestPermissions(this,
-                    new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+                    new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
         }
 
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,

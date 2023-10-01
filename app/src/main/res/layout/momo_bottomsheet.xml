@@ -25,12 +25,12 @@
             app:tint="@color/icon_tint" />
 
         <TextView
-            android:id="@+id/choosetxt"
+            android:id="@+id/momo_bottomsheet_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:text="@string/your_order"
+            android:text="Pay with Momo or OM"
             android:textAlignment="center"
             android:textColor="@color/text_tint"
             android:textSize="@dimen/topbar_title"
@@ -40,61 +40,45 @@
             app:layout_constraintTop_toBottomOf="@+id/back2" />
 
         <TextView
-            android:id="@+id/order_bottomsheet_descr"
+            android:id="@+id/momo_bottomsheet_descr"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:text="@string/orderBottomSheet_subtitle"
+            android:text="Confirm payment for order"
             android:textColor="@color/text_tint"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/choosetxt" />
+            app:layout_constraintTop_toBottomOf="@+id/momo_bottomsheet_title" />
 
 
-        <TextView
-            android:id="@+id/order_bottomsheet_pricing"
-            android:layout_width="0dp"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/momo_bottomsheet_number_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:text="@string/pricing"
-            android:textColor="@color/text_tint"
+            android:hint="Phone Numer"
+            app:counterMaxLength="100"
+            app:hintTextColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/order_bottomsheet_descr" />
+            app:layout_constraintTop_toBottomOf="@+id/momo_bottomsheet_descr"
+            app:startIconDrawable="@drawable/ic_phone">
 
-        <ImageView
-            android:id="@+id/order_send_paypal"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:paddingVertical="10dp"
-            android:background="@color/paypal_btn"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/order_bottomsheet_pricing"
-            app:srcCompat="@drawable/paypal" />
-        <ImageView
-            android:id="@+id/momo_pay"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:paddingVertical="5dp"
-            android:background="@color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/order_send_paypal"
-            app:srcCompat="@drawable/momo" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/momo_bottomsheet_number"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="text|number"
+                android:maxLength="100" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/order_send_order_btn"
+            android:id="@+id/momo_bottomsheet_submit"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginStart="16dp"
@@ -104,14 +88,14 @@
             android:backgroundTint="@color/button_tint"
             android:bottomLeftRadius="10dp"
             android:bottomRightRadius="10dp"
-            android:text="@string/order"
+            android:text="Pay"
             android:textColor="@color/white"
             android:topLeftRadius="10dp"
             android:topRightRadius="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/momo_pay" />
+            app:layout_constraintTop_toBottomOf="@+id/momo_bottomsheet_number_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout >
 

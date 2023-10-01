@@ -25,6 +25,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.jema.fancoin.Campay.CamPay;
 import com.jema.fancoin.Database.User;
 import com.jema.fancoin.Database.UserViewModel;
 import com.jema.fancoin.R;
@@ -52,10 +53,11 @@ public class OrderVideoActivity extends AppCompatActivity {
     Button orderVideo;
     Button bottomsheet;
     FirebaseFirestore db;
-    BottomSheetDialog dialog;
+    BottomSheetDialog dialog, momoDialog;
     private FirebaseAuth auth;
     private String username, useremail, userphone, userimage;
     private UserViewModel viewModel;
+    private CamPay camPay;
 
     // on below line creating a Paypal Configuration Object
     // on below line creating a variable to store request code for paypal sdk
@@ -73,6 +75,10 @@ public class OrderVideoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_video);
         dialog = new BottomSheetDialog(
+                this,
+                R.style.ThemeOverlay_App_BottomSheetDialog
+        );
+        momoDialog = new BottomSheetDialog(
                 this,
                 R.style.ThemeOverlay_App_BottomSheetDialog
         );
@@ -149,25 +155,61 @@ public class OrderVideoActivity extends AppCompatActivity {
     private String showDialog() {
         View view = getLayoutInflater().inflate(R.layout.order_bottomsheet, null);
         Button sendOrder = view.findViewById(R.id.order_send_order_btn);
+        ImageView paypalBtn = view.findViewById(R.id.order_send_paypal);
+        ImageView momoBtn = view.findViewById(R.id.momo_pay);
         TextView descr = view.findViewById(R.id.order_bottomsheet_descr);
         TextView pricing = view.findViewById(R.id.order_bottomsheet_pricing);
 
         descr.setText("Your are about to order from ".concat(name));
         pricing.setText("Pricing : ".concat(price).concat(" XAF"));
 
-        sendOrder.setOnClickListener(new View.OnClickListener() {
+        paypalBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-
-                makePayment("100");
-
-
+                if(Integer.parseInt(price) < 50){
+                    makePayment("50");
+                } else {
+                    makePayment(price);
+                }
+            }
+        });
+        momoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                showMomoDialog();
             }
         });
         dialog.setCancelable(true);
         dialog.setContentView(view);
         dialog.show();
+        return null;
+    }
+
+
+    private String showMomoDialog() {
+        View viewMomo = getLayoutInflater().inflate(R.layout.momo_bottomsheet, null);
+        Button payOrder = viewMomo.findViewById(R.id.momo_bottomsheet_submit);
+        EditText phoneNumberInput = viewMomo.findViewById(R.id.momo_bottomsheet_number);
+        TextView descr = viewMomo.findViewById(R.id.momo_bottomsheet_descr);
+
+        descr.setText("Confirm your payment of ".concat(price).concat(" XAF"));
+
+        payOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                momoDialog.dismiss();
+                if(Integer.parseInt(price) < 50){
+                    makePaymentMomo("50");
+                } else {
+                    makePaymentMomo(price);
+                }
+            }
+        });
+        momoDialog.setCancelable(true);
+        momoDialog.setContentView(viewMomo);
+        momoDialog.show();
         return null;
     }
 
@@ -186,6 +228,13 @@ public class OrderVideoActivity extends AppCompatActivity {
         // the request code will be used on the method onActivityResult
         startActivityForResult(intent, PAYPAL_REQUEST_CODE);
     }
+
+
+    private void makePaymentMomo(String amount) {
+//        query api to initiate payment and get response
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
