@@ -227,6 +227,7 @@ public class SettingsProfileActivity extends AppCompatActivity {
             imageUri = data.getData();
             pp.setImageURI(imageUri);
             imageSelected = true;
+            uploadImage();
         }
     }
 

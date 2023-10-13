@@ -167,6 +167,7 @@ public class AddShowcaseActivity extends AppCompatActivity {
     private void requestStoragePermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            Log.d("JemaTag", "doing the if");
 
             new AlertDialog.Builder(this)
                     .setTitle("Permission needed")
@@ -187,7 +188,8 @@ public class AddShowcaseActivity extends AppCompatActivity {
                     .create().show();
 
         } else {
-            ActivityCompat.requestPermissions(this,
+            Log.d("JemaTag", "doing the else");
+            ActivityCompat.requestPermissions(AddShowcaseActivity.this,
                     new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
         }
     }
