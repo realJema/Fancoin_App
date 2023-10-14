@@ -25,7 +25,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.jema.fancoin.Campay.CamPay;
 import com.jema.fancoin.Database.User;
 import com.jema.fancoin.Database.UserViewModel;
 import com.jema.fancoin.R;
@@ -39,9 +38,20 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class OrderVideoActivity extends AppCompatActivity {
 
@@ -57,7 +67,6 @@ public class OrderVideoActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private String username, useremail, userphone, userimage;
     private UserViewModel viewModel;
-    private CamPay camPay;
 
     // on below line creating a Paypal Configuration Object
     // on below line creating a variable to store request code for paypal sdk
@@ -70,6 +79,7 @@ public class OrderVideoActivity extends AppCompatActivity {
             .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
             // on below line we are passing a client id.
             .clientId(clientID);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,12 +137,12 @@ public class OrderVideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(recipient.getText().toString().matches("") ){
-                    Toast.makeText(OrderVideoActivity.this, R.string.order_recipient_and_description,Toast.LENGTH_LONG).show();
+                if (recipient.getText().toString().matches("")) {
+                    Toast.makeText(OrderVideoActivity.this, R.string.order_recipient_and_description, Toast.LENGTH_LONG).show();
                     return;
                 }
-                if( description.getText().toString().matches("")){
-                    Toast.makeText(OrderVideoActivity.this,R.string.order_recipient_and_description,Toast.LENGTH_LONG).show();
+                if (description.getText().toString().matches("")) {
+                    Toast.makeText(OrderVideoActivity.this, R.string.order_recipient_and_description, Toast.LENGTH_LONG).show();
                     return;
                 }
                 showDialog();
@@ -167,7 +177,7 @@ public class OrderVideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                if(Integer.parseInt(price) < 50){
+                if (Integer.parseInt(price) < 50) {
                     makePayment("50");
                 } else {
                     makePayment(price);
@@ -200,11 +210,12 @@ public class OrderVideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                momoDialog.dismiss();
-                if(Integer.parseInt(price) < 50){
-                    makePaymentMomo("50");
-                } else {
-                    makePaymentMomo(price);
-                }
+//                if(Integer.parseInt(price) < 50){
+//                    makePaymentMomo("50");
+//                } else {
+//                    makePaymentMomo(price);
+//                }
+                checkPaymentMomo("p.iBm5mQ7zC4mDFAw92AbVJ1g5TKbUh1DjQdCXwovCjOed9o1CVQnpDZCjitIrEIhBlITUrf96EaxPOwcKqafQO9xYpG2CXDKS");
             }
         });
         momoDialog.setCancelable(true);
@@ -229,10 +240,144 @@ public class OrderVideoActivity extends AppCompatActivity {
         startActivityForResult(intent, PAYPAL_REQUEST_CODE);
     }
 
-
     private void makePaymentMomo(String amount) {
-//        query api to initiate payment and get response
+//      We initiate the payment on notchpay
 
+        Date now = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yyyy_HH-m-s"); // we change the format to give a valid name string
+        String strDate = formatter.format(now);
+        String payRef = "payment_" + auth.getCurrentUser().getUid().concat("_" + strDate); // the name containing the user's id, date formatted and the extension
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpClient client = new OkHttpClient().newBuilder()
+                        .build();
+                MediaType mediaType = MediaType.parse("text/plain");
+                RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                        .addFormDataPart("email", "astrideevans@gmail.com")
+                        .addFormDataPart("currency", "XAF")
+                        .addFormDataPart("amount", "100") // amount in fcfa
+                        .addFormDataPart("phone", "651136617")
+                        .addFormDataPart("reference", payRef)
+                        .addFormDataPart("description", "Payment description")
+                        .build();
+                Request request = new Request.Builder()
+                        .url("https://api.notchpay.co/payments/initialize")
+                        .method("POST", body)
+                        .addHeader("Authorization", "b.e2jtSqi3lAPzHNov")
+                        .addHeader("Accept", "application/json")
+                        .build();
+
+                try {
+
+                    Response response = client.newCall(request).execute();
+
+                    if (response.isSuccessful()) {
+                        // Get the response body as a string.
+                        String responseData = response.body().string();
+                        Log.d("JemaTag", responseData);
+                        // Create a regular expression to match the reference value.
+                        String regex = "\"reference\"\\s*:\\s*\"([^\"]*)\"";
+                        Pattern pattern = Pattern.compile(regex);
+
+                        // Use the regex to match the reference value in the response.
+                        Matcher matcher = pattern.matcher(responseData);
+
+                        // Extract the reference value from the matched string.
+                        String referenceValue = null;
+                        String referenceValue2 = null;
+                        if (matcher.find()) {
+                            referenceValue = matcher.group();
+                            referenceValue2 = referenceValue.replaceFirst("\"reference\":\"", "").replace("\"", "");
+                            Log.d("JemaTag", referenceValue2);
+
+                            OkHttpClient clientValidate = new OkHttpClient().newBuilder()
+                                    .build();
+                            MediaType mediaTypeValidate = MediaType.parse("application/json");
+                            RequestBody bodyValidate = RequestBody.create(mediaTypeValidate, "{\r\n\"channel\":\"cm.mtn\",\r\n\"data\":{\r\n\"phone\":\"+237651136617\"\r\n}\r\n}\r\n");
+                            Request requestValidate = new Request.Builder()
+                                    .url("https://api.notchpay.co/payments/" + referenceValue2)
+                                    .method("PUT", bodyValidate)
+                                    .addHeader("Authorization", "b.e2jtSqi3lAPzHNov")
+                                    .addHeader("Accept", "application/json")
+                                    .addHeader("Content-Type", "application/json")
+                                    .build();
+
+                            Response responseValidate = clientValidate.newCall(requestValidate).execute();
+
+                            if (response.isSuccessful()) {
+                                String responseData2 = responseValidate.body().string();
+                                Log.d("JemaTag", responseData2);
+                            }
+                        }
+                        // Do something with the response data.
+                    } else {
+                        // Handle the error response.
+                        Log.d("JemaTag", "Notchpay initiate payment failed");
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        thread.start();
+
+    }
+
+    private void checkPaymentMomo(String reference) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpClient client = new OkHttpClient().newBuilder()
+                        .build();
+                MediaType mediaType = MediaType.parse("text/plain");
+                Request request = new Request.Builder()
+                        .url("https://api.notchpay.co/payments/" + reference)
+                        .addHeader("Authorization", "b.e2jtSqi3lAPzHNov")
+                        .build();
+                try {
+                    Response paymentCheckresponse = client.newCall(request).execute();
+
+                    if (paymentCheckresponse.isSuccessful()) {
+                        String paymentCheckresponseData = paymentCheckresponse.body().string();
+                        // Create a regular expression to match the reference value.
+                        String regex = "\"message\"\\s*:\\s*\"([^\"]*)\"";
+                        Pattern pattern = Pattern.compile(regex);
+
+                        // Use the regex to match the reference value in the response.
+                        Matcher matcher = pattern.matcher(paymentCheckresponseData);
+
+                        // Extract the reference value from the matched string.
+                        String referenceValue = null;
+                        String referenceValue2 = null;
+                        if (matcher.find()) {
+                            referenceValue = matcher.group();
+                            referenceValue2 = referenceValue.replaceFirst("\"message\":\"", "").replace("\"", "");
+
+                            if (referenceValue2.equalsIgnoreCase("payment retrieved")) {
+                                Log.d("Jematag", "payment confirmed");
+
+                                // TODO : add redirection to payment confirmed page
+
+
+                            } else {
+                                Log.d("Jematag", "payment incomplete");
+
+                                // TODO : show message that payment not confirmed
+
+                            }
+                        } else {
+                            Log.d("Jematag", "Checking payment string failed");
+                        }
+                    } else {
+                        Log.d("JemaTag", "Payment check failed");
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        thread.start();
     }
 
     @Override
@@ -254,7 +399,7 @@ public class OrderVideoActivity extends AppCompatActivity {
                         String payID = payObj.getJSONObject("response").getString("id");
                         String state = payObj.getJSONObject("response").getString("state");
                         // on below line displaying a toast message with the payment status
-                        HashMap<String , Object> order = new HashMap<>();
+                        HashMap<String, Object> order = new HashMap<>();
 
                         order.put("star_uid", id);
                         order.put("star_image", image);
@@ -268,7 +413,7 @@ public class OrderVideoActivity extends AppCompatActivity {
                         order.put("client_email", useremail);
 
 
-                        order.put("recipient" , recipient.getText().toString());
+                        order.put("recipient", recipient.getText().toString());
                         order.put("description", description.getText().toString());
                         order.put("date", new Date());
                         order.put("id", auth.getCurrentUser().getUid());

@@ -17,10 +17,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.jema.fancoin.Adapter.ProfileVideosAdapter;
 import com.jema.fancoin.Database.User;
 import com.jema.fancoin.Database.UserViewModel;
@@ -61,6 +63,7 @@ public class ProfileFragment extends Fragment {
     private FirebaseFirestore db;
 
     private ArrayList<String> videoPathslocal;
+    public String numberOfRequests = "0";
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -94,12 +97,10 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         Home homeActivity = (Home) getActivity();
         User iData = homeActivity.mydata;
-        String iRequests = homeActivity.numberOfRequests;
 
         Log.d("JemaTag", iData.username);
 
@@ -132,9 +133,9 @@ public class ProfileFragment extends Fragment {
         Picasso.get().load(iData.image).into(pp);
         followers.setText(iData.followers);
         following.setText(iData.following);
-        requests.setText(iRequests);
+        requests.setText(numberOfRequests);
         String requestStr = getString(R.string.requests);
-        requestsPage.setText(requestStr.concat(" (").concat(iRequests).concat(")"));
+        requestsPage.setText(requestStr.concat(" (").concat(numberOfRequests).concat(")"));
 
 //        videosFeed.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 3);
@@ -167,6 +168,7 @@ public class ProfileFragment extends Fragment {
         });
 
         ProfileVideosListener();
+        RequestsListener();
 
         return rootView;
 
@@ -174,32 +176,57 @@ public class ProfileFragment extends Fragment {
 
     /**
      * Listen to changes in showcase videos on firebase for the current user
-     *
      */
     private void ProfileVideosListener() {
-        db.collection("Users").document(auth.getCurrentUser().getUid())
-                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                        if (error != null) {
-                            Log.e("Firebase Error", error.getMessage());
-                            return;
-                        }
-                        List<String> group = (List<String>) value.get("showcase");
+        db.collection("Users").document(auth.getCurrentUser().getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.e("Firebase Error", error.getMessage());
+                    return;
+                }
+                List<String> group = (List<String>) value.get("showcase");
 
 //                        adding videos to profile
-                        if (group != null && group.size() != 0) {
-                            noVideos.setVisibility(View.GONE);
-                            for (int i = 0; i < group.size(); i++) {
-                                if(!videoPaths.contains(group.get(i))) {
-                                    videoPaths.add(group.get(i));
-                                }
-                            }
-                            videosAdapter.notifyDataSetChanged();
+                if (group != null && group.size() != 0) {
+                    noVideos.setVisibility(View.GONE);
+                    for (int i = 0; i < group.size(); i++) {
+                        if (!videoPaths.contains(group.get(i))) {
+                            videoPaths.add(group.get(i));
                         }
                     }
-                });
+                    videosAdapter.notifyDataSetChanged();
+                }
+            }
+        });
     }
 
+    /**
+     * Listening on the data base of orders to count all the commands passed for this user
+     */
+    private void RequestsListener() {
+
+        db.collection("Orders").whereEqualTo("star_uid", auth.getCurrentUser().getUid()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+                if (error != null) {
+//                            if(progressDialog.isShowing())
+//                                progressDialog.dismiss();
+                    Log.i("JemaTag", "error gettting data");
+                    return;
+                }
+
+                for (DocumentChange dc : value.getDocumentChanges()) {
+
+                    String numberOrders = String.valueOf(value.getDocuments().size());
+                    numberOfRequests = numberOrders;
+                    requests.setText(numberOfRequests);
+                    String requestStr = getString(R.string.requests);
+                    requestsPage.setText(requestStr.concat(" (").concat(numberOfRequests).concat(")"));
+                }
+            }
+        });
+    }
 
 }
