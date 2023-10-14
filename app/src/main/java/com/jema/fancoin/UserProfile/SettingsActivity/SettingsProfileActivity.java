@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -50,6 +51,8 @@ public class SettingsProfileActivity extends AppCompatActivity {
     BottomSheetDialog dialog;
     TextView profileName, profileEmail;
     ImageView pp, back, editName, editEmail, changeImageBtn;
+    ShapeableImageView ppCircle;
+    String ppPath = null;
     TextInputEditText username;
     TextInputLayout usernameContainer;
     Button saveBtn;
@@ -78,6 +81,7 @@ public class SettingsProfileActivity extends AppCompatActivity {
         editEmail = findViewById(R.id.edit_email);
         changeImageBtn = findViewById(R.id.settings_profile_change_image);
         back = findViewById(R.id.back2);
+        ppCircle = findViewById(R.id.settings_profile_image);
 
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -91,6 +95,7 @@ public class SettingsProfileActivity extends AppCompatActivity {
                     profileName.setText(user.username);
                     profileEmail.setText(user.email);
                     Picasso.get().load(user.image).into(pp);
+                    ppPath = user.image;
                     myUsername = user.username;
                 }
             }
@@ -119,6 +124,14 @@ public class SettingsProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 selectImage();
+            }
+        });
+        ppCircle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(SettingsProfileActivity.this, ProfilePictureActivity.class);
+                i.putExtra("profile_image", ppPath);
+                startActivity(i);
             }
         });
        /*
