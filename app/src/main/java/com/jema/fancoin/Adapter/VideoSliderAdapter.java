@@ -1,12 +1,8 @@
 package com.jema.fancoin.Adapter;
 
-import static android.provider.MediaStore.Video.Thumbnails.MINI_KIND;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.media.ThumbnailUtils;
-import android.util.Log;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.jema.fancoin.Order.FullscreenViewAcivity;
 import com.jema.fancoin.R;
 
 import java.util.ArrayList;
@@ -78,24 +75,6 @@ public class VideoSliderAdapter extends RecyclerView.Adapter<VideoSliderAdapter.
         MediaItem mediaItem = MediaItem.fromUri(videoUri);
         holder.simpleExoPlayer.setMediaItem(mediaItem);
 
-//        Picasso.get().load(Thumbnail).into(holder.thumbnailImage);
-
-
-        holder.bt_fullscreen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!isFullScreen) {
-                    holder.bt_fullscreen.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_fullscreen_exit)
-                    );
-//                    activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-                } else {
-                    holder.bt_fullscreen.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_fullscreen));
-//                    activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                }
-                isFullScreen = !isFullScreen;
-            }
-        });
-
         holder.playPauseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -136,6 +115,15 @@ public class VideoSliderAdapter extends RecyclerView.Adapter<VideoSliderAdapter.
                 holder.simpleExoPlayer.play();
                 holder.bt_pause.setVisibility(View.VISIBLE);
                 holder.bt_play.setVisibility(View.GONE);
+            }
+        });
+        holder.bt_fullscreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, FullscreenViewAcivity.class)
+                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.putExtra("videoPath", videoUri);
+                context.startActivity(i);
             }
         });
 

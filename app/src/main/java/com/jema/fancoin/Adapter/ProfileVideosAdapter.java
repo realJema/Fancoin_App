@@ -2,12 +2,12 @@ package com.jema.fancoin.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
@@ -21,9 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.jema.fancoin.Order.FullscreenViewAcivity;
 import com.jema.fancoin.R;
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 
@@ -57,17 +56,6 @@ public class ProfileVideosAdapter extends RecyclerView.Adapter<ProfileVideosAdap
 
         // get data
         Uri videoUri = Uri.parse(pathsList.get(position));
-
-       /* String substring1 = "vod/";
-        String substring2 = "/mp4";
-
-        String videoId = StringUtils.substringBetween(videoUri.toString(), substring1, substring2);
-        String Thumbnail = "https://vod.api.video/vod/" + videoId + "/thumbnail.jpg";
-
-
-        Glide.with(context)
-                .load(Thumbnail)
-                .into(holder.profile_thumbnailImage);*/
 
         Glide.with(context)
                 .load(videoUri)
@@ -137,6 +125,16 @@ public class ProfileVideosAdapter extends RecyclerView.Adapter<ProfileVideosAdap
                 holder.profile_simpleExoPlayer.play();
                 holder.profile_bt_pause.setVisibility(View.VISIBLE);
                 holder.profile_bt_play.setVisibility(View.GONE);
+            }
+        });
+
+        holder.profile_bt_fullscreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, FullscreenViewAcivity.class)
+                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.putExtra("videoPath", videoUri);
+                context.startActivity(i);
             }
         });
 

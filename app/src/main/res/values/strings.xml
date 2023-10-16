@@ -184,4 +184,8 @@
     <string name="inbox2">Inbox</string>
     <string name="upload_successfull">Upload Successfull</string>
     <string name="Upload_success_subtitle">You can view the video now on your profile</string>
+    <string name="settings_profile_subtext">This is your email. This email is visible to your contacts</string>
+    <string name="title_activity_fullscreen_video">FullscreenVideoActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

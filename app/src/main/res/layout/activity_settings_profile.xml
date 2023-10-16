@@ -31,9 +31,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/settingsProfile_title"
+            android:textColor="@color/text_tint"
             android:textSize="@dimen/topbar_title"
             android:textStyle="bold"
-            android:textColor="@color/text_tint"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -92,16 +92,17 @@
                     app:layout_constraintEnd_toEndOf="@+id/settings_profile_image"
                     app:shapeAppearanceOverlay="@style/Circular" />
 
-
+                <!-- username -->
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/imageView6"
+                    android:id="@+id/settings_profile_username_icon"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="50dp"
                     android:background="@color/colorPrimary"
                     android:padding="1dp"
-                    android:src="@drawable/ic_user_black"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_at"
                     android:tint="@color/white"
                     app:contentPadding="3dp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -109,28 +110,28 @@
                     app:shapeAppearanceOverlay="@style/Circular" />
 
                 <ImageView
-                    android:id="@+id/edit_name"
+                    android:id="@+id/username_icon_edit"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_marginEnd="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/imageView6"
+                    app:layout_constraintTop_toTopOf="@+id/settings_profile_username_icon"
                     app:srcCompat="@drawable/ic_edit"
                     app:tint="@color/colorPrimary" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/username_suptext"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:text="@string/name"
-                    android:textSize="12dp"
                     android:inputType="textCapSentences"
-                    app:layout_constraintStart_toEndOf="@+id/imageView6"
-                    app:layout_constraintTop_toTopOf="@+id/imageView6" />
+                    android:text="@string/username"
+                    android:textSize="12dp"
+                    app:layout_constraintStart_toEndOf="@+id/settings_profile_username_icon"
+                    app:layout_constraintTop_toTopOf="@+id/settings_profile_username_icon" />
 
                 <TextView
-                    android:id="@+id/settings_profile_name"
+                    android:id="@+id/username_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -138,23 +139,84 @@
                     android:text="TextView"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    app:layout_constraintEnd_toStartOf="@+id/edit_name"
-                    app:layout_constraintStart_toStartOf="@+id/textView3"
-                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                    app:layout_constraintEnd_toStartOf="@+id/username_icon_edit"
+                    app:layout_constraintStart_toStartOf="@+id/username_suptext"
+                    app:layout_constraintTop_toBottomOf="@+id/username_suptext" />
 
                 <TextView
-                    android:id="@+id/textView63"
+                    android:id="@+id/username_subtext"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="This is your useranme. This name will be visible to your contacts"
                     android:textSize="12dp"
-                    app:layout_constraintEnd_toEndOf="@+id/settings_profile_name"
-                    app:layout_constraintStart_toStartOf="@+id/settings_profile_name"
-                    app:layout_constraintTop_toBottomOf="@+id/settings_profile_name" />
-
-
+                    app:layout_constraintEnd_toEndOf="@+id/username_text"
+                    app:layout_constraintStart_toStartOf="@+id/username_text"
+                    app:layout_constraintTop_toBottomOf="@+id/username_text" />
+                <!--end of username -->
+                <!-- name -->
                 <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/settings_profile_name_icon"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="24dp"
+                    android:background="@color/colorPrimary"
+                    android:padding="1dp"
+                    android:src="@drawable/ic_user_black"
+                    android:tint="@color/white"
+                    app:contentPadding="3dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/username_subtext"
+                    app:shapeAppearanceOverlay="@style/Circular" />
+
+                <ImageView
+                    android:id="@+id/name_icon_edit"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/settings_profile_name_icon"
+                    app:srcCompat="@drawable/ic_edit"
+                    app:tint="@color/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/name_suptext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:inputType="textCapSentences"
+                    android:text="Full name"
+                    android:textSize="12dp"
+                    app:layout_constraintStart_toEndOf="@+id/settings_profile_name_icon"
+                    app:layout_constraintTop_toTopOf="@+id/settings_profile_name_icon" />
+
+                <TextView
+                    android:id="@+id/name_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="TextView"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/name_icon_edit"
+                    app:layout_constraintStart_toStartOf="@+id/name_suptext"
+                    app:layout_constraintTop_toBottomOf="@+id/name_suptext" />
+
+                <TextView
+                    android:id="@+id/name_subtext"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="This is your full name."
+                    android:textSize="12dp"
+                    app:layout_constraintEnd_toEndOf="@+id/name_text"
+                    app:layout_constraintStart_toStartOf="@+id/name_text"
+                    app:layout_constraintTop_toBottomOf="@+id/name_text" />
+                <!--end of name -->
+
+            <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/imageView62"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
@@ -166,7 +228,7 @@
                     android:tint="@color/white"
                     app:contentPadding="3dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView63"
+                    app:layout_constraintTop_toBottomOf="@+id/name_subtext"
                     app:shapeAppearanceOverlay="@style/Circular" />
 
                 <ImageView
@@ -184,9 +246,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:inputType="textCapSentences"
                     android:text="Email"
                     android:textSize="12dp"
-                    android:inputType="textCapSentences"
                     app:layout_constraintStart_toEndOf="@+id/imageView62"
                     app:layout_constraintTop_toTopOf="@+id/imageView62" />
 
@@ -208,8 +270,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:text="@string/settings_profile_subtext"
                     android:textSize="12dp"
-                    android:text="TThis is your email. This email is visible to your contacts"
                     app:layout_constraintEnd_toEndOf="@+id/settings_profile_email"
                     app:layout_constraintStart_toStartOf="@+id/settings_profile_email"
                     app:layout_constraintTop_toBottomOf="@+id/settings_profile_email" />

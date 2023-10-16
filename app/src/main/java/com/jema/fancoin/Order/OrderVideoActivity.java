@@ -210,12 +210,12 @@ public class OrderVideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                momoDialog.dismiss();
-//                if(Integer.parseInt(price) < 50){
-//                    makePaymentMomo("50");
-//                } else {
-//                    makePaymentMomo(price);
-//                }
-                checkPaymentMomo("p.iBm5mQ7zC4mDFAw92AbVJ1g5TKbUh1DjQdCXwovCjOed9o1CVQnpDZCjitIrEIhBlITUrf96EaxPOwcKqafQO9xYpG2CXDKS");
+                if(Integer.parseInt(price) < 50){
+                    makePaymentMomo("50");
+                } else {
+                    makePaymentMomo(price);
+                }
+//                checkPaymentMomo("p.iBm5mQ7zC4mDFAw92AbVJ1g5TKbUh1DjQdCXwovCjOed9o1CVQnpDZCjitIrEIhBlITUrf96EaxPOwcKqafQO9xYpG2CXDKS");
             }
         });
         momoDialog.setCancelable(true);

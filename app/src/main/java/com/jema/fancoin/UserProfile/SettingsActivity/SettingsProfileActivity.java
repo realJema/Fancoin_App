@@ -49,8 +49,8 @@ public class SettingsProfileActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
 
     BottomSheetDialog dialog;
-    TextView profileName, profileEmail;
-    ImageView pp, back, editName, editEmail, changeImageBtn;
+    TextView profieUsername, profileName, profileEmail;
+    ImageView pp, back, editUsername, editName, editEmail, changeImageBtn;
     ShapeableImageView ppCircle;
     String ppPath = null;
     TextInputEditText username;
@@ -75,9 +75,11 @@ public class SettingsProfileActivity extends AppCompatActivity {
 
 
         pp = findViewById(R.id.settings_profile_image);
-        profileName = findViewById(R.id.settings_profile_name);
+        profileName = findViewById(R.id.name_text);
+        profieUsername = findViewById(R.id.username_text);
         profileEmail = findViewById(R.id.settings_profile_email);
-        editName = findViewById(R.id.edit_name);
+        editUsername = findViewById(R.id.username_icon_edit);
+        editName = findViewById(R.id.name_icon_edit);
         editEmail = findViewById(R.id.edit_email);
         changeImageBtn = findViewById(R.id.settings_profile_change_image);
         back = findViewById(R.id.back2);
@@ -92,7 +94,8 @@ public class SettingsProfileActivity extends AppCompatActivity {
             @Override
             public void onChanged(User user) {
                 if (user.username != null) {
-                    profileName.setText(user.username);
+                    profieUsername.setText(user.username);
+                    profileName.setText(user.full_name);
                     profileEmail.setText(user.email);
                     Picasso.get().load(user.image).into(pp);
                     ppPath = user.image;
@@ -108,10 +111,16 @@ public class SettingsProfileActivity extends AppCompatActivity {
             }
         });
 
-        editName.setOnClickListener(new View.OnClickListener() {
+        editUsername.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialog("username");
+            }
+        });
+        editName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog("full_name");
             }
         });
         editEmail.setOnClickListener(new View.OnClickListener() {

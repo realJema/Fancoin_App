@@ -275,7 +275,7 @@ public class Home extends AppCompatActivity {
                 Log.d("firebase value check", String.valueOf(value));
 
                 String temp_username = value.getString("username");
-                String temp_full_name = value.getString("name");
+                String temp_full_name = value.getString("full_name");
                 String temp_application_status = value.getString("application_status");
                 String temp_bio = value.getString("bio");
                 String temp_category = value.getString("category");

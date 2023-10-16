@@ -128,7 +128,7 @@ public class ProfileFragment extends Fragment {
         videosFeed = (RecyclerView) rootView.findViewById(R.id.profile_videos_feed);
 
         username.setText("@".concat(iData.username));
-        usernametop.setText("@".concat(iData.username));
+        usernametop.setText(iData.full_name);
         bio.setText(iData.bio);
         Picasso.get().load(iData.image).into(pp);
         followers.setText(iData.followers);

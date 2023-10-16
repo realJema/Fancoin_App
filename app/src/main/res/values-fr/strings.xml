@@ -167,5 +167,6 @@
     <string name="inbox2">Boite</string>
     <string name="upload_successfull">Upload Successfull</string>
     <string name="Upload_success_subtitle">You can view the video now on your profile</string>
+    <string name="settings_profile_subtext">This is your email. This email is visible to your contacts</string>
 
 </resources>
